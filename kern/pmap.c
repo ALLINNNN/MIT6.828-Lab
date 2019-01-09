@@ -203,12 +203,27 @@ mem_init(void)
 	//    - pages itself -- kernel RW, user NONE
 	// Your code goes here:
 
-    cprintf("tb_addr = %x, PADDR(tb_addr) = %x\n", tb_addr, PADDR(tb_addr));
-    kern_pgdir[PDX(UPAGES)] = PADDR(tb_addr) | PTE_U | PTE_P;
-    pte_t *ps_entry = (pte_t *)tb_addr;
-    for(uint32_t i = 0; i < npages / PGSIZE; i++)
+    pte_t *ptpages = NULL;
+    physaddr_t paptpages = (physaddr_t)PTE_ADDR(kern_pgdir[PDX(UPAGES)]);
+    if(!paptpages)
     {
-        ps_entry[PTX(UPAGES)] = PADDR(tb_addr + i*PGSIZE) | PTE_P | PTE_W;
+        struct PageInfo *pgptpages = page_alloc(ALLOC_ZERO);
+        if(!pgptpages)
+        {
+            panic("page alloc for page table of pages failure\n");
+        }
+        paptpages = page2pa(pgptpages);
+        kern_pgdir[PDX(UPAGES)] = paptpages | PTE_U | PTE_P;
+        pgptpages->pp_ref++;
+
+        ptpages = (pde_t *)(kern_pgdir[PDX(UPAGES)]);
+    }
+
+    ptpages = page2kva(pa2page(paptpages));
+    uint32_t npage = npages*sizeof(struct PageInfo)/PGSIZE;
+    for(uint32_t i = 0; i < npage; i++)
+    {
+        ptpages[PTX(UPAGES + i*PGSIZE)] = PADDR((uint8_t *)pages + i*PGSIZE) | PTE_U | PTE_P;
     }
 
 	//////////////////////////////////////////////////////////////////////
@@ -222,8 +237,34 @@ mem_init(void)
 	//       overwrite memory.  Known as a "guard page".
 	//     Permissions: kernel RW, user NONE
 	// Your code goes here:
-    kern_pgdir[PDX(KSTACKTOP - KSTKSIZE)] = PADDR(bootstacktop - KSTKSIZE) | PTE_P | PTE_W;
-    kern_pgdir[PDX(KSTACKTOP - PTSIZE)] = PADDR((void *)0xffffffff) | PTE_P | PTE_W;
+    pte_t *ptstack = NULL;
+    physaddr_t paptstack = (physaddr_t)PTE_ADDR(kern_pgdir[PDX(KSTACKTOP)]);
+   
+    cprintf("paptstack = %x\n", paptstack);
+    if(!paptstack)
+    {
+        struct PageInfo *pgptstack = page_alloc(ALLOC_ZERO);
+        if(!pgptstack)
+        {
+            panic("page alloc for page table of KSTACKTOP failure\n");
+        }
+        paptstack = page2pa(pgptstack);
+        cprintf("alloc new page for stack, paptstack = %x\n", paptstack);
+        kern_pgdir[PDX(KSTACKTOP - PTSIZE)] = paptstack | PTE_U | PTE_P;
+        pgptstack->pp_ref++;
+
+        ptstack = (pte_t *)kern_pgdir[PDX(KSTACKTOP)];
+    }
+
+    ptstack = (pte_t *)page2kva(pa2page(paptstack));
+    cprintf("bootstack = %x, PADDR(bootstack) = %x\n", bootstack, PADDR(bootstack));
+    for(uint32_t i = 0; i < KSTKSIZE/PGSIZE; i++)
+    {
+        ptstack[PTX(KSTACKTOP - KSTKSIZE + i*PGSIZE)] = (PADDR(bootstack) + i*PGSIZE) | PTE_W | PTE_P;
+        cprintf("KSTACKTOP - KSTKSIZE + %d*PGSIZE = %x\n", i, KSTACKTOP - KSTKSIZE + i*PGSIZE);
+        cprintf("PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = %x, ptstack[PTX] = %x\n", PTX(KSTACKTOP -KSTKSIZE +  i*PGSIZE), ptstack[PTX(KSTACKTOP - KSTKSIZE + i*PGSIZE)]);
+        cprintf("RADDR(bootstack) = %x, PADDR(bootstack) - %d*PGSIZE = %x\n", PADDR(bootstack), i, PADDR(bootstack) - i*PGSIZE);
+    }
 
 	//////////////////////////////////////////////////////////////////////
 	// Map all of physical memory at KERNBASE.
@@ -233,7 +274,50 @@ mem_init(void)
 	// we just set up the mapping anyway.
 	// Permissions: kernel RW, user NONE
 	// Your code goes here:
-    kern_pgdir[PDX(KERNBASE)] = PADDR((void *)0x0000) | PTE_P | PTE_W;
+    for(uintptr_t kb = KERNBASE; kb <= 0xffc00000; )
+    {
+        pte_t *pt = (pte_t *)kern_pgdir[PDX(kb)];
+        cprintf("pt = %x, PDX = %x\n", pt, PDX(kb));
+        if(!pt)
+        {
+            cprintf("va = %x, PDX(%x) = %x has no page table in pgdir\n", kb, pt, PDX(kb));
+            struct PageInfo *pgpd = page_alloc(ALLOC_ZERO);
+            if(!pgpd)
+            {
+                cprintf("has no page for pd\n");
+                break;
+            }
+
+            physaddr_t papd = page2pa(pgpd);
+            kern_pgdir[PDX(kb)] = papd | PTE_W | PTE_P;
+            cprintf("PDX(%x) = %x, kern_pgdir[%x] = %x\n", kb, PDX(kb), PDX(kb), kern_pgdir[PDX(kb)]);
+            pt = (pte_t *)kern_pgdir[PDX(kb)];
+            pgpd->pp_ref++;
+
+            cprintf("alloc new page for pt = %x\n", pt);
+        }
+
+        pt = (pte_t *)KADDR(PTE_ADDR(pt));
+        cprintf("&kern_pgdir[PDX] = %x, pt = %x, va = %x, PDX(%x) = %x\n", &kern_pgdir[PDX(kb)], pt, kb, kb, PDX(kb));
+
+        physaddr_t pa = kb - KERNBASE;
+        cprintf("kb - KERNBASE = %x\n", pa);
+
+        for(uint32_t i = 0; i < PGSIZE/4; i++)
+        {
+            pt[i] = (pa + i*PGSIZE) | PTE_W | PTE_P;
+ //           cprintf("&pt[%d] = %x, pt[%d] = %x, kb = %x, kb + %d*PGSIZE = %x\n", i, &pt[i], i, pt[i], kb, i, kb + i*PGSIZE);
+        }
+        uintptr_t pre_kb = kb;
+        kb = kb + PGSIZE*PGSIZE/4;
+        if(kb < pre_kb)
+        {
+            cprintf("Top of kernel space\n");
+            break;
+        }
+        cprintf("later kb = %x\n", kb);
+    }
+
 
 	// Check that the initial page directory has been set up correctly.
 	check_kern_pgdir();
@@ -247,7 +331,9 @@ mem_init(void)
 	// kern_pgdir wrong.
 	lcr3(PADDR(kern_pgdir));
 
+    cprintf("lcr3 end, check page start\n");
 	check_page_free_list(0);
+    cprintf("check page end\n");
 
 	// entry.S set the really important flags in cr0 (including enabling
 	// paging).  Here we configure the rest of the flags that we care about.
@@ -256,8 +342,10 @@ mem_init(void)
 	cr0 &= ~(CR0_TS|CR0_EM);
 	lcr0(cr0);
 
+    cprintf("lcr0 end, check page installed start\n");
 	// Some more checks, only possible after kern_pgdir is installed.
 	check_page_installed_pgdir();
+    cprintf("check page installed end\n");
 }
 
 // --------------------------------------------------------------
@@ -359,12 +447,14 @@ page_alloc(int alloc_flags)
 
     cprintf("page addr = %x, free_list->next = %x\n", page, page_free_list);
     
-    void *pgaddr = (void *)page2kva(page);
-    cprintf("page = %x, pgaddr = %x\n", page, pgaddr);
+    void *pgva = (void *)page2kva(page);
+    cprintf("page = %x, pgva = %x\n", page, pgva);
     if(alloc_flags & ALLOC_ZERO)
     {
-        memset(pgaddr, 0, PGSIZE);
+        cprintf("alloc_flags = %x, set value of pgva = 0\n", alloc_flags);
+        memset(pgva, 0, PGSIZE);
     }
+    cprintf("set page = %x pp_link to NULL\n", page); 
     page->pp_link = NULL;
     cprintf("alloc end\n"); 
 	return page;
@@ -444,7 +534,7 @@ pgdir_walk(pde_t *pgdir, const void *va, int create)
             return NULL;
         }
 
-        struct PageInfo *ps = page_alloc(0);
+        struct PageInfo *ps = page_alloc(ALLOC_ZERO);
         if(!ps)
             return NULL;
         
@@ -457,7 +547,6 @@ pgdir_walk(pde_t *pgdir, const void *va, int create)
     pt  = (pte_t *)page2kva(pa2page(ptpa));    
     pte = pt + PTX(va);
     cprintf("pgdir_walk, PTX = %d\n", PTX(va));
-//    pte = (pte_t *)pt[PTX(va)];
     cprintf("pgdir_walk end, pte = %x\n", pte);
     return pte;
 }
@@ -517,8 +606,7 @@ page_insert(pde_t *pgdir, struct PageInfo *pp, void *va, int perm)
     cprintf("page_insert, pt = %x, ptpa = %x\n", pgdir[PDX(va)], ptpa);
     if(ptpa)
     {
-        cprintf("page_insert, there is page table = %x for va = %x, pte = %x\n", ptpa, va, PTE_ADDR(pte));
-//        if(PTE_ADDR(pte))
+        cprintf("page_insert, there is page table = %x for va = %x, PTE_ADDR(pte) = %x\n", ptpa, va, PTE_ADDR(pte));
         if(*pte)
         {
             cprintf("page_insert, the page mapped at va has page = %x, remove it\n", *pte);
@@ -560,7 +648,7 @@ page_insert(pde_t *pgdir, struct PageInfo *pp, void *va, int perm)
             do
             {
                 temp = temp->pp_link;
-                cprintf("pre = %x, pre->pp_link = %x, temp = %x\n", pre, pre->pp_link, temp);
+//                cprintf("pre = %x, pre->pp_link = %x, temp = %x\n", pre, pre->pp_link, temp);
                 if(temp == pp)
                 {
                     cprintf("find pp = %x in free list, remove it from free list\n", pp);
@@ -598,7 +686,7 @@ struct PageInfo *
 page_lookup(pde_t *pgdir, void *va, pte_t **pte_store)
 {
 	// Fill this function in
-    cprintf("page_lookup start, va = %x, pte_store = %x\n", va, *pte_store);
+    cprintf("page_lookup start, va = %x, pte_store = %x\n", va, pte_store);
     pte_t *pte = pgdir_walk(pgdir, va, 0);
     cprintf("page_lookup, pte = %x, *pte = %x\n", pte, *pte);
     if(pte == NULL)
@@ -606,7 +694,7 @@ page_lookup(pde_t *pgdir, void *va, pte_t **pte_store)
         return NULL;
     }
 
-    if(**pte_store)
+    if(pte_store)
     {
         cprintf("pte_store is not NULL\n");
         pte_t *ptva = NULL;
@@ -646,14 +734,15 @@ page_remove(pde_t *pgdir, void *va)
     pte_t *pt = NULL;
     physaddr_t ptepa = 0x0000;
     physaddr_t ptpa = PTE_ADDR(pgdir[PDX(va)]);
-    cprintf("PDX(va) = %d, pgdir[%d] = %x\n", PDX(va), PDX(va), pgdir[PDX(va)]);
+    cprintf("PDX(va) = %d, pgdir[%d] = %x, ptpa = %x\n", PDX(va), PDX(va), pgdir[PDX(va)], ptpa);
     
     if(!ptpa)
     {
         cprintf("page_remove, has no page mapped at va = %x\n", va);
         return;
     }
-    
+
+    cprintf("page_remove, pagelookup start, pgdir = %x, va = %x\n", pgdir, va);
     struct PageInfo *pg = page_lookup(pgdir, va, NULL);
     cprintf("page_remove, va = %x corrsponding with pgInfo = %x\n", va, pg);
 
@@ -855,16 +944,24 @@ check_kern_pgdir(void)
 	// check pages array
 	n = ROUNDUP(npages*sizeof(struct PageInfo), PGSIZE);
 	for (i = 0; i < n; i += PGSIZE)
-		assert(check_va2pa(pgdir, UPAGES + i) == PADDR(pages) + i);
-
+    {
+        assert(check_va2pa(pgdir, UPAGES + i) == PADDR(pages) + i);
+    }
 
 	// check phys mem
 	for (i = 0; i < npages * PGSIZE; i += PGSIZE)
-		assert(check_va2pa(pgdir, KERNBASE + i) == i);
+    {
+//	    cprintf("i = %x, total = %x, rest = %x, check pa = %x\n", i, npages*PGSIZE, npages*PGSIZE - i, check_va2pa(pgdir, KERNBASE + i));
+        assert(check_va2pa(pgdir, KERNBASE + i) == i);
+    }
 
 	// check kernel stack
 	for (i = 0; i < KSTKSIZE; i += PGSIZE)
-		assert(check_va2pa(pgdir, KSTACKTOP - KSTKSIZE + i) == PADDR(bootstack) + i);
+    {
+	    cprintf("KSTACKTOP = %x, KSTKSIZE = %x, KSTACKTOP - KSTKSIZE + %x = %x\n", KSTACKTOP, KSTKSIZE, i, KSTACKTOP - KSTKSIZE + i);
+        cprintf("PADDR(bootstack) = %x, PADDR + %x = %x\n", PADDR(bootstack), i, PADDR(bootstack) + i);
+        assert(check_va2pa(pgdir, KSTACKTOP - KSTKSIZE + i) == PADDR(bootstack) + i);
+    }
 	assert(check_va2pa(pgdir, KSTACKTOP - PTSIZE) == ~0);
 
 	// check PDE permissions
@@ -898,11 +995,14 @@ check_va2pa(pde_t *pgdir, uintptr_t va)
 	pte_t *p;
 
 	pgdir = &pgdir[PDX(va)];
+//    cprintf("check, pd = %x, *pd = %x, va = %x, PDX(va) = %x\n", pgdir, *pgdir, va, PDX(va));
 	if (!(*pgdir & PTE_P))
 		return ~0;
 	p = (pte_t*) KADDR(PTE_ADDR(*pgdir));
+//    cprintf("check, pt = %x, pt[%x] = %x\n", p, PTX(va), p[PTX(va)]);
 	if (!(p[PTX(va)] & PTE_P))
 		return ~0;
+//    cprintf("check, pgaddr = %x\n", PTE_ADDR(p[PTX(va)]));
 	return PTE_ADDR(p[PTX(va)]);
 }
 
@@ -1086,10 +1186,14 @@ check_page_installed_pgdir(void)
 	page_free(pp0);
 	memset(page2kva(pp1), 1, PGSIZE);
 	memset(page2kva(pp2), 2, PGSIZE);
+    cprintf("check page install, page_inseart pp1 start\n");
 	page_insert(kern_pgdir, pp1, (void*) PGSIZE, PTE_W);
+    cprintf("check page install, page_inseart pp1 end\n");
 	assert(pp1->pp_ref == 1);
 	assert(*(uint32_t *)PGSIZE == 0x01010101U);
+    cprintf("check page install, page_inseart pp2 start\n");
 	page_insert(kern_pgdir, pp2, (void*) PGSIZE, PTE_W);
+    cprintf("check page install, page_inseart pp2 end\n");
 	assert(*(uint32_t *)PGSIZE == 0x02020202U);
 	assert(pp2->pp_ref == 1);
 	assert(pp1->pp_ref == 0);
