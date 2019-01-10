@@ -101,6 +101,10 @@
 #define MMIOLIM		(KSTACKTOP - PTSIZE)
 #define MMIOBASE	(MMIOLIM - PTSIZE)
 
+//PTSIZE = PGSIZE * NPTENTRIES = 4M
+//PGSIZE = 4089
+//NPTENTRIES = 1024, page table entries per page table
+
 #define ULIM		(MMIOBASE)
 
 /*

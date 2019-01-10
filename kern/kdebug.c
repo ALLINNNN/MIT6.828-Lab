@@ -184,6 +184,8 @@ debuginfo_eip(uintptr_t addr, struct Eipdebuginfo *info)
 		// Search within the function definition for the line number.
 		lline = lfun;
 		rline = rfun;
+        stab_binsearch(stabs, &lline, &rline, N_SLINE, addr);
+        info->eip_line = stabs[lline].n_desc;
 	} else {
 		// Couldn't find function stab!  Maybe we're in an assembly
 		// file.  Search the whole file for the line number.
