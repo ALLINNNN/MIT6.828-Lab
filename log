@@ -1,4 +1,4 @@
-+ cc kern/pmap.c
++ cc kern/env.c
 + ld obj/kern/kernel
 + mk obj/kern/kernel.img
 ***
@@ -7,130 +7,86 @@
 qemu-system-i386 -nographic -drive file=obj/kern/kernel.img,index=0,media=disk,format=raw -serial mon:stdio -gdb tcp::26000 -D qemu.log 
 6828 decimal is 15254 octal!
 Physical memory: 131072K available, base = 640K, extended = 130432K
-nextfree initialize as f0123000
-addr = f0123000, n = 4096, number of page = 1, nextfree = f0124000
-UVPT = ef400000, PDX(UVPT) = 3bd, PADDR = 123000
-nextfree initialize as f0124000
-addr = f0124000, n = 4096, number of page = 1, nextfree = f0125000
-nextfree initialize as f0125000
-addr = f0125000, n = 262144, number of page = 64, nextfree = f0165000
-sizeof(PageInfo) = 8, pages = f0125000, npages = 32768
+nextfree initialize as f01ea000
+addr = f01ea000, n = 4096, number of page = 1, nextfree = f01eb000
+UVPT = ef400000, PDX(UVPT) = 3bd, PADDR = 1ea000
+nextfree initialize as f01eb000
+addr = f01eb000, n = 4096, number of page = 1, nextfree = f01ec000
+nextfree initialize as f01ec000
+addr = f01ec000, n = 262144, number of page = 64, nextfree = f022c000
+nextfree initialize as f022c000
+addr = f022c000, n = 98304, number of page = 24, nextfree = f0244000
+sizeof(PageInfo) = 8, pages = f01ec000, npages = 32768
+sizeof(Env) = 96, envs = f022c000, NENV = 1024
 initialise pageinfo to 0 end
-nextfree initialize as f0165000
-addr = f0165000, n = 0
+initialise envs to 0 end
+nextfree initialize as f0244000
+addr = f0244000, n = 0
 page_init start
-nextfree initialize as f0165000
-addr = f0165000, n = 0
-io start = 160, io end = 256, u start = 256, u end = 357, ps_end = f0165000
+nextfree initialize as f0244000
+addr = f0244000, n = 0
+io start = 160, io end = 256, u start = 256, u end = 580, ps_end = f0244000
 preserve 0 page
 page_init end
-check page free list, page_free_list = f0126ff8
-nextfree initialize as f0165000
-addr = f0165000, n = 0
-check page free list, first free page = f0165000
+check page free list, page_free_list = f01edff8
+nextfree initialize as f0244000
+addr = f0244000, n = 0
+check page free list, first free page = f0244000
 check_page_free_list() succeeded!
 check page free list end
 alloc three pages
-alloc start
-page addr = f0126ff8, free_list->next = f0126ff0
-page = f0126ff8, pgva = f03ff000
-set page = f0126ff8 pp_link to NULL
-alloc end
-alloc start
-page addr = f0126ff0, free_list->next = f0126fe8
-page = f0126ff0, pgva = f03fe000
-set page = f0126ff0 pp_link to NULL
-alloc end
-alloc start
-page addr = f0126fe8, free_list->next = f0126fe0
-page = f0126fe8, pgva = f03fd000
-set page = f0126fe8 pp_link to NULL
-alloc end
+set page = f01edff8 pp_link to NULL
+set page = f01edff0 pp_link to NULL
+set page = f01edfe8 pp_link to NULL
 set free_list = 0
-alloc start
 has no page to allocate
 free pages
 alloc three pages
-alloc start
-page addr = f0126fe8, free_list->next = f0126ff0
-page = f0126fe8, pgva = f03fd000
-set page = f0126fe8 pp_link to NULL
-alloc end
-alloc start
+set page = f01edfe8 pp_link to NULL
 next is NULL
-page addr = f0126ff0, free_list->next = f0126ff8
-page = f0126ff0, pgva = f03fe000
-set page = f0126ff0 pp_link to NULL
-alloc end
-alloc start
-page addr = f0126ff8, free_list->next = 0
-page = f0126ff8, pgva = f03ff000
-set page = f0126ff8 pp_link to NULL
-alloc end
-alloc start
+set page = f01edff0 pp_link to NULL
+set page = f01edff8 pp_link to NULL
 has no page to allocate
 test flags
-alloc start
-page addr = f0126fe8, free_list->next = 0
-page = f0126fe8, pgva = f03fd000
 alloc_flags = 1, set value of pgva = 0
-set page = f0126fe8 pp_link to NULL
-alloc end
+set page = f01edfe8 pp_link to NULL
 check_page_alloc() succeeded!
 check page alloc end
-alloc start
-page addr = f0126ff8, free_list->next = f0126ff0
-page = f0126ff8, pgva = f03ff000
-set page = f0126ff8 pp_link to NULL
-alloc end
-alloc start
-page addr = f0126ff0, free_list->next = f0126fe8
-page = f0126ff0, pgva = f03fe000
-set page = f0126ff0 pp_link to NULL
-alloc end
-alloc start
-page addr = f0126fe8, free_list->next = f0126fe0
-page = f0126fe8, pgva = f03fd000
-set page = f0126fe8 pp_link to NULL
-alloc end
-alloc start
+set page = f01edff8 pp_link to NULL
+set page = f01edff0 pp_link to NULL
+set page = f01edfe8 pp_link to NULL
 has no page to allocate
-page_lookup start, va = 0, pte_store = f011ffbc
+page_lookup start, va = 0, pte_store = f0124fbc
 pgdir_walk start
 pgdir_walk, ptpa = 0, PDX(va) = 0
 pgdir_walk, did not find pdr for va = 0, return NULL
 page_lookup, pte = 0, *pte = f000ff53
-page_insert start, pp = f0126ff0, va = 0
+page_insert start, pp = f01edff0, va = 0
 pgdir_walk start
 pgdir_walk, ptpa = 0, PDX(va) = 0
 pgdir_walk, did not find pdr for va = 0, return NULL
 page_insert, pt = 0, ptpa = 0
 page_insert, there is no page table for va, create one and adds it to the pgdir
-alloc start
 has no page to allocate
 page_insert, alloc page for pt failure
 free pp0 and try again: pp0 should be used for page table
-page_insert start, pp = f0126ff0, va = 0
+page_insert start, pp = f01edff0, va = 0
 pgdir_walk start
 pgdir_walk, ptpa = 0, PDX(va) = 0
 pgdir_walk, did not find pdr for va = 0, return NULL
 page_insert, pt = 0, ptpa = 0
 page_insert, there is no page table for va, create one and adds it to the pgdir
-alloc start
-page addr = f0126ff8, free_list->next = 0
-page = f0126ff8, pgva = f03ff000
 alloc_flags = 1, set value of pgva = 0
-set page = f0126ff8 pp_link to NULL
-alloc end
+set page = f01edff8 pp_link to NULL
 page_insert, alloc page = 3ff000 for pt
 page_insert, PDX(va) = 0, pgdir[0] = 3ff007
 page_insert, insert page = 3fe000 to pt for va = 0
 PTX(va) = 0, pt[0] = 3fe003
-page_free, pp = f0126ff0, pre = 0
-pp = f0126ff0, pp_ref = 1
+page_free, pp = f01edff0, pre = 0
+pp = f01edff0, pp_ref = 1
 page_insert end
 should be able to map pp2 at PGSIZE because pp0 is already allocated for page table
-page_insert start, pp = f0126fe8, va = 1000
+page_insert start, pp = f01edfe8, va = 1000
 pgdir_walk start
 pgdir_walk, ptpa = 3ff000, PDX(va) = 0
 pgdir_walk, PTX = 1
@@ -139,15 +95,14 @@ page_insert, pt = 3ff007, ptpa = 3ff000
 page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff000
 page_insert, insert page = 3fd000 to pt for va = 1000
 PTX(va) = 1, pt[1] = 3fd003
-page_free, pp = f0126fe8, pre = 0
-pp = f0126fe8, pp_ref = 1
+page_free, pp = f01edfe8, pre = 0
+pp = f01edfe8, pp_ref = 1
 page_insert end
 should be no free memory
-alloc start
 has no page to allocate
 should be able to map pp2 at PGSIZE because it's already there
-pp2 = f0126fe8
-page_insert start, pp = f0126fe8, va = 1000
+pp2 = f01edfe8
+page_insert start, pp = f01edfe8, va = 1000
 pgdir_walk start
 pgdir_walk, ptpa = 3ff000, PDX(va) = 0
 pgdir_walk, PTX = 1
@@ -157,28 +112,27 @@ page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff00
 page_insert, the page mapped at va has page = 3fd003, remove it
 page_remove start, va = 1000
 PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
-page_remove, pagelookup start, pgdir = f0123000, va = 1000
+page_remove, pagelookup start, pgdir = f01ea000, va = 1000
 page_lookup start, va = 1000, pte_store = 0
 pgdir_walk start
 pgdir_walk, ptpa = 3ff000, PDX(va) = 0
 pgdir_walk, PTX = 1
 pgdir_walk end, pte = f03ff004
 page_lookup, pte = f03ff004, *pte = 3fd003
-page_lookup, temp = 3fd003, pg = f0126fe8
+page_lookup, temp = 3fd003, pg = f01edfe8
 page_lookup end
-page_remove, va = 1000 corrsponding with pgInfo = f0126fe8
+page_remove, va = 1000 corrsponding with pgInfo = f01edfe8
 page_remove, pt = f03ff000, ptepa = 3fd000
 page_remove, ptepa = 3fd000 is not NULL, set pte to 0
-page_decref start, pp = f0126fe8, ref = 1
-page_decref end, pp = f0126fe8, ref = 0
+page_decref start, pp = f01edfe8, ref = 1
+page_decref end, pp = f01edfe8, ref = 0
 page_remove end
 page_insert, insert page = 3fd000 to pt for va = 1000
 PTX(va) = 1, pt[1] = 3fd003
-page_free, pp = f0126fe8, pre = f0126fe8
+page_free, pp = f01edfe8, pre = f01edfe8
 page_free, find pp == pre
-pp = f0126fe8, pp_ref = 1
+pp = f01edfe8, pp_ref = 1
 page_insert end
-alloc start
 has no page to allocate
 check that pgdir_walk returns a pointer to the pte
 ptep = f03ff000, ptep + PTX(PGSIZE) = f03ff004
@@ -187,7 +141,7 @@ pgdir_walk, ptpa = 3ff000, PDX(va) = 0
 pgdir_walk, PTX = 1
 pgdir_walk end, pte = f03ff004
 should be able to change permissions too.
-page_insert start, pp = f0126fe8, va = 1000
+page_insert start, pp = f01edfe8, va = 1000
 pgdir_walk start
 pgdir_walk, ptpa = 3ff000, PDX(va) = 0
 pgdir_walk, PTX = 1
@@ -197,32 +151,32 @@ page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff00
 page_insert, the page mapped at va has page = 3fd003, remove it
 page_remove start, va = 1000
 PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
-page_remove, pagelookup start, pgdir = f0123000, va = 1000
+page_remove, pagelookup start, pgdir = f01ea000, va = 1000
 page_lookup start, va = 1000, pte_store = 0
 pgdir_walk start
 pgdir_walk, ptpa = 3ff000, PDX(va) = 0
 pgdir_walk, PTX = 1
 pgdir_walk end, pte = f03ff004
 page_lookup, pte = f03ff004, *pte = 3fd003
-page_lookup, temp = 3fd003, pg = f0126fe8
+page_lookup, temp = 3fd003, pg = f01edfe8
 page_lookup end
-page_remove, va = 1000 corrsponding with pgInfo = f0126fe8
+page_remove, va = 1000 corrsponding with pgInfo = f01edfe8
 page_remove, pt = f03ff000, ptepa = 3fd000
 page_remove, ptepa = 3fd000 is not NULL, set pte to 0
-page_decref start, pp = f0126fe8, ref = 1
-page_decref end, pp = f0126fe8, ref = 0
+page_decref start, pp = f01edfe8, ref = 1
+page_decref end, pp = f01edfe8, ref = 0
 page_remove end
 page_insert, insert page = 3fd000 to pt for va = 1000
 PTX(va) = 1, pt[1] = 3fd007
-page_free, pp = f0126fe8, pre = f0126fe8
+page_free, pp = f01edfe8, pre = f01edfe8
 page_free, find pp == pre
-pp = f0126fe8, pp_ref = 1
+pp = f01edfe8, pp_ref = 1
 page_insert end
 pgdir_walk start
 pgdir_walk, ptpa = 3ff000, PDX(va) = 0
 pgdir_walk, PTX = 1
 pgdir_walk end, pte = f03ff004
-page_insert start, pp = f0126fe8, va = 1000
+page_insert start, pp = f01edfe8, va = 1000
 pgdir_walk start
 pgdir_walk, ptpa = 3ff000, PDX(va) = 0
 pgdir_walk, PTX = 1
@@ -232,26 +186,26 @@ page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff00
 page_insert, the page mapped at va has page = 3fd007, remove it
 page_remove start, va = 1000
 PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
-page_remove, pagelookup start, pgdir = f0123000, va = 1000
+page_remove, pagelookup start, pgdir = f01ea000, va = 1000
 page_lookup start, va = 1000, pte_store = 0
 pgdir_walk start
 pgdir_walk, ptpa = 3ff000, PDX(va) = 0
 pgdir_walk, PTX = 1
 pgdir_walk end, pte = f03ff004
 page_lookup, pte = f03ff004, *pte = 3fd007
-page_lookup, temp = 3fd007, pg = f0126fe8
+page_lookup, temp = 3fd007, pg = f01edfe8
 page_lookup end
-page_remove, va = 1000 corrsponding with pgInfo = f0126fe8
+page_remove, va = 1000 corrsponding with pgInfo = f01edfe8
 page_remove, pt = f03ff000, ptepa = 3fd000
 page_remove, ptepa = 3fd000 is not NULL, set pte to 0
-page_decref start, pp = f0126fe8, ref = 1
-page_decref end, pp = f0126fe8, ref = 0
+page_decref start, pp = f01edfe8, ref = 1
+page_decref end, pp = f01edfe8, ref = 0
 page_remove end
 page_insert, insert page = 3fd000 to pt for va = 1000
 PTX(va) = 1, pt[1] = 3fd003
-page_free, pp = f0126fe8, pre = f0126fe8
+page_free, pp = f01edfe8, pre = f01edfe8
 page_free, find pp == pre
-pp = f0126fe8, pp_ref = 1
+pp = f01edfe8, pp_ref = 1
 page_insert end
 pgdir_walk start
 pgdir_walk, ptpa = 3ff000, PDX(va) = 0
@@ -261,16 +215,15 @@ pgdir_walk start
 pgdir_walk, ptpa = 3ff000, PDX(va) = 0
 pgdir_walk, PTX = 1
 pgdir_walk end, pte = f03ff004
-page_insert start, pp = f0126ff8, va = 400000
+page_insert start, pp = f01edff8, va = 400000
 pgdir_walk start
 pgdir_walk, ptpa = 0, PDX(va) = 1
 pgdir_walk, did not find pdr for va = 400000, return NULL
 page_insert, pt = 0, ptpa = 0
 page_insert, there is no page table for va, create one and adds it to the pgdir
-alloc start
 has no page to allocate
 page_insert, alloc page for pt failure
-page_insert start, pp = f0126ff0, va = 1000
+page_insert start, pp = f01edff0, va = 1000
 pgdir_walk start
 pgdir_walk, ptpa = 3ff000, PDX(va) = 0
 pgdir_walk, PTX = 1
@@ -280,53 +233,49 @@ page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff00
 page_insert, the page mapped at va has page = 3fd003, remove it
 page_remove start, va = 1000
 PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
-page_remove, pagelookup start, pgdir = f0123000, va = 1000
+page_remove, pagelookup start, pgdir = f01ea000, va = 1000
 page_lookup start, va = 1000, pte_store = 0
 pgdir_walk start
 pgdir_walk, ptpa = 3ff000, PDX(va) = 0
 pgdir_walk, PTX = 1
 pgdir_walk end, pte = f03ff004
 page_lookup, pte = f03ff004, *pte = 3fd003
-page_lookup, temp = 3fd003, pg = f0126fe8
+page_lookup, temp = 3fd003, pg = f01edfe8
 page_lookup end
-page_remove, va = 1000 corrsponding with pgInfo = f0126fe8
+page_remove, va = 1000 corrsponding with pgInfo = f01edfe8
 page_remove, pt = f03ff000, ptepa = 3fd000
 page_remove, ptepa = 3fd000 is not NULL, set pte to 0
-page_decref start, pp = f0126fe8, ref = 1
-page_decref end, pp = f0126fe8, ref = 0
+page_decref start, pp = f01edfe8, ref = 1
+page_decref end, pp = f01edfe8, ref = 0
 page_remove end
 page_insert, insert page = 3fe000 to pt for va = 1000
 PTX(va) = 1, pt[1] = 3fe003
-page_free, pp = f0126ff0, pre = f0126fe8
-pp = f0126ff0, pp_ref = 2
+page_free, pp = f01edff0, pre = f01edfe8
+pp = f01edff0, pp_ref = 2
 page_insert end
 pgdir_walk start
 pgdir_walk, ptpa = 3ff000, PDX(va) = 0
 pgdir_walk, PTX = 1
 pgdir_walk end, pte = f03ff004
-alloc start
-page addr = f0126fe8, free_list->next = 0
-page = f0126fe8, pgva = f03fd000
-set page = f0126fe8 pp_link to NULL
-alloc end
+set page = f01edfe8 pp_link to NULL
 page_remove start, va = 0
 PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
-page_remove, pagelookup start, pgdir = f0123000, va = 0
+page_remove, pagelookup start, pgdir = f01ea000, va = 0
 page_lookup start, va = 0, pte_store = 0
 pgdir_walk start
 pgdir_walk, ptpa = 3ff000, PDX(va) = 0
 pgdir_walk, PTX = 0
 pgdir_walk end, pte = f03ff000
 page_lookup, pte = f03ff000, *pte = 3fe003
-page_lookup, temp = 3fe003, pg = f0126ff0
+page_lookup, temp = 3fe003, pg = f01edff0
 page_lookup end
-page_remove, va = 0 corrsponding with pgInfo = f0126ff0
+page_remove, va = 0 corrsponding with pgInfo = f01edff0
 page_remove, pt = f03ff000, ptepa = 3fe000
 page_remove, ptepa = 3fe000 is not NULL, set pte to 0
-page_decref start, pp = f0126ff0, ref = 2
-page_decref end, pp = f0126ff0, ref = 1
+page_decref start, pp = f01edff0, ref = 2
+page_decref end, pp = f01edff0, ref = 1
 page_remove end
-page_insert start, pp = f0126ff0, va = 1000
+page_insert start, pp = f01edff0, va = 1000
 pgdir_walk start
 pgdir_walk, ptpa = 3ff000, PDX(va) = 0
 pgdir_walk, PTX = 1
@@ -336,1059 +285,4756 @@ page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff00
 page_insert, the page mapped at va has page = 3fe003, remove it
 page_remove start, va = 1000
 PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
-page_remove, pagelookup start, pgdir = f0123000, va = 1000
+page_remove, pagelookup start, pgdir = f01ea000, va = 1000
 page_lookup start, va = 1000, pte_store = 0
 pgdir_walk start
 pgdir_walk, ptpa = 3ff000, PDX(va) = 0
 pgdir_walk, PTX = 1
 pgdir_walk end, pte = f03ff004
 page_lookup, pte = f03ff004, *pte = 3fe003
-page_lookup, temp = 3fe003, pg = f0126ff0
+page_lookup, temp = 3fe003, pg = f01edff0
 page_lookup end
-page_remove, va = 1000 corrsponding with pgInfo = f0126ff0
+page_remove, va = 1000 corrsponding with pgInfo = f01edff0
 page_remove, pt = f03ff000, ptepa = 3fe000
 page_remove, ptepa = 3fe000 is not NULL, set pte to 0
-page_decref start, pp = f0126ff0, ref = 1
-page_decref end, pp = f0126ff0, ref = 0
+page_decref start, pp = f01edff0, ref = 1
+page_decref end, pp = f01edff0, ref = 0
 page_remove end
 page_insert, insert page = 3fe000 to pt for va = 1000
 PTX(va) = 1, pt[1] = 3fe001
-page_free, pp = f0126ff0, pre = f0126ff0
+page_free, pp = f01edff0, pre = f01edff0
 page_free, find pp == pre
-pp = f0126ff0, pp_ref = 1
+pp = f01edff0, pp_ref = 1
 page_insert end
 page_remove start, va = 1000
 PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
-page_remove, pagelookup start, pgdir = f0123000, va = 1000
+page_remove, pagelookup start, pgdir = f01ea000, va = 1000
 page_lookup start, va = 1000, pte_store = 0
 pgdir_walk start
 pgdir_walk, ptpa = 3ff000, PDX(va) = 0
 pgdir_walk, PTX = 1
 pgdir_walk end, pte = f03ff004
 page_lookup, pte = f03ff004, *pte = 3fe001
-page_lookup, temp = 3fe001, pg = f0126ff0
+page_lookup, temp = 3fe001, pg = f01edff0
 page_lookup end
-page_remove, va = 1000 corrsponding with pgInfo = f0126ff0
+page_remove, va = 1000 corrsponding with pgInfo = f01edff0
 page_remove, pt = f03ff000, ptepa = 3fe000
 page_remove, ptepa = 3fe000 is not NULL, set pte to 0
-page_decref start, pp = f0126ff0, ref = 1
-page_decref end, pp = f0126ff0, ref = 0
+page_decref start, pp = f01edff0, ref = 1
+page_decref end, pp = f01edff0, ref = 0
 page_remove end
-alloc start
-page addr = f0126ff0, free_list->next = 0
-page = f0126ff0, pgva = f03fe000
-set page = f0126ff0 pp_link to NULL
-alloc end
-alloc start
+set page = f01edff0 pp_link to NULL
 has no page to allocate
 pgdir_walk start
 pgdir_walk, ptpa = 0, PDX(va) = 1
-alloc start
-page addr = f0126ff8, free_list->next = 0
-page = f0126ff8, pgva = f03ff000
 alloc_flags = 1, set value of pgva = 0
-set page = f0126ff8 pp_link to NULL
-alloc end
+set page = f01edff8 pp_link to NULL
 pgdir_walk, new page for pt = 3ff000
 pgdir_walk, PTX = 1
 pgdir_walk end, pte = f03ff004
 pgdir_walk start
 pgdir_walk, ptpa = 0, PDX(va) = 0
-alloc start
-page addr = f0126ff8, free_list->next = 0
-page = f0126ff8, pgva = f03ff000
 alloc_flags = 1, set value of pgva = 0
-set page = f0126ff8 pp_link to NULL
-alloc end
+set page = f01edff8 pp_link to NULL
 pgdir_walk, new page for pt = 3ff000
 pgdir_walk, PTX = 0
 pgdir_walk end, pte = f03ff000
 check_page() succeeded!
 check page end
-alloc start
-page addr = f0126fe8, free_list->next = f0126ff0
-page = f0126fe8, pgva = f03fd000
 alloc_flags = 1, set value of pgva = 0
-set page = f0126fe8 pp_link to NULL
-alloc end
+set page = f01edfe8 pp_link to NULL
+pgdir_walk start
+pgdir_walk, ptpa = 0, PDX(va) = 955
+alloc_flags = 1, set value of pgva = 0
+set page = f01edff0 pp_link to NULL
+pgdir_walk, new page for pt = 3fe000
+pgdir_walk, PTX = 0
+pgdir_walk end, pte = f03fe000
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1
+pgdir_walk end, pte = f03fe004
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 2
+pgdir_walk end, pte = f03fe008
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 3
+pgdir_walk end, pte = f03fe00c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 4
+pgdir_walk end, pte = f03fe010
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 5
+pgdir_walk end, pte = f03fe014
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 6
+pgdir_walk end, pte = f03fe018
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 7
+pgdir_walk end, pte = f03fe01c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 8
+pgdir_walk end, pte = f03fe020
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 9
+pgdir_walk end, pte = f03fe024
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 10
+pgdir_walk end, pte = f03fe028
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 11
+pgdir_walk end, pte = f03fe02c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 12
+pgdir_walk end, pte = f03fe030
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 13
+pgdir_walk end, pte = f03fe034
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 14
+pgdir_walk end, pte = f03fe038
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 15
+pgdir_walk end, pte = f03fe03c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 16
+pgdir_walk end, pte = f03fe040
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 17
+pgdir_walk end, pte = f03fe044
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 18
+pgdir_walk end, pte = f03fe048
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 19
+pgdir_walk end, pte = f03fe04c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 20
+pgdir_walk end, pte = f03fe050
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 21
+pgdir_walk end, pte = f03fe054
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 22
+pgdir_walk end, pte = f03fe058
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 23
+pgdir_walk end, pte = f03fe05c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 24
+pgdir_walk end, pte = f03fe060
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 25
+pgdir_walk end, pte = f03fe064
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 26
+pgdir_walk end, pte = f03fe068
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 27
+pgdir_walk end, pte = f03fe06c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 28
+pgdir_walk end, pte = f03fe070
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 29
+pgdir_walk end, pte = f03fe074
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 30
+pgdir_walk end, pte = f03fe078
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 31
+pgdir_walk end, pte = f03fe07c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 32
+pgdir_walk end, pte = f03fe080
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 33
+pgdir_walk end, pte = f03fe084
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 34
+pgdir_walk end, pte = f03fe088
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 35
+pgdir_walk end, pte = f03fe08c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 36
+pgdir_walk end, pte = f03fe090
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 37
+pgdir_walk end, pte = f03fe094
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 38
+pgdir_walk end, pte = f03fe098
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 39
+pgdir_walk end, pte = f03fe09c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 40
+pgdir_walk end, pte = f03fe0a0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 41
+pgdir_walk end, pte = f03fe0a4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 42
+pgdir_walk end, pte = f03fe0a8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 43
+pgdir_walk end, pte = f03fe0ac
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 44
+pgdir_walk end, pte = f03fe0b0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 45
+pgdir_walk end, pte = f03fe0b4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 46
+pgdir_walk end, pte = f03fe0b8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 47
+pgdir_walk end, pte = f03fe0bc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 48
+pgdir_walk end, pte = f03fe0c0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 49
+pgdir_walk end, pte = f03fe0c4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 50
+pgdir_walk end, pte = f03fe0c8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 51
+pgdir_walk end, pte = f03fe0cc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 52
+pgdir_walk end, pte = f03fe0d0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 53
+pgdir_walk end, pte = f03fe0d4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 54
+pgdir_walk end, pte = f03fe0d8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 55
+pgdir_walk end, pte = f03fe0dc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 56
+pgdir_walk end, pte = f03fe0e0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 57
+pgdir_walk end, pte = f03fe0e4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 58
+pgdir_walk end, pte = f03fe0e8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 59
+pgdir_walk end, pte = f03fe0ec
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 60
+pgdir_walk end, pte = f03fe0f0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 61
+pgdir_walk end, pte = f03fe0f4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 62
+pgdir_walk end, pte = f03fe0f8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 63
+pgdir_walk end, pte = f03fe0fc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 64
+pgdir_walk end, pte = f03fe100
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 65
+pgdir_walk end, pte = f03fe104
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 66
+pgdir_walk end, pte = f03fe108
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 67
+pgdir_walk end, pte = f03fe10c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 68
+pgdir_walk end, pte = f03fe110
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 69
+pgdir_walk end, pte = f03fe114
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 70
+pgdir_walk end, pte = f03fe118
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 71
+pgdir_walk end, pte = f03fe11c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 72
+pgdir_walk end, pte = f03fe120
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 73
+pgdir_walk end, pte = f03fe124
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 74
+pgdir_walk end, pte = f03fe128
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 75
+pgdir_walk end, pte = f03fe12c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 76
+pgdir_walk end, pte = f03fe130
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 77
+pgdir_walk end, pte = f03fe134
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 78
+pgdir_walk end, pte = f03fe138
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 79
+pgdir_walk end, pte = f03fe13c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 80
+pgdir_walk end, pte = f03fe140
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 81
+pgdir_walk end, pte = f03fe144
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 82
+pgdir_walk end, pte = f03fe148
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 83
+pgdir_walk end, pte = f03fe14c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 84
+pgdir_walk end, pte = f03fe150
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 85
+pgdir_walk end, pte = f03fe154
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 86
+pgdir_walk end, pte = f03fe158
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 87
+pgdir_walk end, pte = f03fe15c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 88
+pgdir_walk end, pte = f03fe160
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 89
+pgdir_walk end, pte = f03fe164
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 90
+pgdir_walk end, pte = f03fe168
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 91
+pgdir_walk end, pte = f03fe16c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 92
+pgdir_walk end, pte = f03fe170
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 93
+pgdir_walk end, pte = f03fe174
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 94
+pgdir_walk end, pte = f03fe178
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 95
+pgdir_walk end, pte = f03fe17c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 96
+pgdir_walk end, pte = f03fe180
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 97
+pgdir_walk end, pte = f03fe184
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 98
+pgdir_walk end, pte = f03fe188
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 99
+pgdir_walk end, pte = f03fe18c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 100
+pgdir_walk end, pte = f03fe190
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 101
+pgdir_walk end, pte = f03fe194
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 102
+pgdir_walk end, pte = f03fe198
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 103
+pgdir_walk end, pte = f03fe19c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 104
+pgdir_walk end, pte = f03fe1a0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 105
+pgdir_walk end, pte = f03fe1a4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 106
+pgdir_walk end, pte = f03fe1a8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 107
+pgdir_walk end, pte = f03fe1ac
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 108
+pgdir_walk end, pte = f03fe1b0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 109
+pgdir_walk end, pte = f03fe1b4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 110
+pgdir_walk end, pte = f03fe1b8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 111
+pgdir_walk end, pte = f03fe1bc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 112
+pgdir_walk end, pte = f03fe1c0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 113
+pgdir_walk end, pte = f03fe1c4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 114
+pgdir_walk end, pte = f03fe1c8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 115
+pgdir_walk end, pte = f03fe1cc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 116
+pgdir_walk end, pte = f03fe1d0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 117
+pgdir_walk end, pte = f03fe1d4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 118
+pgdir_walk end, pte = f03fe1d8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 119
+pgdir_walk end, pte = f03fe1dc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 120
+pgdir_walk end, pte = f03fe1e0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 121
+pgdir_walk end, pte = f03fe1e4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 122
+pgdir_walk end, pte = f03fe1e8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 123
+pgdir_walk end, pte = f03fe1ec
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 124
+pgdir_walk end, pte = f03fe1f0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 125
+pgdir_walk end, pte = f03fe1f4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 126
+pgdir_walk end, pte = f03fe1f8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 127
+pgdir_walk end, pte = f03fe1fc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 128
+pgdir_walk end, pte = f03fe200
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 129
+pgdir_walk end, pte = f03fe204
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 130
+pgdir_walk end, pte = f03fe208
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 131
+pgdir_walk end, pte = f03fe20c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 132
+pgdir_walk end, pte = f03fe210
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 133
+pgdir_walk end, pte = f03fe214
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 134
+pgdir_walk end, pte = f03fe218
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 135
+pgdir_walk end, pte = f03fe21c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 136
+pgdir_walk end, pte = f03fe220
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 137
+pgdir_walk end, pte = f03fe224
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 138
+pgdir_walk end, pte = f03fe228
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 139
+pgdir_walk end, pte = f03fe22c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 140
+pgdir_walk end, pte = f03fe230
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 141
+pgdir_walk end, pte = f03fe234
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 142
+pgdir_walk end, pte = f03fe238
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 143
+pgdir_walk end, pte = f03fe23c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 144
+pgdir_walk end, pte = f03fe240
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 145
+pgdir_walk end, pte = f03fe244
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 146
+pgdir_walk end, pte = f03fe248
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 147
+pgdir_walk end, pte = f03fe24c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 148
+pgdir_walk end, pte = f03fe250
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 149
+pgdir_walk end, pte = f03fe254
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 150
+pgdir_walk end, pte = f03fe258
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 151
+pgdir_walk end, pte = f03fe25c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 152
+pgdir_walk end, pte = f03fe260
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 153
+pgdir_walk end, pte = f03fe264
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 154
+pgdir_walk end, pte = f03fe268
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 155
+pgdir_walk end, pte = f03fe26c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 156
+pgdir_walk end, pte = f03fe270
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 157
+pgdir_walk end, pte = f03fe274
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 158
+pgdir_walk end, pte = f03fe278
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 159
+pgdir_walk end, pte = f03fe27c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 160
+pgdir_walk end, pte = f03fe280
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 161
+pgdir_walk end, pte = f03fe284
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 162
+pgdir_walk end, pte = f03fe288
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 163
+pgdir_walk end, pte = f03fe28c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 164
+pgdir_walk end, pte = f03fe290
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 165
+pgdir_walk end, pte = f03fe294
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 166
+pgdir_walk end, pte = f03fe298
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 167
+pgdir_walk end, pte = f03fe29c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 168
+pgdir_walk end, pte = f03fe2a0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 169
+pgdir_walk end, pte = f03fe2a4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 170
+pgdir_walk end, pte = f03fe2a8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 171
+pgdir_walk end, pte = f03fe2ac
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 172
+pgdir_walk end, pte = f03fe2b0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 173
+pgdir_walk end, pte = f03fe2b4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 174
+pgdir_walk end, pte = f03fe2b8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 175
+pgdir_walk end, pte = f03fe2bc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 176
+pgdir_walk end, pte = f03fe2c0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 177
+pgdir_walk end, pte = f03fe2c4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 178
+pgdir_walk end, pte = f03fe2c8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 179
+pgdir_walk end, pte = f03fe2cc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 180
+pgdir_walk end, pte = f03fe2d0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 181
+pgdir_walk end, pte = f03fe2d4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 182
+pgdir_walk end, pte = f03fe2d8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 183
+pgdir_walk end, pte = f03fe2dc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 184
+pgdir_walk end, pte = f03fe2e0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 185
+pgdir_walk end, pte = f03fe2e4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 186
+pgdir_walk end, pte = f03fe2e8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 187
+pgdir_walk end, pte = f03fe2ec
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 188
+pgdir_walk end, pte = f03fe2f0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 189
+pgdir_walk end, pte = f03fe2f4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 190
+pgdir_walk end, pte = f03fe2f8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 191
+pgdir_walk end, pte = f03fe2fc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 192
+pgdir_walk end, pte = f03fe300
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 193
+pgdir_walk end, pte = f03fe304
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 194
+pgdir_walk end, pte = f03fe308
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 195
+pgdir_walk end, pte = f03fe30c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 196
+pgdir_walk end, pte = f03fe310
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 197
+pgdir_walk end, pte = f03fe314
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 198
+pgdir_walk end, pte = f03fe318
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 199
+pgdir_walk end, pte = f03fe31c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 200
+pgdir_walk end, pte = f03fe320
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 201
+pgdir_walk end, pte = f03fe324
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 202
+pgdir_walk end, pte = f03fe328
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 203
+pgdir_walk end, pte = f03fe32c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 204
+pgdir_walk end, pte = f03fe330
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 205
+pgdir_walk end, pte = f03fe334
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 206
+pgdir_walk end, pte = f03fe338
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 207
+pgdir_walk end, pte = f03fe33c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 208
+pgdir_walk end, pte = f03fe340
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 209
+pgdir_walk end, pte = f03fe344
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 210
+pgdir_walk end, pte = f03fe348
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 211
+pgdir_walk end, pte = f03fe34c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 212
+pgdir_walk end, pte = f03fe350
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 213
+pgdir_walk end, pte = f03fe354
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 214
+pgdir_walk end, pte = f03fe358
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 215
+pgdir_walk end, pte = f03fe35c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 216
+pgdir_walk end, pte = f03fe360
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 217
+pgdir_walk end, pte = f03fe364
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 218
+pgdir_walk end, pte = f03fe368
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 219
+pgdir_walk end, pte = f03fe36c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 220
+pgdir_walk end, pte = f03fe370
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 221
+pgdir_walk end, pte = f03fe374
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 222
+pgdir_walk end, pte = f03fe378
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 223
+pgdir_walk end, pte = f03fe37c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 224
+pgdir_walk end, pte = f03fe380
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 225
+pgdir_walk end, pte = f03fe384
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 226
+pgdir_walk end, pte = f03fe388
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 227
+pgdir_walk end, pte = f03fe38c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 228
+pgdir_walk end, pte = f03fe390
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 229
+pgdir_walk end, pte = f03fe394
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 230
+pgdir_walk end, pte = f03fe398
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 231
+pgdir_walk end, pte = f03fe39c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 232
+pgdir_walk end, pte = f03fe3a0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 233
+pgdir_walk end, pte = f03fe3a4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 234
+pgdir_walk end, pte = f03fe3a8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 235
+pgdir_walk end, pte = f03fe3ac
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 236
+pgdir_walk end, pte = f03fe3b0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 237
+pgdir_walk end, pte = f03fe3b4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 238
+pgdir_walk end, pte = f03fe3b8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 239
+pgdir_walk end, pte = f03fe3bc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 240
+pgdir_walk end, pte = f03fe3c0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 241
+pgdir_walk end, pte = f03fe3c4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 242
+pgdir_walk end, pte = f03fe3c8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 243
+pgdir_walk end, pte = f03fe3cc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 244
+pgdir_walk end, pte = f03fe3d0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 245
+pgdir_walk end, pte = f03fe3d4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 246
+pgdir_walk end, pte = f03fe3d8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 247
+pgdir_walk end, pte = f03fe3dc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 248
+pgdir_walk end, pte = f03fe3e0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 249
+pgdir_walk end, pte = f03fe3e4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 250
+pgdir_walk end, pte = f03fe3e8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 251
+pgdir_walk end, pte = f03fe3ec
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 252
+pgdir_walk end, pte = f03fe3f0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 253
+pgdir_walk end, pte = f03fe3f4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 254
+pgdir_walk end, pte = f03fe3f8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 255
+pgdir_walk end, pte = f03fe3fc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 256
+pgdir_walk end, pte = f03fe400
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 257
+pgdir_walk end, pte = f03fe404
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 258
+pgdir_walk end, pte = f03fe408
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 259
+pgdir_walk end, pte = f03fe40c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 260
+pgdir_walk end, pte = f03fe410
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 261
+pgdir_walk end, pte = f03fe414
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 262
+pgdir_walk end, pte = f03fe418
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 263
+pgdir_walk end, pte = f03fe41c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 264
+pgdir_walk end, pte = f03fe420
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 265
+pgdir_walk end, pte = f03fe424
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 266
+pgdir_walk end, pte = f03fe428
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 267
+pgdir_walk end, pte = f03fe42c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 268
+pgdir_walk end, pte = f03fe430
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 269
+pgdir_walk end, pte = f03fe434
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 270
+pgdir_walk end, pte = f03fe438
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 271
+pgdir_walk end, pte = f03fe43c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 272
+pgdir_walk end, pte = f03fe440
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 273
+pgdir_walk end, pte = f03fe444
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 274
+pgdir_walk end, pte = f03fe448
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 275
+pgdir_walk end, pte = f03fe44c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 276
+pgdir_walk end, pte = f03fe450
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 277
+pgdir_walk end, pte = f03fe454
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 278
+pgdir_walk end, pte = f03fe458
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 279
+pgdir_walk end, pte = f03fe45c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 280
+pgdir_walk end, pte = f03fe460
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 281
+pgdir_walk end, pte = f03fe464
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 282
+pgdir_walk end, pte = f03fe468
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 283
+pgdir_walk end, pte = f03fe46c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 284
+pgdir_walk end, pte = f03fe470
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 285
+pgdir_walk end, pte = f03fe474
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 286
+pgdir_walk end, pte = f03fe478
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 287
+pgdir_walk end, pte = f03fe47c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 288
+pgdir_walk end, pte = f03fe480
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 289
+pgdir_walk end, pte = f03fe484
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 290
+pgdir_walk end, pte = f03fe488
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 291
+pgdir_walk end, pte = f03fe48c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 292
+pgdir_walk end, pte = f03fe490
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 293
+pgdir_walk end, pte = f03fe494
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 294
+pgdir_walk end, pte = f03fe498
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 295
+pgdir_walk end, pte = f03fe49c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 296
+pgdir_walk end, pte = f03fe4a0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 297
+pgdir_walk end, pte = f03fe4a4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 298
+pgdir_walk end, pte = f03fe4a8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 299
+pgdir_walk end, pte = f03fe4ac
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 300
+pgdir_walk end, pte = f03fe4b0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 301
+pgdir_walk end, pte = f03fe4b4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 302
+pgdir_walk end, pte = f03fe4b8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 303
+pgdir_walk end, pte = f03fe4bc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 304
+pgdir_walk end, pte = f03fe4c0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 305
+pgdir_walk end, pte = f03fe4c4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 306
+pgdir_walk end, pte = f03fe4c8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 307
+pgdir_walk end, pte = f03fe4cc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 308
+pgdir_walk end, pte = f03fe4d0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 309
+pgdir_walk end, pte = f03fe4d4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 310
+pgdir_walk end, pte = f03fe4d8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 311
+pgdir_walk end, pte = f03fe4dc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 312
+pgdir_walk end, pte = f03fe4e0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 313
+pgdir_walk end, pte = f03fe4e4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 314
+pgdir_walk end, pte = f03fe4e8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 315
+pgdir_walk end, pte = f03fe4ec
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 316
+pgdir_walk end, pte = f03fe4f0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 317
+pgdir_walk end, pte = f03fe4f4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 318
+pgdir_walk end, pte = f03fe4f8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 319
+pgdir_walk end, pte = f03fe4fc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 320
+pgdir_walk end, pte = f03fe500
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 321
+pgdir_walk end, pte = f03fe504
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 322
+pgdir_walk end, pte = f03fe508
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 323
+pgdir_walk end, pte = f03fe50c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 324
+pgdir_walk end, pte = f03fe510
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 325
+pgdir_walk end, pte = f03fe514
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 326
+pgdir_walk end, pte = f03fe518
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 327
+pgdir_walk end, pte = f03fe51c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 328
+pgdir_walk end, pte = f03fe520
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 329
+pgdir_walk end, pte = f03fe524
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 330
+pgdir_walk end, pte = f03fe528
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 331
+pgdir_walk end, pte = f03fe52c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 332
+pgdir_walk end, pte = f03fe530
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 333
+pgdir_walk end, pte = f03fe534
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 334
+pgdir_walk end, pte = f03fe538
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 335
+pgdir_walk end, pte = f03fe53c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 336
+pgdir_walk end, pte = f03fe540
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 337
+pgdir_walk end, pte = f03fe544
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 338
+pgdir_walk end, pte = f03fe548
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 339
+pgdir_walk end, pte = f03fe54c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 340
+pgdir_walk end, pte = f03fe550
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 341
+pgdir_walk end, pte = f03fe554
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 342
+pgdir_walk end, pte = f03fe558
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 343
+pgdir_walk end, pte = f03fe55c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 344
+pgdir_walk end, pte = f03fe560
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 345
+pgdir_walk end, pte = f03fe564
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 346
+pgdir_walk end, pte = f03fe568
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 347
+pgdir_walk end, pte = f03fe56c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 348
+pgdir_walk end, pte = f03fe570
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 349
+pgdir_walk end, pte = f03fe574
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 350
+pgdir_walk end, pte = f03fe578
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 351
+pgdir_walk end, pte = f03fe57c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 352
+pgdir_walk end, pte = f03fe580
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 353
+pgdir_walk end, pte = f03fe584
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 354
+pgdir_walk end, pte = f03fe588
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 355
+pgdir_walk end, pte = f03fe58c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 356
+pgdir_walk end, pte = f03fe590
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 357
+pgdir_walk end, pte = f03fe594
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 358
+pgdir_walk end, pte = f03fe598
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 359
+pgdir_walk end, pte = f03fe59c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 360
+pgdir_walk end, pte = f03fe5a0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 361
+pgdir_walk end, pte = f03fe5a4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 362
+pgdir_walk end, pte = f03fe5a8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 363
+pgdir_walk end, pte = f03fe5ac
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 364
+pgdir_walk end, pte = f03fe5b0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 365
+pgdir_walk end, pte = f03fe5b4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 366
+pgdir_walk end, pte = f03fe5b8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 367
+pgdir_walk end, pte = f03fe5bc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 368
+pgdir_walk end, pte = f03fe5c0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 369
+pgdir_walk end, pte = f03fe5c4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 370
+pgdir_walk end, pte = f03fe5c8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 371
+pgdir_walk end, pte = f03fe5cc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 372
+pgdir_walk end, pte = f03fe5d0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 373
+pgdir_walk end, pte = f03fe5d4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 374
+pgdir_walk end, pte = f03fe5d8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 375
+pgdir_walk end, pte = f03fe5dc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 376
+pgdir_walk end, pte = f03fe5e0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 377
+pgdir_walk end, pte = f03fe5e4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 378
+pgdir_walk end, pte = f03fe5e8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 379
+pgdir_walk end, pte = f03fe5ec
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 380
+pgdir_walk end, pte = f03fe5f0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 381
+pgdir_walk end, pte = f03fe5f4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 382
+pgdir_walk end, pte = f03fe5f8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 383
+pgdir_walk end, pte = f03fe5fc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 384
+pgdir_walk end, pte = f03fe600
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 385
+pgdir_walk end, pte = f03fe604
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 386
+pgdir_walk end, pte = f03fe608
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 387
+pgdir_walk end, pte = f03fe60c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 388
+pgdir_walk end, pte = f03fe610
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 389
+pgdir_walk end, pte = f03fe614
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 390
+pgdir_walk end, pte = f03fe618
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 391
+pgdir_walk end, pte = f03fe61c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 392
+pgdir_walk end, pte = f03fe620
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 393
+pgdir_walk end, pte = f03fe624
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 394
+pgdir_walk end, pte = f03fe628
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 395
+pgdir_walk end, pte = f03fe62c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 396
+pgdir_walk end, pte = f03fe630
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 397
+pgdir_walk end, pte = f03fe634
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 398
+pgdir_walk end, pte = f03fe638
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 399
+pgdir_walk end, pte = f03fe63c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 400
+pgdir_walk end, pte = f03fe640
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 401
+pgdir_walk end, pte = f03fe644
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 402
+pgdir_walk end, pte = f03fe648
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 403
+pgdir_walk end, pte = f03fe64c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 404
+pgdir_walk end, pte = f03fe650
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 405
+pgdir_walk end, pte = f03fe654
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 406
+pgdir_walk end, pte = f03fe658
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 407
+pgdir_walk end, pte = f03fe65c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 408
+pgdir_walk end, pte = f03fe660
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 409
+pgdir_walk end, pte = f03fe664
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 410
+pgdir_walk end, pte = f03fe668
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 411
+pgdir_walk end, pte = f03fe66c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 412
+pgdir_walk end, pte = f03fe670
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 413
+pgdir_walk end, pte = f03fe674
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 414
+pgdir_walk end, pte = f03fe678
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 415
+pgdir_walk end, pte = f03fe67c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 416
+pgdir_walk end, pte = f03fe680
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 417
+pgdir_walk end, pte = f03fe684
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 418
+pgdir_walk end, pte = f03fe688
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 419
+pgdir_walk end, pte = f03fe68c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 420
+pgdir_walk end, pte = f03fe690
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 421
+pgdir_walk end, pte = f03fe694
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 422
+pgdir_walk end, pte = f03fe698
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 423
+pgdir_walk end, pte = f03fe69c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 424
+pgdir_walk end, pte = f03fe6a0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 425
+pgdir_walk end, pte = f03fe6a4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 426
+pgdir_walk end, pte = f03fe6a8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 427
+pgdir_walk end, pte = f03fe6ac
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 428
+pgdir_walk end, pte = f03fe6b0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 429
+pgdir_walk end, pte = f03fe6b4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 430
+pgdir_walk end, pte = f03fe6b8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 431
+pgdir_walk end, pte = f03fe6bc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 432
+pgdir_walk end, pte = f03fe6c0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 433
+pgdir_walk end, pte = f03fe6c4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 434
+pgdir_walk end, pte = f03fe6c8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 435
+pgdir_walk end, pte = f03fe6cc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 436
+pgdir_walk end, pte = f03fe6d0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 437
+pgdir_walk end, pte = f03fe6d4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 438
+pgdir_walk end, pte = f03fe6d8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 439
+pgdir_walk end, pte = f03fe6dc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 440
+pgdir_walk end, pte = f03fe6e0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 441
+pgdir_walk end, pte = f03fe6e4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 442
+pgdir_walk end, pte = f03fe6e8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 443
+pgdir_walk end, pte = f03fe6ec
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 444
+pgdir_walk end, pte = f03fe6f0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 445
+pgdir_walk end, pte = f03fe6f4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 446
+pgdir_walk end, pte = f03fe6f8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 447
+pgdir_walk end, pte = f03fe6fc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 448
+pgdir_walk end, pte = f03fe700
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 449
+pgdir_walk end, pte = f03fe704
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 450
+pgdir_walk end, pte = f03fe708
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 451
+pgdir_walk end, pte = f03fe70c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 452
+pgdir_walk end, pte = f03fe710
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 453
+pgdir_walk end, pte = f03fe714
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 454
+pgdir_walk end, pte = f03fe718
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 455
+pgdir_walk end, pte = f03fe71c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 456
+pgdir_walk end, pte = f03fe720
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 457
+pgdir_walk end, pte = f03fe724
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 458
+pgdir_walk end, pte = f03fe728
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 459
+pgdir_walk end, pte = f03fe72c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 460
+pgdir_walk end, pte = f03fe730
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 461
+pgdir_walk end, pte = f03fe734
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 462
+pgdir_walk end, pte = f03fe738
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 463
+pgdir_walk end, pte = f03fe73c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 464
+pgdir_walk end, pte = f03fe740
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 465
+pgdir_walk end, pte = f03fe744
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 466
+pgdir_walk end, pte = f03fe748
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 467
+pgdir_walk end, pte = f03fe74c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 468
+pgdir_walk end, pte = f03fe750
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 469
+pgdir_walk end, pte = f03fe754
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 470
+pgdir_walk end, pte = f03fe758
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 471
+pgdir_walk end, pte = f03fe75c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 472
+pgdir_walk end, pte = f03fe760
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 473
+pgdir_walk end, pte = f03fe764
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 474
+pgdir_walk end, pte = f03fe768
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 475
+pgdir_walk end, pte = f03fe76c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 476
+pgdir_walk end, pte = f03fe770
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 477
+pgdir_walk end, pte = f03fe774
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 478
+pgdir_walk end, pte = f03fe778
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 479
+pgdir_walk end, pte = f03fe77c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 480
+pgdir_walk end, pte = f03fe780
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 481
+pgdir_walk end, pte = f03fe784
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 482
+pgdir_walk end, pte = f03fe788
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 483
+pgdir_walk end, pte = f03fe78c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 484
+pgdir_walk end, pte = f03fe790
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 485
+pgdir_walk end, pte = f03fe794
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 486
+pgdir_walk end, pte = f03fe798
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 487
+pgdir_walk end, pte = f03fe79c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 488
+pgdir_walk end, pte = f03fe7a0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 489
+pgdir_walk end, pte = f03fe7a4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 490
+pgdir_walk end, pte = f03fe7a8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 491
+pgdir_walk end, pte = f03fe7ac
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 492
+pgdir_walk end, pte = f03fe7b0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 493
+pgdir_walk end, pte = f03fe7b4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 494
+pgdir_walk end, pte = f03fe7b8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 495
+pgdir_walk end, pte = f03fe7bc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 496
+pgdir_walk end, pte = f03fe7c0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 497
+pgdir_walk end, pte = f03fe7c4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 498
+pgdir_walk end, pte = f03fe7c8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 499
+pgdir_walk end, pte = f03fe7cc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 500
+pgdir_walk end, pte = f03fe7d0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 501
+pgdir_walk end, pte = f03fe7d4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 502
+pgdir_walk end, pte = f03fe7d8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 503
+pgdir_walk end, pte = f03fe7dc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 504
+pgdir_walk end, pte = f03fe7e0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 505
+pgdir_walk end, pte = f03fe7e4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 506
+pgdir_walk end, pte = f03fe7e8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 507
+pgdir_walk end, pte = f03fe7ec
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 508
+pgdir_walk end, pte = f03fe7f0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 509
+pgdir_walk end, pte = f03fe7f4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 510
+pgdir_walk end, pte = f03fe7f8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 511
+pgdir_walk end, pte = f03fe7fc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 512
+pgdir_walk end, pte = f03fe800
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 513
+pgdir_walk end, pte = f03fe804
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 514
+pgdir_walk end, pte = f03fe808
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 515
+pgdir_walk end, pte = f03fe80c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 516
+pgdir_walk end, pte = f03fe810
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 517
+pgdir_walk end, pte = f03fe814
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 518
+pgdir_walk end, pte = f03fe818
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 519
+pgdir_walk end, pte = f03fe81c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 520
+pgdir_walk end, pte = f03fe820
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 521
+pgdir_walk end, pte = f03fe824
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 522
+pgdir_walk end, pte = f03fe828
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 523
+pgdir_walk end, pte = f03fe82c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 524
+pgdir_walk end, pte = f03fe830
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 525
+pgdir_walk end, pte = f03fe834
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 526
+pgdir_walk end, pte = f03fe838
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 527
+pgdir_walk end, pte = f03fe83c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 528
+pgdir_walk end, pte = f03fe840
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 529
+pgdir_walk end, pte = f03fe844
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 530
+pgdir_walk end, pte = f03fe848
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 531
+pgdir_walk end, pte = f03fe84c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 532
+pgdir_walk end, pte = f03fe850
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 533
+pgdir_walk end, pte = f03fe854
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 534
+pgdir_walk end, pte = f03fe858
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 535
+pgdir_walk end, pte = f03fe85c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 536
+pgdir_walk end, pte = f03fe860
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 537
+pgdir_walk end, pte = f03fe864
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 538
+pgdir_walk end, pte = f03fe868
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 539
+pgdir_walk end, pte = f03fe86c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 540
+pgdir_walk end, pte = f03fe870
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 541
+pgdir_walk end, pte = f03fe874
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 542
+pgdir_walk end, pte = f03fe878
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 543
+pgdir_walk end, pte = f03fe87c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 544
+pgdir_walk end, pte = f03fe880
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 545
+pgdir_walk end, pte = f03fe884
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 546
+pgdir_walk end, pte = f03fe888
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 547
+pgdir_walk end, pte = f03fe88c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 548
+pgdir_walk end, pte = f03fe890
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 549
+pgdir_walk end, pte = f03fe894
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 550
+pgdir_walk end, pte = f03fe898
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 551
+pgdir_walk end, pte = f03fe89c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 552
+pgdir_walk end, pte = f03fe8a0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 553
+pgdir_walk end, pte = f03fe8a4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 554
+pgdir_walk end, pte = f03fe8a8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 555
+pgdir_walk end, pte = f03fe8ac
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 556
+pgdir_walk end, pte = f03fe8b0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 557
+pgdir_walk end, pte = f03fe8b4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 558
+pgdir_walk end, pte = f03fe8b8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 559
+pgdir_walk end, pte = f03fe8bc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 560
+pgdir_walk end, pte = f03fe8c0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 561
+pgdir_walk end, pte = f03fe8c4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 562
+pgdir_walk end, pte = f03fe8c8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 563
+pgdir_walk end, pte = f03fe8cc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 564
+pgdir_walk end, pte = f03fe8d0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 565
+pgdir_walk end, pte = f03fe8d4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 566
+pgdir_walk end, pte = f03fe8d8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 567
+pgdir_walk end, pte = f03fe8dc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 568
+pgdir_walk end, pte = f03fe8e0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 569
+pgdir_walk end, pte = f03fe8e4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 570
+pgdir_walk end, pte = f03fe8e8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 571
+pgdir_walk end, pte = f03fe8ec
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 572
+pgdir_walk end, pte = f03fe8f0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 573
+pgdir_walk end, pte = f03fe8f4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 574
+pgdir_walk end, pte = f03fe8f8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 575
+pgdir_walk end, pte = f03fe8fc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 576
+pgdir_walk end, pte = f03fe900
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 577
+pgdir_walk end, pte = f03fe904
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 578
+pgdir_walk end, pte = f03fe908
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 579
+pgdir_walk end, pte = f03fe90c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 580
+pgdir_walk end, pte = f03fe910
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 581
+pgdir_walk end, pte = f03fe914
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 582
+pgdir_walk end, pte = f03fe918
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 583
+pgdir_walk end, pte = f03fe91c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 584
+pgdir_walk end, pte = f03fe920
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 585
+pgdir_walk end, pte = f03fe924
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 586
+pgdir_walk end, pte = f03fe928
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 587
+pgdir_walk end, pte = f03fe92c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 588
+pgdir_walk end, pte = f03fe930
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 589
+pgdir_walk end, pte = f03fe934
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 590
+pgdir_walk end, pte = f03fe938
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 591
+pgdir_walk end, pte = f03fe93c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 592
+pgdir_walk end, pte = f03fe940
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 593
+pgdir_walk end, pte = f03fe944
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 594
+pgdir_walk end, pte = f03fe948
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 595
+pgdir_walk end, pte = f03fe94c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 596
+pgdir_walk end, pte = f03fe950
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 597
+pgdir_walk end, pte = f03fe954
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 598
+pgdir_walk end, pte = f03fe958
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 599
+pgdir_walk end, pte = f03fe95c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 600
+pgdir_walk end, pte = f03fe960
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 601
+pgdir_walk end, pte = f03fe964
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 602
+pgdir_walk end, pte = f03fe968
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 603
+pgdir_walk end, pte = f03fe96c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 604
+pgdir_walk end, pte = f03fe970
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 605
+pgdir_walk end, pte = f03fe974
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 606
+pgdir_walk end, pte = f03fe978
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 607
+pgdir_walk end, pte = f03fe97c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 608
+pgdir_walk end, pte = f03fe980
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 609
+pgdir_walk end, pte = f03fe984
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 610
+pgdir_walk end, pte = f03fe988
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 611
+pgdir_walk end, pte = f03fe98c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 612
+pgdir_walk end, pte = f03fe990
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 613
+pgdir_walk end, pte = f03fe994
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 614
+pgdir_walk end, pte = f03fe998
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 615
+pgdir_walk end, pte = f03fe99c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 616
+pgdir_walk end, pte = f03fe9a0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 617
+pgdir_walk end, pte = f03fe9a4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 618
+pgdir_walk end, pte = f03fe9a8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 619
+pgdir_walk end, pte = f03fe9ac
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 620
+pgdir_walk end, pte = f03fe9b0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 621
+pgdir_walk end, pte = f03fe9b4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 622
+pgdir_walk end, pte = f03fe9b8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 623
+pgdir_walk end, pte = f03fe9bc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 624
+pgdir_walk end, pte = f03fe9c0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 625
+pgdir_walk end, pte = f03fe9c4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 626
+pgdir_walk end, pte = f03fe9c8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 627
+pgdir_walk end, pte = f03fe9cc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 628
+pgdir_walk end, pte = f03fe9d0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 629
+pgdir_walk end, pte = f03fe9d4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 630
+pgdir_walk end, pte = f03fe9d8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 631
+pgdir_walk end, pte = f03fe9dc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 632
+pgdir_walk end, pte = f03fe9e0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 633
+pgdir_walk end, pte = f03fe9e4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 634
+pgdir_walk end, pte = f03fe9e8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 635
+pgdir_walk end, pte = f03fe9ec
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 636
+pgdir_walk end, pte = f03fe9f0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 637
+pgdir_walk end, pte = f03fe9f4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 638
+pgdir_walk end, pte = f03fe9f8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 639
+pgdir_walk end, pte = f03fe9fc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 640
+pgdir_walk end, pte = f03fea00
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 641
+pgdir_walk end, pte = f03fea04
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 642
+pgdir_walk end, pte = f03fea08
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 643
+pgdir_walk end, pte = f03fea0c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 644
+pgdir_walk end, pte = f03fea10
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 645
+pgdir_walk end, pte = f03fea14
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 646
+pgdir_walk end, pte = f03fea18
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 647
+pgdir_walk end, pte = f03fea1c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 648
+pgdir_walk end, pte = f03fea20
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 649
+pgdir_walk end, pte = f03fea24
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 650
+pgdir_walk end, pte = f03fea28
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 651
+pgdir_walk end, pte = f03fea2c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 652
+pgdir_walk end, pte = f03fea30
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 653
+pgdir_walk end, pte = f03fea34
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 654
+pgdir_walk end, pte = f03fea38
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 655
+pgdir_walk end, pte = f03fea3c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 656
+pgdir_walk end, pte = f03fea40
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 657
+pgdir_walk end, pte = f03fea44
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 658
+pgdir_walk end, pte = f03fea48
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 659
+pgdir_walk end, pte = f03fea4c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 660
+pgdir_walk end, pte = f03fea50
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 661
+pgdir_walk end, pte = f03fea54
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 662
+pgdir_walk end, pte = f03fea58
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 663
+pgdir_walk end, pte = f03fea5c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 664
+pgdir_walk end, pte = f03fea60
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 665
+pgdir_walk end, pte = f03fea64
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 666
+pgdir_walk end, pte = f03fea68
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 667
+pgdir_walk end, pte = f03fea6c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 668
+pgdir_walk end, pte = f03fea70
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 669
+pgdir_walk end, pte = f03fea74
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 670
+pgdir_walk end, pte = f03fea78
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 671
+pgdir_walk end, pte = f03fea7c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 672
+pgdir_walk end, pte = f03fea80
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 673
+pgdir_walk end, pte = f03fea84
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 674
+pgdir_walk end, pte = f03fea88
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 675
+pgdir_walk end, pte = f03fea8c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 676
+pgdir_walk end, pte = f03fea90
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 677
+pgdir_walk end, pte = f03fea94
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 678
+pgdir_walk end, pte = f03fea98
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 679
+pgdir_walk end, pte = f03fea9c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 680
+pgdir_walk end, pte = f03feaa0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 681
+pgdir_walk end, pte = f03feaa4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 682
+pgdir_walk end, pte = f03feaa8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 683
+pgdir_walk end, pte = f03feaac
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 684
+pgdir_walk end, pte = f03feab0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 685
+pgdir_walk end, pte = f03feab4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 686
+pgdir_walk end, pte = f03feab8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 687
+pgdir_walk end, pte = f03feabc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 688
+pgdir_walk end, pte = f03feac0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 689
+pgdir_walk end, pte = f03feac4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 690
+pgdir_walk end, pte = f03feac8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 691
+pgdir_walk end, pte = f03feacc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 692
+pgdir_walk end, pte = f03fead0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 693
+pgdir_walk end, pte = f03fead4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 694
+pgdir_walk end, pte = f03fead8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 695
+pgdir_walk end, pte = f03feadc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 696
+pgdir_walk end, pte = f03feae0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 697
+pgdir_walk end, pte = f03feae4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 698
+pgdir_walk end, pte = f03feae8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 699
+pgdir_walk end, pte = f03feaec
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 700
+pgdir_walk end, pte = f03feaf0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 701
+pgdir_walk end, pte = f03feaf4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 702
+pgdir_walk end, pte = f03feaf8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 703
+pgdir_walk end, pte = f03feafc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 704
+pgdir_walk end, pte = f03feb00
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 705
+pgdir_walk end, pte = f03feb04
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 706
+pgdir_walk end, pte = f03feb08
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 707
+pgdir_walk end, pte = f03feb0c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 708
+pgdir_walk end, pte = f03feb10
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 709
+pgdir_walk end, pte = f03feb14
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 710
+pgdir_walk end, pte = f03feb18
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 711
+pgdir_walk end, pte = f03feb1c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 712
+pgdir_walk end, pte = f03feb20
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 713
+pgdir_walk end, pte = f03feb24
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 714
+pgdir_walk end, pte = f03feb28
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 715
+pgdir_walk end, pte = f03feb2c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 716
+pgdir_walk end, pte = f03feb30
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 717
+pgdir_walk end, pte = f03feb34
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 718
+pgdir_walk end, pte = f03feb38
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 719
+pgdir_walk end, pte = f03feb3c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 720
+pgdir_walk end, pte = f03feb40
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 721
+pgdir_walk end, pte = f03feb44
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 722
+pgdir_walk end, pte = f03feb48
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 723
+pgdir_walk end, pte = f03feb4c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 724
+pgdir_walk end, pte = f03feb50
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 725
+pgdir_walk end, pte = f03feb54
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 726
+pgdir_walk end, pte = f03feb58
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 727
+pgdir_walk end, pte = f03feb5c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 728
+pgdir_walk end, pte = f03feb60
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 729
+pgdir_walk end, pte = f03feb64
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 730
+pgdir_walk end, pte = f03feb68
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 731
+pgdir_walk end, pte = f03feb6c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 732
+pgdir_walk end, pte = f03feb70
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 733
+pgdir_walk end, pte = f03feb74
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 734
+pgdir_walk end, pte = f03feb78
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 735
+pgdir_walk end, pte = f03feb7c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 736
+pgdir_walk end, pte = f03feb80
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 737
+pgdir_walk end, pte = f03feb84
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 738
+pgdir_walk end, pte = f03feb88
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 739
+pgdir_walk end, pte = f03feb8c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 740
+pgdir_walk end, pte = f03feb90
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 741
+pgdir_walk end, pte = f03feb94
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 742
+pgdir_walk end, pte = f03feb98
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 743
+pgdir_walk end, pte = f03feb9c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 744
+pgdir_walk end, pte = f03feba0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 745
+pgdir_walk end, pte = f03feba4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 746
+pgdir_walk end, pte = f03feba8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 747
+pgdir_walk end, pte = f03febac
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 748
+pgdir_walk end, pte = f03febb0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 749
+pgdir_walk end, pte = f03febb4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 750
+pgdir_walk end, pte = f03febb8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 751
+pgdir_walk end, pte = f03febbc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 752
+pgdir_walk end, pte = f03febc0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 753
+pgdir_walk end, pte = f03febc4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 754
+pgdir_walk end, pte = f03febc8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 755
+pgdir_walk end, pte = f03febcc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 756
+pgdir_walk end, pte = f03febd0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 757
+pgdir_walk end, pte = f03febd4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 758
+pgdir_walk end, pte = f03febd8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 759
+pgdir_walk end, pte = f03febdc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 760
+pgdir_walk end, pte = f03febe0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 761
+pgdir_walk end, pte = f03febe4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 762
+pgdir_walk end, pte = f03febe8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 763
+pgdir_walk end, pte = f03febec
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 764
+pgdir_walk end, pte = f03febf0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 765
+pgdir_walk end, pte = f03febf4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 766
+pgdir_walk end, pte = f03febf8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 767
+pgdir_walk end, pte = f03febfc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 768
+pgdir_walk end, pte = f03fec00
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 769
+pgdir_walk end, pte = f03fec04
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 770
+pgdir_walk end, pte = f03fec08
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 771
+pgdir_walk end, pte = f03fec0c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 772
+pgdir_walk end, pte = f03fec10
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 773
+pgdir_walk end, pte = f03fec14
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 774
+pgdir_walk end, pte = f03fec18
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 775
+pgdir_walk end, pte = f03fec1c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 776
+pgdir_walk end, pte = f03fec20
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 777
+pgdir_walk end, pte = f03fec24
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 778
+pgdir_walk end, pte = f03fec28
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 779
+pgdir_walk end, pte = f03fec2c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 780
+pgdir_walk end, pte = f03fec30
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 781
+pgdir_walk end, pte = f03fec34
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 782
+pgdir_walk end, pte = f03fec38
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 783
+pgdir_walk end, pte = f03fec3c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 784
+pgdir_walk end, pte = f03fec40
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 785
+pgdir_walk end, pte = f03fec44
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 786
+pgdir_walk end, pte = f03fec48
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 787
+pgdir_walk end, pte = f03fec4c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 788
+pgdir_walk end, pte = f03fec50
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 789
+pgdir_walk end, pte = f03fec54
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 790
+pgdir_walk end, pte = f03fec58
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 791
+pgdir_walk end, pte = f03fec5c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 792
+pgdir_walk end, pte = f03fec60
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 793
+pgdir_walk end, pte = f03fec64
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 794
+pgdir_walk end, pte = f03fec68
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 795
+pgdir_walk end, pte = f03fec6c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 796
+pgdir_walk end, pte = f03fec70
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 797
+pgdir_walk end, pte = f03fec74
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 798
+pgdir_walk end, pte = f03fec78
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 799
+pgdir_walk end, pte = f03fec7c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 800
+pgdir_walk end, pte = f03fec80
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 801
+pgdir_walk end, pte = f03fec84
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 802
+pgdir_walk end, pte = f03fec88
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 803
+pgdir_walk end, pte = f03fec8c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 804
+pgdir_walk end, pte = f03fec90
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 805
+pgdir_walk end, pte = f03fec94
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 806
+pgdir_walk end, pte = f03fec98
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 807
+pgdir_walk end, pte = f03fec9c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 808
+pgdir_walk end, pte = f03feca0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 809
+pgdir_walk end, pte = f03feca4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 810
+pgdir_walk end, pte = f03feca8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 811
+pgdir_walk end, pte = f03fecac
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 812
+pgdir_walk end, pte = f03fecb0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 813
+pgdir_walk end, pte = f03fecb4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 814
+pgdir_walk end, pte = f03fecb8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 815
+pgdir_walk end, pte = f03fecbc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 816
+pgdir_walk end, pte = f03fecc0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 817
+pgdir_walk end, pte = f03fecc4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 818
+pgdir_walk end, pte = f03fecc8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 819
+pgdir_walk end, pte = f03feccc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 820
+pgdir_walk end, pte = f03fecd0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 821
+pgdir_walk end, pte = f03fecd4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 822
+pgdir_walk end, pte = f03fecd8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 823
+pgdir_walk end, pte = f03fecdc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 824
+pgdir_walk end, pte = f03fece0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 825
+pgdir_walk end, pte = f03fece4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 826
+pgdir_walk end, pte = f03fece8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 827
+pgdir_walk end, pte = f03fecec
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 828
+pgdir_walk end, pte = f03fecf0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 829
+pgdir_walk end, pte = f03fecf4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 830
+pgdir_walk end, pte = f03fecf8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 831
+pgdir_walk end, pte = f03fecfc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 832
+pgdir_walk end, pte = f03fed00
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 833
+pgdir_walk end, pte = f03fed04
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 834
+pgdir_walk end, pte = f03fed08
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 835
+pgdir_walk end, pte = f03fed0c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 836
+pgdir_walk end, pte = f03fed10
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 837
+pgdir_walk end, pte = f03fed14
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 838
+pgdir_walk end, pte = f03fed18
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 839
+pgdir_walk end, pte = f03fed1c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 840
+pgdir_walk end, pte = f03fed20
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 841
+pgdir_walk end, pte = f03fed24
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 842
+pgdir_walk end, pte = f03fed28
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 843
+pgdir_walk end, pte = f03fed2c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 844
+pgdir_walk end, pte = f03fed30
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 845
+pgdir_walk end, pte = f03fed34
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 846
+pgdir_walk end, pte = f03fed38
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 847
+pgdir_walk end, pte = f03fed3c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 848
+pgdir_walk end, pte = f03fed40
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 849
+pgdir_walk end, pte = f03fed44
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 850
+pgdir_walk end, pte = f03fed48
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 851
+pgdir_walk end, pte = f03fed4c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 852
+pgdir_walk end, pte = f03fed50
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 853
+pgdir_walk end, pte = f03fed54
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 854
+pgdir_walk end, pte = f03fed58
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 855
+pgdir_walk end, pte = f03fed5c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 856
+pgdir_walk end, pte = f03fed60
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 857
+pgdir_walk end, pte = f03fed64
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 858
+pgdir_walk end, pte = f03fed68
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 859
+pgdir_walk end, pte = f03fed6c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 860
+pgdir_walk end, pte = f03fed70
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 861
+pgdir_walk end, pte = f03fed74
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 862
+pgdir_walk end, pte = f03fed78
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 863
+pgdir_walk end, pte = f03fed7c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 864
+pgdir_walk end, pte = f03fed80
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 865
+pgdir_walk end, pte = f03fed84
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 866
+pgdir_walk end, pte = f03fed88
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 867
+pgdir_walk end, pte = f03fed8c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 868
+pgdir_walk end, pte = f03fed90
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 869
+pgdir_walk end, pte = f03fed94
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 870
+pgdir_walk end, pte = f03fed98
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 871
+pgdir_walk end, pte = f03fed9c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 872
+pgdir_walk end, pte = f03feda0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 873
+pgdir_walk end, pte = f03feda4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 874
+pgdir_walk end, pte = f03feda8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 875
+pgdir_walk end, pte = f03fedac
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 876
+pgdir_walk end, pte = f03fedb0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 877
+pgdir_walk end, pte = f03fedb4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 878
+pgdir_walk end, pte = f03fedb8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 879
+pgdir_walk end, pte = f03fedbc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 880
+pgdir_walk end, pte = f03fedc0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 881
+pgdir_walk end, pte = f03fedc4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 882
+pgdir_walk end, pte = f03fedc8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 883
+pgdir_walk end, pte = f03fedcc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 884
+pgdir_walk end, pte = f03fedd0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 885
+pgdir_walk end, pte = f03fedd4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 886
+pgdir_walk end, pte = f03fedd8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 887
+pgdir_walk end, pte = f03feddc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 888
+pgdir_walk end, pte = f03fede0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 889
+pgdir_walk end, pte = f03fede4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 890
+pgdir_walk end, pte = f03fede8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 891
+pgdir_walk end, pte = f03fedec
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 892
+pgdir_walk end, pte = f03fedf0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 893
+pgdir_walk end, pte = f03fedf4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 894
+pgdir_walk end, pte = f03fedf8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 895
+pgdir_walk end, pte = f03fedfc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 896
+pgdir_walk end, pte = f03fee00
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 897
+pgdir_walk end, pte = f03fee04
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 898
+pgdir_walk end, pte = f03fee08
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 899
+pgdir_walk end, pte = f03fee0c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 900
+pgdir_walk end, pte = f03fee10
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 901
+pgdir_walk end, pte = f03fee14
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 902
+pgdir_walk end, pte = f03fee18
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 903
+pgdir_walk end, pte = f03fee1c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 904
+pgdir_walk end, pte = f03fee20
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 905
+pgdir_walk end, pte = f03fee24
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 906
+pgdir_walk end, pte = f03fee28
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 907
+pgdir_walk end, pte = f03fee2c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 908
+pgdir_walk end, pte = f03fee30
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 909
+pgdir_walk end, pte = f03fee34
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 910
+pgdir_walk end, pte = f03fee38
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 911
+pgdir_walk end, pte = f03fee3c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 912
+pgdir_walk end, pte = f03fee40
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 913
+pgdir_walk end, pte = f03fee44
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 914
+pgdir_walk end, pte = f03fee48
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 915
+pgdir_walk end, pte = f03fee4c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 916
+pgdir_walk end, pte = f03fee50
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 917
+pgdir_walk end, pte = f03fee54
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 918
+pgdir_walk end, pte = f03fee58
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 919
+pgdir_walk end, pte = f03fee5c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 920
+pgdir_walk end, pte = f03fee60
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 921
+pgdir_walk end, pte = f03fee64
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 922
+pgdir_walk end, pte = f03fee68
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 923
+pgdir_walk end, pte = f03fee6c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 924
+pgdir_walk end, pte = f03fee70
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 925
+pgdir_walk end, pte = f03fee74
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 926
+pgdir_walk end, pte = f03fee78
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 927
+pgdir_walk end, pte = f03fee7c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 928
+pgdir_walk end, pte = f03fee80
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 929
+pgdir_walk end, pte = f03fee84
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 930
+pgdir_walk end, pte = f03fee88
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 931
+pgdir_walk end, pte = f03fee8c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 932
+pgdir_walk end, pte = f03fee90
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 933
+pgdir_walk end, pte = f03fee94
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 934
+pgdir_walk end, pte = f03fee98
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 935
+pgdir_walk end, pte = f03fee9c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 936
+pgdir_walk end, pte = f03feea0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 937
+pgdir_walk end, pte = f03feea4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 938
+pgdir_walk end, pte = f03feea8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 939
+pgdir_walk end, pte = f03feeac
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 940
+pgdir_walk end, pte = f03feeb0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 941
+pgdir_walk end, pte = f03feeb4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 942
+pgdir_walk end, pte = f03feeb8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 943
+pgdir_walk end, pte = f03feebc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 944
+pgdir_walk end, pte = f03feec0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 945
+pgdir_walk end, pte = f03feec4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 946
+pgdir_walk end, pte = f03feec8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 947
+pgdir_walk end, pte = f03feecc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 948
+pgdir_walk end, pte = f03feed0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 949
+pgdir_walk end, pte = f03feed4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 950
+pgdir_walk end, pte = f03feed8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 951
+pgdir_walk end, pte = f03feedc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 952
+pgdir_walk end, pte = f03feee0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 953
+pgdir_walk end, pte = f03feee4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 954
+pgdir_walk end, pte = f03feee8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 955
+pgdir_walk end, pte = f03feeec
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 956
+pgdir_walk end, pte = f03feef0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 957
+pgdir_walk end, pte = f03feef4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 958
+pgdir_walk end, pte = f03feef8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 959
+pgdir_walk end, pte = f03feefc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 960
+pgdir_walk end, pte = f03fef00
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 961
+pgdir_walk end, pte = f03fef04
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 962
+pgdir_walk end, pte = f03fef08
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 963
+pgdir_walk end, pte = f03fef0c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 964
+pgdir_walk end, pte = f03fef10
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 965
+pgdir_walk end, pte = f03fef14
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 966
+pgdir_walk end, pte = f03fef18
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 967
+pgdir_walk end, pte = f03fef1c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 968
+pgdir_walk end, pte = f03fef20
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 969
+pgdir_walk end, pte = f03fef24
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 970
+pgdir_walk end, pte = f03fef28
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 971
+pgdir_walk end, pte = f03fef2c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 972
+pgdir_walk end, pte = f03fef30
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 973
+pgdir_walk end, pte = f03fef34
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 974
+pgdir_walk end, pte = f03fef38
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 975
+pgdir_walk end, pte = f03fef3c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 976
+pgdir_walk end, pte = f03fef40
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 977
+pgdir_walk end, pte = f03fef44
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 978
+pgdir_walk end, pte = f03fef48
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 979
+pgdir_walk end, pte = f03fef4c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 980
+pgdir_walk end, pte = f03fef50
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 981
+pgdir_walk end, pte = f03fef54
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 982
+pgdir_walk end, pte = f03fef58
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 983
+pgdir_walk end, pte = f03fef5c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 984
+pgdir_walk end, pte = f03fef60
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 985
+pgdir_walk end, pte = f03fef64
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 986
+pgdir_walk end, pte = f03fef68
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 987
+pgdir_walk end, pte = f03fef6c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 988
+pgdir_walk end, pte = f03fef70
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 989
+pgdir_walk end, pte = f03fef74
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 990
+pgdir_walk end, pte = f03fef78
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 991
+pgdir_walk end, pte = f03fef7c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 992
+pgdir_walk end, pte = f03fef80
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 993
+pgdir_walk end, pte = f03fef84
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 994
+pgdir_walk end, pte = f03fef88
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 995
+pgdir_walk end, pte = f03fef8c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 996
+pgdir_walk end, pte = f03fef90
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 997
+pgdir_walk end, pte = f03fef94
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 998
+pgdir_walk end, pte = f03fef98
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 999
+pgdir_walk end, pte = f03fef9c
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1000
+pgdir_walk end, pte = f03fefa0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1001
+pgdir_walk end, pte = f03fefa4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1002
+pgdir_walk end, pte = f03fefa8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1003
+pgdir_walk end, pte = f03fefac
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1004
+pgdir_walk end, pte = f03fefb0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1005
+pgdir_walk end, pte = f03fefb4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1006
+pgdir_walk end, pte = f03fefb8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1007
+pgdir_walk end, pte = f03fefbc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1008
+pgdir_walk end, pte = f03fefc0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1009
+pgdir_walk end, pte = f03fefc4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1010
+pgdir_walk end, pte = f03fefc8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1011
+pgdir_walk end, pte = f03fefcc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1012
+pgdir_walk end, pte = f03fefd0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1013
+pgdir_walk end, pte = f03fefd4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1014
+pgdir_walk end, pte = f03fefd8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1015
+pgdir_walk end, pte = f03fefdc
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1016
+pgdir_walk end, pte = f03fefe0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1017
+pgdir_walk end, pte = f03fefe4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1018
+pgdir_walk end, pte = f03fefe8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1019
+pgdir_walk end, pte = f03fefec
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1020
+pgdir_walk end, pte = f03feff0
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1021
+pgdir_walk end, pte = f03feff4
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1022
+pgdir_walk end, pte = f03feff8
+pgdir_walk start
+pgdir_walk, ptpa = 3fe000, PDX(va) = 955
+pgdir_walk, PTX = 1023
+pgdir_walk end, pte = f03feffc
+ptenvs = f03fe000, nenvs = 18
 paptstack = 0
-alloc start
-page addr = f0126ff0, free_list->next = f0126ff8
-page = f0126ff0, pgva = f03fe000
 alloc_flags = 1, set value of pgva = 0
-set page = f0126ff0 pp_link to NULL
-alloc end
-alloc new page for stack, paptstack = 3fe000
-bootstack = f0118000, PADDR(bootstack) = 118000
+set page = f01edff8 pp_link to NULL
+alloc new page for stack, paptstack = 3ff000
+bootstack = f011d000, PADDR(bootstack) = 11d000
 KSTACKTOP - KSTKSIZE + 0*PGSIZE = efff8000
-PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = 3f8, ptstack[PTX] = 118003
-RADDR(bootstack) = 118000, PADDR(bootstack) - 0*PGSIZE = 118000
+PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = 3f8, ptstack[PTX] = 11d003
+RADDR(bootstack) = 11d000, PADDR(bootstack) - 0*PGSIZE = 11d000
 KSTACKTOP - KSTKSIZE + 1*PGSIZE = efff9000
-PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = 3f9, ptstack[PTX] = 119003
-RADDR(bootstack) = 118000, PADDR(bootstack) - 1*PGSIZE = 117000
+PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = 3f9, ptstack[PTX] = 11e003
+RADDR(bootstack) = 11d000, PADDR(bootstack) - 1*PGSIZE = 11c000
 KSTACKTOP - KSTKSIZE + 2*PGSIZE = efffa000
-PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = 3fa, ptstack[PTX] = 11a003
-RADDR(bootstack) = 118000, PADDR(bootstack) - 2*PGSIZE = 116000
+PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = 3fa, ptstack[PTX] = 11f003
+RADDR(bootstack) = 11d000, PADDR(bootstack) - 2*PGSIZE = 11b000
 KSTACKTOP - KSTKSIZE + 3*PGSIZE = efffb000
-PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = 3fb, ptstack[PTX] = 11b003
-RADDR(bootstack) = 118000, PADDR(bootstack) - 3*PGSIZE = 115000
+PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = 3fb, ptstack[PTX] = 120003
+RADDR(bootstack) = 11d000, PADDR(bootstack) - 3*PGSIZE = 11a000
 KSTACKTOP - KSTKSIZE + 4*PGSIZE = efffc000
-PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = 3fc, ptstack[PTX] = 11c003
-RADDR(bootstack) = 118000, PADDR(bootstack) - 4*PGSIZE = 114000
+PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = 3fc, ptstack[PTX] = 121003
+RADDR(bootstack) = 11d000, PADDR(bootstack) - 4*PGSIZE = 119000
 KSTACKTOP - KSTKSIZE + 5*PGSIZE = efffd000
-PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = 3fd, ptstack[PTX] = 11d003
-RADDR(bootstack) = 118000, PADDR(bootstack) - 5*PGSIZE = 113000
+PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = 3fd, ptstack[PTX] = 122003
+RADDR(bootstack) = 11d000, PADDR(bootstack) - 5*PGSIZE = 118000
 KSTACKTOP - KSTKSIZE + 6*PGSIZE = efffe000
-PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = 3fe, ptstack[PTX] = 11e003
-RADDR(bootstack) = 118000, PADDR(bootstack) - 6*PGSIZE = 112000
+PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = 3fe, ptstack[PTX] = 123003
+RADDR(bootstack) = 11d000, PADDR(bootstack) - 6*PGSIZE = 117000
 KSTACKTOP - KSTKSIZE + 7*PGSIZE = effff000
-PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = 3ff, ptstack[PTX] = 11f003
-RADDR(bootstack) = 118000, PADDR(bootstack) - 7*PGSIZE = 111000
-pt = 0, PDX = 3c0
+PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = 3ff, ptstack[PTX] = 124003
+RADDR(bootstack) = 11d000, PADDR(bootstack) - 7*PGSIZE = 116000
 va = f0000000, PDX(0) = 3c0 has no page table in pgdir
-alloc start
-page addr = f0126ff8, free_list->next = f0126fe0
-page = f0126ff8, pgva = f03ff000
 alloc_flags = 1, set value of pgva = 0
-set page = f0126ff8 pp_link to NULL
-alloc end
-PDX(f0000000) = 3c0, kern_pgdir[3c0] = 3ff003
-alloc new page for pt = 3ff003
-&kern_pgdir[PDX] = f0123f00, pt = f03ff000, va = f0000000, PDX(f0000000) = 3c0
-kb - KERNBASE = 0
-later kb = f0400000
-pt = 0, PDX = 3c1
-va = f0400000, PDX(0) = 3c1 has no page table in pgdir
-alloc start
-page addr = f0126fe0, free_list->next = f0126fd8
-page = f0126fe0, pgva = f03fc000
-alloc_flags = 1, set value of pgva = 0
-set page = f0126fe0 pp_link to NULL
-alloc end
-PDX(f0400000) = 3c1, kern_pgdir[3c1] = 3fc003
+set page = f01edfe0 pp_link to NULL
+PDX(f0000000) = 3c0, kern_pgdir[3c0] = 3fc003
 alloc new page for pt = 3fc003
-&kern_pgdir[PDX] = f0123f04, pt = f03fc000, va = f0400000, PDX(f0400000) = 3c1
-kb - KERNBASE = 400000
-later kb = f0800000
-pt = 0, PDX = 3c2
-va = f0800000, PDX(0) = 3c2 has no page table in pgdir
-alloc start
-page addr = f0126fd8, free_list->next = f0126fd0
-page = f0126fd8, pgva = f03fb000
+va = f0400000, PDX(0) = 3c1 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126fd8 pp_link to NULL
-alloc end
-PDX(f0800000) = 3c2, kern_pgdir[3c2] = 3fb003
+set page = f01edfd8 pp_link to NULL
+PDX(f0400000) = 3c1, kern_pgdir[3c1] = 3fb003
 alloc new page for pt = 3fb003
-&kern_pgdir[PDX] = f0123f08, pt = f03fb000, va = f0800000, PDX(f0800000) = 3c2
-kb - KERNBASE = 800000
-later kb = f0c00000
-pt = 0, PDX = 3c3
-va = f0c00000, PDX(0) = 3c3 has no page table in pgdir
-alloc start
-page addr = f0126fd0, free_list->next = f0126fc8
-page = f0126fd0, pgva = f03fa000
+va = f0800000, PDX(0) = 3c2 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126fd0 pp_link to NULL
-alloc end
-PDX(f0c00000) = 3c3, kern_pgdir[3c3] = 3fa003
+set page = f01edfd0 pp_link to NULL
+PDX(f0800000) = 3c2, kern_pgdir[3c2] = 3fa003
 alloc new page for pt = 3fa003
-&kern_pgdir[PDX] = f0123f0c, pt = f03fa000, va = f0c00000, PDX(f0c00000) = 3c3
-kb - KERNBASE = c00000
-later kb = f1000000
-pt = 0, PDX = 3c4
-va = f1000000, PDX(0) = 3c4 has no page table in pgdir
-alloc start
-page addr = f0126fc8, free_list->next = f0126fc0
-page = f0126fc8, pgva = f03f9000
+va = f0c00000, PDX(0) = 3c3 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126fc8 pp_link to NULL
-alloc end
-PDX(f1000000) = 3c4, kern_pgdir[3c4] = 3f9003
+set page = f01edfc8 pp_link to NULL
+PDX(f0c00000) = 3c3, kern_pgdir[3c3] = 3f9003
 alloc new page for pt = 3f9003
-&kern_pgdir[PDX] = f0123f10, pt = f03f9000, va = f1000000, PDX(f1000000) = 3c4
-kb - KERNBASE = 1000000
-later kb = f1400000
-pt = 0, PDX = 3c5
-va = f1400000, PDX(0) = 3c5 has no page table in pgdir
-alloc start
-page addr = f0126fc0, free_list->next = f0126fb8
-page = f0126fc0, pgva = f03f8000
+va = f1000000, PDX(0) = 3c4 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126fc0 pp_link to NULL
-alloc end
-PDX(f1400000) = 3c5, kern_pgdir[3c5] = 3f8003
+set page = f01edfc0 pp_link to NULL
+PDX(f1000000) = 3c4, kern_pgdir[3c4] = 3f8003
 alloc new page for pt = 3f8003
-&kern_pgdir[PDX] = f0123f14, pt = f03f8000, va = f1400000, PDX(f1400000) = 3c5
-kb - KERNBASE = 1400000
-later kb = f1800000
-pt = 0, PDX = 3c6
-va = f1800000, PDX(0) = 3c6 has no page table in pgdir
-alloc start
-page addr = f0126fb8, free_list->next = f0126fb0
-page = f0126fb8, pgva = f03f7000
+va = f1400000, PDX(0) = 3c5 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126fb8 pp_link to NULL
-alloc end
-PDX(f1800000) = 3c6, kern_pgdir[3c6] = 3f7003
+set page = f01edfb8 pp_link to NULL
+PDX(f1400000) = 3c5, kern_pgdir[3c5] = 3f7003
 alloc new page for pt = 3f7003
-&kern_pgdir[PDX] = f0123f18, pt = f03f7000, va = f1800000, PDX(f1800000) = 3c6
-kb - KERNBASE = 1800000
-later kb = f1c00000
-pt = 0, PDX = 3c7
-va = f1c00000, PDX(0) = 3c7 has no page table in pgdir
-alloc start
-page addr = f0126fb0, free_list->next = f0126fa8
-page = f0126fb0, pgva = f03f6000
+va = f1800000, PDX(0) = 3c6 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126fb0 pp_link to NULL
-alloc end
-PDX(f1c00000) = 3c7, kern_pgdir[3c7] = 3f6003
+set page = f01edfb0 pp_link to NULL
+PDX(f1800000) = 3c6, kern_pgdir[3c6] = 3f6003
 alloc new page for pt = 3f6003
-&kern_pgdir[PDX] = f0123f1c, pt = f03f6000, va = f1c00000, PDX(f1c00000) = 3c7
-kb - KERNBASE = 1c00000
-later kb = f2000000
-pt = 0, PDX = 3c8
-va = f2000000, PDX(0) = 3c8 has no page table in pgdir
-alloc start
-page addr = f0126fa8, free_list->next = f0126fa0
-page = f0126fa8, pgva = f03f5000
+va = f1c00000, PDX(0) = 3c7 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126fa8 pp_link to NULL
-alloc end
-PDX(f2000000) = 3c8, kern_pgdir[3c8] = 3f5003
+set page = f01edfa8 pp_link to NULL
+PDX(f1c00000) = 3c7, kern_pgdir[3c7] = 3f5003
 alloc new page for pt = 3f5003
-&kern_pgdir[PDX] = f0123f20, pt = f03f5000, va = f2000000, PDX(f2000000) = 3c8
-kb - KERNBASE = 2000000
-later kb = f2400000
-pt = 0, PDX = 3c9
-va = f2400000, PDX(0) = 3c9 has no page table in pgdir
-alloc start
-page addr = f0126fa0, free_list->next = f0126f98
-page = f0126fa0, pgva = f03f4000
+va = f2000000, PDX(0) = 3c8 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126fa0 pp_link to NULL
-alloc end
-PDX(f2400000) = 3c9, kern_pgdir[3c9] = 3f4003
+set page = f01edfa0 pp_link to NULL
+PDX(f2000000) = 3c8, kern_pgdir[3c8] = 3f4003
 alloc new page for pt = 3f4003
-&kern_pgdir[PDX] = f0123f24, pt = f03f4000, va = f2400000, PDX(f2400000) = 3c9
-kb - KERNBASE = 2400000
-later kb = f2800000
-pt = 0, PDX = 3ca
-va = f2800000, PDX(0) = 3ca has no page table in pgdir
-alloc start
-page addr = f0126f98, free_list->next = f0126f90
-page = f0126f98, pgva = f03f3000
+va = f2400000, PDX(0) = 3c9 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f98 pp_link to NULL
-alloc end
-PDX(f2800000) = 3ca, kern_pgdir[3ca] = 3f3003
+set page = f01edf98 pp_link to NULL
+PDX(f2400000) = 3c9, kern_pgdir[3c9] = 3f3003
 alloc new page for pt = 3f3003
-&kern_pgdir[PDX] = f0123f28, pt = f03f3000, va = f2800000, PDX(f2800000) = 3ca
-kb - KERNBASE = 2800000
-later kb = f2c00000
-pt = 0, PDX = 3cb
-va = f2c00000, PDX(0) = 3cb has no page table in pgdir
-alloc start
-page addr = f0126f90, free_list->next = f0126f88
-page = f0126f90, pgva = f03f2000
+va = f2800000, PDX(0) = 3ca has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f90 pp_link to NULL
-alloc end
-PDX(f2c00000) = 3cb, kern_pgdir[3cb] = 3f2003
+set page = f01edf90 pp_link to NULL
+PDX(f2800000) = 3ca, kern_pgdir[3ca] = 3f2003
 alloc new page for pt = 3f2003
-&kern_pgdir[PDX] = f0123f2c, pt = f03f2000, va = f2c00000, PDX(f2c00000) = 3cb
-kb - KERNBASE = 2c00000
-later kb = f3000000
-pt = 0, PDX = 3cc
-va = f3000000, PDX(0) = 3cc has no page table in pgdir
-alloc start
-page addr = f0126f88, free_list->next = f0126f80
-page = f0126f88, pgva = f03f1000
+va = f2c00000, PDX(0) = 3cb has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f88 pp_link to NULL
-alloc end
-PDX(f3000000) = 3cc, kern_pgdir[3cc] = 3f1003
+set page = f01edf88 pp_link to NULL
+PDX(f2c00000) = 3cb, kern_pgdir[3cb] = 3f1003
 alloc new page for pt = 3f1003
-&kern_pgdir[PDX] = f0123f30, pt = f03f1000, va = f3000000, PDX(f3000000) = 3cc
-kb - KERNBASE = 3000000
-later kb = f3400000
-pt = 0, PDX = 3cd
-va = f3400000, PDX(0) = 3cd has no page table in pgdir
-alloc start
-page addr = f0126f80, free_list->next = f0126f78
-page = f0126f80, pgva = f03f0000
+va = f3000000, PDX(0) = 3cc has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f80 pp_link to NULL
-alloc end
-PDX(f3400000) = 3cd, kern_pgdir[3cd] = 3f0003
+set page = f01edf80 pp_link to NULL
+PDX(f3000000) = 3cc, kern_pgdir[3cc] = 3f0003
 alloc new page for pt = 3f0003
-&kern_pgdir[PDX] = f0123f34, pt = f03f0000, va = f3400000, PDX(f3400000) = 3cd
-kb - KERNBASE = 3400000
-later kb = f3800000
-pt = 0, PDX = 3ce
-va = f3800000, PDX(0) = 3ce has no page table in pgdir
-alloc start
-page addr = f0126f78, free_list->next = f0126f70
-page = f0126f78, pgva = f03ef000
+va = f3400000, PDX(0) = 3cd has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f78 pp_link to NULL
-alloc end
-PDX(f3800000) = 3ce, kern_pgdir[3ce] = 3ef003
+set page = f01edf78 pp_link to NULL
+PDX(f3400000) = 3cd, kern_pgdir[3cd] = 3ef003
 alloc new page for pt = 3ef003
-&kern_pgdir[PDX] = f0123f38, pt = f03ef000, va = f3800000, PDX(f3800000) = 3ce
-kb - KERNBASE = 3800000
-later kb = f3c00000
-pt = 0, PDX = 3cf
-va = f3c00000, PDX(0) = 3cf has no page table in pgdir
-alloc start
-page addr = f0126f70, free_list->next = f0126f68
-page = f0126f70, pgva = f03ee000
+va = f3800000, PDX(0) = 3ce has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f70 pp_link to NULL
-alloc end
-PDX(f3c00000) = 3cf, kern_pgdir[3cf] = 3ee003
+set page = f01edf70 pp_link to NULL
+PDX(f3800000) = 3ce, kern_pgdir[3ce] = 3ee003
 alloc new page for pt = 3ee003
-&kern_pgdir[PDX] = f0123f3c, pt = f03ee000, va = f3c00000, PDX(f3c00000) = 3cf
-kb - KERNBASE = 3c00000
-later kb = f4000000
-pt = 0, PDX = 3d0
-va = f4000000, PDX(0) = 3d0 has no page table in pgdir
-alloc start
-page addr = f0126f68, free_list->next = f0126f60
-page = f0126f68, pgva = f03ed000
+va = f3c00000, PDX(0) = 3cf has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f68 pp_link to NULL
-alloc end
-PDX(f4000000) = 3d0, kern_pgdir[3d0] = 3ed003
+set page = f01edf68 pp_link to NULL
+PDX(f3c00000) = 3cf, kern_pgdir[3cf] = 3ed003
 alloc new page for pt = 3ed003
-&kern_pgdir[PDX] = f0123f40, pt = f03ed000, va = f4000000, PDX(f4000000) = 3d0
-kb - KERNBASE = 4000000
-later kb = f4400000
-pt = 0, PDX = 3d1
-va = f4400000, PDX(0) = 3d1 has no page table in pgdir
-alloc start
-page addr = f0126f60, free_list->next = f0126f58
-page = f0126f60, pgva = f03ec000
+va = f4000000, PDX(0) = 3d0 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f60 pp_link to NULL
-alloc end
-PDX(f4400000) = 3d1, kern_pgdir[3d1] = 3ec003
+set page = f01edf60 pp_link to NULL
+PDX(f4000000) = 3d0, kern_pgdir[3d0] = 3ec003
 alloc new page for pt = 3ec003
-&kern_pgdir[PDX] = f0123f44, pt = f03ec000, va = f4400000, PDX(f4400000) = 3d1
-kb - KERNBASE = 4400000
-later kb = f4800000
-pt = 0, PDX = 3d2
-va = f4800000, PDX(0) = 3d2 has no page table in pgdir
-alloc start
-page addr = f0126f58, free_list->next = f0126f50
-page = f0126f58, pgva = f03eb000
+va = f4400000, PDX(0) = 3d1 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f58 pp_link to NULL
-alloc end
-PDX(f4800000) = 3d2, kern_pgdir[3d2] = 3eb003
+set page = f01edf58 pp_link to NULL
+PDX(f4400000) = 3d1, kern_pgdir[3d1] = 3eb003
 alloc new page for pt = 3eb003
-&kern_pgdir[PDX] = f0123f48, pt = f03eb000, va = f4800000, PDX(f4800000) = 3d2
-kb - KERNBASE = 4800000
-later kb = f4c00000
-pt = 0, PDX = 3d3
-va = f4c00000, PDX(0) = 3d3 has no page table in pgdir
-alloc start
-page addr = f0126f50, free_list->next = f0126f48
-page = f0126f50, pgva = f03ea000
+va = f4800000, PDX(0) = 3d2 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f50 pp_link to NULL
-alloc end
-PDX(f4c00000) = 3d3, kern_pgdir[3d3] = 3ea003
+set page = f01edf50 pp_link to NULL
+PDX(f4800000) = 3d2, kern_pgdir[3d2] = 3ea003
 alloc new page for pt = 3ea003
-&kern_pgdir[PDX] = f0123f4c, pt = f03ea000, va = f4c00000, PDX(f4c00000) = 3d3
-kb - KERNBASE = 4c00000
-later kb = f5000000
-pt = 0, PDX = 3d4
-va = f5000000, PDX(0) = 3d4 has no page table in pgdir
-alloc start
-page addr = f0126f48, free_list->next = f0126f40
-page = f0126f48, pgva = f03e9000
+va = f4c00000, PDX(0) = 3d3 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f48 pp_link to NULL
-alloc end
-PDX(f5000000) = 3d4, kern_pgdir[3d4] = 3e9003
+set page = f01edf48 pp_link to NULL
+PDX(f4c00000) = 3d3, kern_pgdir[3d3] = 3e9003
 alloc new page for pt = 3e9003
-&kern_pgdir[PDX] = f0123f50, pt = f03e9000, va = f5000000, PDX(f5000000) = 3d4
-kb - KERNBASE = 5000000
-later kb = f5400000
-pt = 0, PDX = 3d5
-va = f5400000, PDX(0) = 3d5 has no page table in pgdir
-alloc start
-page addr = f0126f40, free_list->next = f0126f38
-page = f0126f40, pgva = f03e8000
+va = f5000000, PDX(0) = 3d4 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f40 pp_link to NULL
-alloc end
-PDX(f5400000) = 3d5, kern_pgdir[3d5] = 3e8003
+set page = f01edf40 pp_link to NULL
+PDX(f5000000) = 3d4, kern_pgdir[3d4] = 3e8003
 alloc new page for pt = 3e8003
-&kern_pgdir[PDX] = f0123f54, pt = f03e8000, va = f5400000, PDX(f5400000) = 3d5
-kb - KERNBASE = 5400000
-later kb = f5800000
-pt = 0, PDX = 3d6
-va = f5800000, PDX(0) = 3d6 has no page table in pgdir
-alloc start
-page addr = f0126f38, free_list->next = f0126f30
-page = f0126f38, pgva = f03e7000
+va = f5400000, PDX(0) = 3d5 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f38 pp_link to NULL
-alloc end
-PDX(f5800000) = 3d6, kern_pgdir[3d6] = 3e7003
+set page = f01edf38 pp_link to NULL
+PDX(f5400000) = 3d5, kern_pgdir[3d5] = 3e7003
 alloc new page for pt = 3e7003
-&kern_pgdir[PDX] = f0123f58, pt = f03e7000, va = f5800000, PDX(f5800000) = 3d6
-kb - KERNBASE = 5800000
-later kb = f5c00000
-pt = 0, PDX = 3d7
-va = f5c00000, PDX(0) = 3d7 has no page table in pgdir
-alloc start
-page addr = f0126f30, free_list->next = f0126f28
-page = f0126f30, pgva = f03e6000
+va = f5800000, PDX(0) = 3d6 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f30 pp_link to NULL
-alloc end
-PDX(f5c00000) = 3d7, kern_pgdir[3d7] = 3e6003
+set page = f01edf30 pp_link to NULL
+PDX(f5800000) = 3d6, kern_pgdir[3d6] = 3e6003
 alloc new page for pt = 3e6003
-&kern_pgdir[PDX] = f0123f5c, pt = f03e6000, va = f5c00000, PDX(f5c00000) = 3d7
-kb - KERNBASE = 5c00000
-later kb = f6000000
-pt = 0, PDX = 3d8
-va = f6000000, PDX(0) = 3d8 has no page table in pgdir
-alloc start
-page addr = f0126f28, free_list->next = f0126f20
-page = f0126f28, pgva = f03e5000
+va = f5c00000, PDX(0) = 3d7 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f28 pp_link to NULL
-alloc end
-PDX(f6000000) = 3d8, kern_pgdir[3d8] = 3e5003
+set page = f01edf28 pp_link to NULL
+PDX(f5c00000) = 3d7, kern_pgdir[3d7] = 3e5003
 alloc new page for pt = 3e5003
-&kern_pgdir[PDX] = f0123f60, pt = f03e5000, va = f6000000, PDX(f6000000) = 3d8
-kb - KERNBASE = 6000000
-later kb = f6400000
-pt = 0, PDX = 3d9
-va = f6400000, PDX(0) = 3d9 has no page table in pgdir
-alloc start
-page addr = f0126f20, free_list->next = f0126f18
-page = f0126f20, pgva = f03e4000
+va = f6000000, PDX(0) = 3d8 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f20 pp_link to NULL
-alloc end
-PDX(f6400000) = 3d9, kern_pgdir[3d9] = 3e4003
+set page = f01edf20 pp_link to NULL
+PDX(f6000000) = 3d8, kern_pgdir[3d8] = 3e4003
 alloc new page for pt = 3e4003
-&kern_pgdir[PDX] = f0123f64, pt = f03e4000, va = f6400000, PDX(f6400000) = 3d9
-kb - KERNBASE = 6400000
-later kb = f6800000
-pt = 0, PDX = 3da
-va = f6800000, PDX(0) = 3da has no page table in pgdir
-alloc start
-page addr = f0126f18, free_list->next = f0126f10
-page = f0126f18, pgva = f03e3000
+va = f6400000, PDX(0) = 3d9 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f18 pp_link to NULL
-alloc end
-PDX(f6800000) = 3da, kern_pgdir[3da] = 3e3003
+set page = f01edf18 pp_link to NULL
+PDX(f6400000) = 3d9, kern_pgdir[3d9] = 3e3003
 alloc new page for pt = 3e3003
-&kern_pgdir[PDX] = f0123f68, pt = f03e3000, va = f6800000, PDX(f6800000) = 3da
-kb - KERNBASE = 6800000
-later kb = f6c00000
-pt = 0, PDX = 3db
-va = f6c00000, PDX(0) = 3db has no page table in pgdir
-alloc start
-page addr = f0126f10, free_list->next = f0126f08
-page = f0126f10, pgva = f03e2000
+va = f6800000, PDX(0) = 3da has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f10 pp_link to NULL
-alloc end
-PDX(f6c00000) = 3db, kern_pgdir[3db] = 3e2003
+set page = f01edf10 pp_link to NULL
+PDX(f6800000) = 3da, kern_pgdir[3da] = 3e2003
 alloc new page for pt = 3e2003
-&kern_pgdir[PDX] = f0123f6c, pt = f03e2000, va = f6c00000, PDX(f6c00000) = 3db
-kb - KERNBASE = 6c00000
-later kb = f7000000
-pt = 0, PDX = 3dc
-va = f7000000, PDX(0) = 3dc has no page table in pgdir
-alloc start
-page addr = f0126f08, free_list->next = f0126f00
-page = f0126f08, pgva = f03e1000
+va = f6c00000, PDX(0) = 3db has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f08 pp_link to NULL
-alloc end
-PDX(f7000000) = 3dc, kern_pgdir[3dc] = 3e1003
+set page = f01edf08 pp_link to NULL
+PDX(f6c00000) = 3db, kern_pgdir[3db] = 3e1003
 alloc new page for pt = 3e1003
-&kern_pgdir[PDX] = f0123f70, pt = f03e1000, va = f7000000, PDX(f7000000) = 3dc
-kb - KERNBASE = 7000000
-later kb = f7400000
-pt = 0, PDX = 3dd
-va = f7400000, PDX(0) = 3dd has no page table in pgdir
-alloc start
-page addr = f0126f00, free_list->next = f0126ef8
-page = f0126f00, pgva = f03e0000
+va = f7000000, PDX(0) = 3dc has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126f00 pp_link to NULL
-alloc end
-PDX(f7400000) = 3dd, kern_pgdir[3dd] = 3e0003
+set page = f01edf00 pp_link to NULL
+PDX(f7000000) = 3dc, kern_pgdir[3dc] = 3e0003
 alloc new page for pt = 3e0003
-&kern_pgdir[PDX] = f0123f74, pt = f03e0000, va = f7400000, PDX(f7400000) = 3dd
-kb - KERNBASE = 7400000
-later kb = f7800000
-pt = 0, PDX = 3de
-va = f7800000, PDX(0) = 3de has no page table in pgdir
-alloc start
-page addr = f0126ef8, free_list->next = f0126ef0
-page = f0126ef8, pgva = f03df000
+va = f7400000, PDX(0) = 3dd has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126ef8 pp_link to NULL
-alloc end
-PDX(f7800000) = 3de, kern_pgdir[3de] = 3df003
+set page = f01edef8 pp_link to NULL
+PDX(f7400000) = 3dd, kern_pgdir[3dd] = 3df003
 alloc new page for pt = 3df003
-&kern_pgdir[PDX] = f0123f78, pt = f03df000, va = f7800000, PDX(f7800000) = 3de
-kb - KERNBASE = 7800000
-later kb = f7c00000
-pt = 0, PDX = 3df
-va = f7c00000, PDX(0) = 3df has no page table in pgdir
-alloc start
-page addr = f0126ef0, free_list->next = f0126ee8
-page = f0126ef0, pgva = f03de000
+va = f7800000, PDX(0) = 3de has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126ef0 pp_link to NULL
-alloc end
-PDX(f7c00000) = 3df, kern_pgdir[3df] = 3de003
+set page = f01edef0 pp_link to NULL
+PDX(f7800000) = 3de, kern_pgdir[3de] = 3de003
 alloc new page for pt = 3de003
-&kern_pgdir[PDX] = f0123f7c, pt = f03de000, va = f7c00000, PDX(f7c00000) = 3df
-kb - KERNBASE = 7c00000
-later kb = f8000000
-pt = 0, PDX = 3e0
-va = f8000000, PDX(0) = 3e0 has no page table in pgdir
-alloc start
-page addr = f0126ee8, free_list->next = f0126ee0
-page = f0126ee8, pgva = f03dd000
+va = f7c00000, PDX(0) = 3df has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126ee8 pp_link to NULL
-alloc end
-PDX(f8000000) = 3e0, kern_pgdir[3e0] = 3dd003
+set page = f01edee8 pp_link to NULL
+PDX(f7c00000) = 3df, kern_pgdir[3df] = 3dd003
 alloc new page for pt = 3dd003
-&kern_pgdir[PDX] = f0123f80, pt = f03dd000, va = f8000000, PDX(f8000000) = 3e0
-kb - KERNBASE = 8000000
-later kb = f8400000
-pt = 0, PDX = 3e1
-va = f8400000, PDX(0) = 3e1 has no page table in pgdir
-alloc start
-page addr = f0126ee0, free_list->next = f0126ed8
-page = f0126ee0, pgva = f03dc000
+va = f8000000, PDX(0) = 3e0 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126ee0 pp_link to NULL
-alloc end
-PDX(f8400000) = 3e1, kern_pgdir[3e1] = 3dc003
+set page = f01edee0 pp_link to NULL
+PDX(f8000000) = 3e0, kern_pgdir[3e0] = 3dc003
 alloc new page for pt = 3dc003
-&kern_pgdir[PDX] = f0123f84, pt = f03dc000, va = f8400000, PDX(f8400000) = 3e1
-kb - KERNBASE = 8400000
-later kb = f8800000
-pt = 0, PDX = 3e2
-va = f8800000, PDX(0) = 3e2 has no page table in pgdir
-alloc start
-page addr = f0126ed8, free_list->next = f0126ed0
-page = f0126ed8, pgva = f03db000
+va = f8400000, PDX(0) = 3e1 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126ed8 pp_link to NULL
-alloc end
-PDX(f8800000) = 3e2, kern_pgdir[3e2] = 3db003
+set page = f01eded8 pp_link to NULL
+PDX(f8400000) = 3e1, kern_pgdir[3e1] = 3db003
 alloc new page for pt = 3db003
-&kern_pgdir[PDX] = f0123f88, pt = f03db000, va = f8800000, PDX(f8800000) = 3e2
-kb - KERNBASE = 8800000
-later kb = f8c00000
-pt = 0, PDX = 3e3
-va = f8c00000, PDX(0) = 3e3 has no page table in pgdir
-alloc start
-page addr = f0126ed0, free_list->next = f0126ec8
-page = f0126ed0, pgva = f03da000
+va = f8800000, PDX(0) = 3e2 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126ed0 pp_link to NULL
-alloc end
-PDX(f8c00000) = 3e3, kern_pgdir[3e3] = 3da003
+set page = f01eded0 pp_link to NULL
+PDX(f8800000) = 3e2, kern_pgdir[3e2] = 3da003
 alloc new page for pt = 3da003
-&kern_pgdir[PDX] = f0123f8c, pt = f03da000, va = f8c00000, PDX(f8c00000) = 3e3
-kb - KERNBASE = 8c00000
-later kb = f9000000
-pt = 0, PDX = 3e4
-va = f9000000, PDX(0) = 3e4 has no page table in pgdir
-alloc start
-page addr = f0126ec8, free_list->next = f0126ec0
-page = f0126ec8, pgva = f03d9000
+va = f8c00000, PDX(0) = 3e3 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126ec8 pp_link to NULL
-alloc end
-PDX(f9000000) = 3e4, kern_pgdir[3e4] = 3d9003
+set page = f01edec8 pp_link to NULL
+PDX(f8c00000) = 3e3, kern_pgdir[3e3] = 3d9003
 alloc new page for pt = 3d9003
-&kern_pgdir[PDX] = f0123f90, pt = f03d9000, va = f9000000, PDX(f9000000) = 3e4
-kb - KERNBASE = 9000000
-later kb = f9400000
-pt = 0, PDX = 3e5
-va = f9400000, PDX(0) = 3e5 has no page table in pgdir
-alloc start
-page addr = f0126ec0, free_list->next = f0126eb8
-page = f0126ec0, pgva = f03d8000
+va = f9000000, PDX(0) = 3e4 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126ec0 pp_link to NULL
-alloc end
-PDX(f9400000) = 3e5, kern_pgdir[3e5] = 3d8003
+set page = f01edec0 pp_link to NULL
+PDX(f9000000) = 3e4, kern_pgdir[3e4] = 3d8003
 alloc new page for pt = 3d8003
-&kern_pgdir[PDX] = f0123f94, pt = f03d8000, va = f9400000, PDX(f9400000) = 3e5
-kb - KERNBASE = 9400000
-later kb = f9800000
-pt = 0, PDX = 3e6
-va = f9800000, PDX(0) = 3e6 has no page table in pgdir
-alloc start
-page addr = f0126eb8, free_list->next = f0126eb0
-page = f0126eb8, pgva = f03d7000
+va = f9400000, PDX(0) = 3e5 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126eb8 pp_link to NULL
-alloc end
-PDX(f9800000) = 3e6, kern_pgdir[3e6] = 3d7003
+set page = f01edeb8 pp_link to NULL
+PDX(f9400000) = 3e5, kern_pgdir[3e5] = 3d7003
 alloc new page for pt = 3d7003
-&kern_pgdir[PDX] = f0123f98, pt = f03d7000, va = f9800000, PDX(f9800000) = 3e6
-kb - KERNBASE = 9800000
-later kb = f9c00000
-pt = 0, PDX = 3e7
-va = f9c00000, PDX(0) = 3e7 has no page table in pgdir
-alloc start
-page addr = f0126eb0, free_list->next = f0126ea8
-page = f0126eb0, pgva = f03d6000
+va = f9800000, PDX(0) = 3e6 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126eb0 pp_link to NULL
-alloc end
-PDX(f9c00000) = 3e7, kern_pgdir[3e7] = 3d6003
+set page = f01edeb0 pp_link to NULL
+PDX(f9800000) = 3e6, kern_pgdir[3e6] = 3d6003
 alloc new page for pt = 3d6003
-&kern_pgdir[PDX] = f0123f9c, pt = f03d6000, va = f9c00000, PDX(f9c00000) = 3e7
-kb - KERNBASE = 9c00000
-later kb = fa000000
-pt = 0, PDX = 3e8
-va = fa000000, PDX(0) = 3e8 has no page table in pgdir
-alloc start
-page addr = f0126ea8, free_list->next = f0126ea0
-page = f0126ea8, pgva = f03d5000
+va = f9c00000, PDX(0) = 3e7 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126ea8 pp_link to NULL
-alloc end
-PDX(fa000000) = 3e8, kern_pgdir[3e8] = 3d5003
+set page = f01edea8 pp_link to NULL
+PDX(f9c00000) = 3e7, kern_pgdir[3e7] = 3d5003
 alloc new page for pt = 3d5003
-&kern_pgdir[PDX] = f0123fa0, pt = f03d5000, va = fa000000, PDX(fa000000) = 3e8
-kb - KERNBASE = a000000
-later kb = fa400000
-pt = 0, PDX = 3e9
-va = fa400000, PDX(0) = 3e9 has no page table in pgdir
-alloc start
-page addr = f0126ea0, free_list->next = f0126e98
-page = f0126ea0, pgva = f03d4000
+va = fa000000, PDX(0) = 3e8 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126ea0 pp_link to NULL
-alloc end
-PDX(fa400000) = 3e9, kern_pgdir[3e9] = 3d4003
+set page = f01edea0 pp_link to NULL
+PDX(fa000000) = 3e8, kern_pgdir[3e8] = 3d4003
 alloc new page for pt = 3d4003
-&kern_pgdir[PDX] = f0123fa4, pt = f03d4000, va = fa400000, PDX(fa400000) = 3e9
-kb - KERNBASE = a400000
-later kb = fa800000
-pt = 0, PDX = 3ea
-va = fa800000, PDX(0) = 3ea has no page table in pgdir
-alloc start
-page addr = f0126e98, free_list->next = f0126e90
-page = f0126e98, pgva = f03d3000
+va = fa400000, PDX(0) = 3e9 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e98 pp_link to NULL
-alloc end
-PDX(fa800000) = 3ea, kern_pgdir[3ea] = 3d3003
+set page = f01ede98 pp_link to NULL
+PDX(fa400000) = 3e9, kern_pgdir[3e9] = 3d3003
 alloc new page for pt = 3d3003
-&kern_pgdir[PDX] = f0123fa8, pt = f03d3000, va = fa800000, PDX(fa800000) = 3ea
-kb - KERNBASE = a800000
-later kb = fac00000
-pt = 0, PDX = 3eb
-va = fac00000, PDX(0) = 3eb has no page table in pgdir
-alloc start
-page addr = f0126e90, free_list->next = f0126e88
-page = f0126e90, pgva = f03d2000
+va = fa800000, PDX(0) = 3ea has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e90 pp_link to NULL
-alloc end
-PDX(fac00000) = 3eb, kern_pgdir[3eb] = 3d2003
+set page = f01ede90 pp_link to NULL
+PDX(fa800000) = 3ea, kern_pgdir[3ea] = 3d2003
 alloc new page for pt = 3d2003
-&kern_pgdir[PDX] = f0123fac, pt = f03d2000, va = fac00000, PDX(fac00000) = 3eb
-kb - KERNBASE = ac00000
-later kb = fb000000
-pt = 0, PDX = 3ec
-va = fb000000, PDX(0) = 3ec has no page table in pgdir
-alloc start
-page addr = f0126e88, free_list->next = f0126e80
-page = f0126e88, pgva = f03d1000
+va = fac00000, PDX(0) = 3eb has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e88 pp_link to NULL
-alloc end
-PDX(fb000000) = 3ec, kern_pgdir[3ec] = 3d1003
+set page = f01ede88 pp_link to NULL
+PDX(fac00000) = 3eb, kern_pgdir[3eb] = 3d1003
 alloc new page for pt = 3d1003
-&kern_pgdir[PDX] = f0123fb0, pt = f03d1000, va = fb000000, PDX(fb000000) = 3ec
-kb - KERNBASE = b000000
-later kb = fb400000
-pt = 0, PDX = 3ed
-va = fb400000, PDX(0) = 3ed has no page table in pgdir
-alloc start
-page addr = f0126e80, free_list->next = f0126e78
-page = f0126e80, pgva = f03d0000
+va = fb000000, PDX(0) = 3ec has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e80 pp_link to NULL
-alloc end
-PDX(fb400000) = 3ed, kern_pgdir[3ed] = 3d0003
+set page = f01ede80 pp_link to NULL
+PDX(fb000000) = 3ec, kern_pgdir[3ec] = 3d0003
 alloc new page for pt = 3d0003
-&kern_pgdir[PDX] = f0123fb4, pt = f03d0000, va = fb400000, PDX(fb400000) = 3ed
-kb - KERNBASE = b400000
-later kb = fb800000
-pt = 0, PDX = 3ee
-va = fb800000, PDX(0) = 3ee has no page table in pgdir
-alloc start
-page addr = f0126e78, free_list->next = f0126e70
-page = f0126e78, pgva = f03cf000
+va = fb400000, PDX(0) = 3ed has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e78 pp_link to NULL
-alloc end
-PDX(fb800000) = 3ee, kern_pgdir[3ee] = 3cf003
+set page = f01ede78 pp_link to NULL
+PDX(fb400000) = 3ed, kern_pgdir[3ed] = 3cf003
 alloc new page for pt = 3cf003
-&kern_pgdir[PDX] = f0123fb8, pt = f03cf000, va = fb800000, PDX(fb800000) = 3ee
-kb - KERNBASE = b800000
-later kb = fbc00000
-pt = 0, PDX = 3ef
-va = fbc00000, PDX(0) = 3ef has no page table in pgdir
-alloc start
-page addr = f0126e70, free_list->next = f0126e68
-page = f0126e70, pgva = f03ce000
+va = fb800000, PDX(0) = 3ee has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e70 pp_link to NULL
-alloc end
-PDX(fbc00000) = 3ef, kern_pgdir[3ef] = 3ce003
+set page = f01ede70 pp_link to NULL
+PDX(fb800000) = 3ee, kern_pgdir[3ee] = 3ce003
 alloc new page for pt = 3ce003
-&kern_pgdir[PDX] = f0123fbc, pt = f03ce000, va = fbc00000, PDX(fbc00000) = 3ef
-kb - KERNBASE = bc00000
-later kb = fc000000
-pt = 0, PDX = 3f0
-va = fc000000, PDX(0) = 3f0 has no page table in pgdir
-alloc start
-page addr = f0126e68, free_list->next = f0126e60
-page = f0126e68, pgva = f03cd000
+va = fbc00000, PDX(0) = 3ef has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e68 pp_link to NULL
-alloc end
-PDX(fc000000) = 3f0, kern_pgdir[3f0] = 3cd003
+set page = f01ede68 pp_link to NULL
+PDX(fbc00000) = 3ef, kern_pgdir[3ef] = 3cd003
 alloc new page for pt = 3cd003
-&kern_pgdir[PDX] = f0123fc0, pt = f03cd000, va = fc000000, PDX(fc000000) = 3f0
-kb - KERNBASE = c000000
-later kb = fc400000
-pt = 0, PDX = 3f1
-va = fc400000, PDX(0) = 3f1 has no page table in pgdir
-alloc start
-page addr = f0126e60, free_list->next = f0126e58
-page = f0126e60, pgva = f03cc000
+va = fc000000, PDX(0) = 3f0 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e60 pp_link to NULL
-alloc end
-PDX(fc400000) = 3f1, kern_pgdir[3f1] = 3cc003
+set page = f01ede60 pp_link to NULL
+PDX(fc000000) = 3f0, kern_pgdir[3f0] = 3cc003
 alloc new page for pt = 3cc003
-&kern_pgdir[PDX] = f0123fc4, pt = f03cc000, va = fc400000, PDX(fc400000) = 3f1
-kb - KERNBASE = c400000
-later kb = fc800000
-pt = 0, PDX = 3f2
-va = fc800000, PDX(0) = 3f2 has no page table in pgdir
-alloc start
-page addr = f0126e58, free_list->next = f0126e50
-page = f0126e58, pgva = f03cb000
+va = fc400000, PDX(0) = 3f1 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e58 pp_link to NULL
-alloc end
-PDX(fc800000) = 3f2, kern_pgdir[3f2] = 3cb003
+set page = f01ede58 pp_link to NULL
+PDX(fc400000) = 3f1, kern_pgdir[3f1] = 3cb003
 alloc new page for pt = 3cb003
-&kern_pgdir[PDX] = f0123fc8, pt = f03cb000, va = fc800000, PDX(fc800000) = 3f2
-kb - KERNBASE = c800000
-later kb = fcc00000
-pt = 0, PDX = 3f3
-va = fcc00000, PDX(0) = 3f3 has no page table in pgdir
-alloc start
-page addr = f0126e50, free_list->next = f0126e48
-page = f0126e50, pgva = f03ca000
+va = fc800000, PDX(0) = 3f2 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e50 pp_link to NULL
-alloc end
-PDX(fcc00000) = 3f3, kern_pgdir[3f3] = 3ca003
+set page = f01ede50 pp_link to NULL
+PDX(fc800000) = 3f2, kern_pgdir[3f2] = 3ca003
 alloc new page for pt = 3ca003
-&kern_pgdir[PDX] = f0123fcc, pt = f03ca000, va = fcc00000, PDX(fcc00000) = 3f3
-kb - KERNBASE = cc00000
-later kb = fd000000
-pt = 0, PDX = 3f4
-va = fd000000, PDX(0) = 3f4 has no page table in pgdir
-alloc start
-page addr = f0126e48, free_list->next = f0126e40
-page = f0126e48, pgva = f03c9000
+va = fcc00000, PDX(0) = 3f3 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e48 pp_link to NULL
-alloc end
-PDX(fd000000) = 3f4, kern_pgdir[3f4] = 3c9003
+set page = f01ede48 pp_link to NULL
+PDX(fcc00000) = 3f3, kern_pgdir[3f3] = 3c9003
 alloc new page for pt = 3c9003
-&kern_pgdir[PDX] = f0123fd0, pt = f03c9000, va = fd000000, PDX(fd000000) = 3f4
-kb - KERNBASE = d000000
-later kb = fd400000
-pt = 0, PDX = 3f5
-va = fd400000, PDX(0) = 3f5 has no page table in pgdir
-alloc start
-page addr = f0126e40, free_list->next = f0126e38
-page = f0126e40, pgva = f03c8000
+va = fd000000, PDX(0) = 3f4 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e40 pp_link to NULL
-alloc end
-PDX(fd400000) = 3f5, kern_pgdir[3f5] = 3c8003
+set page = f01ede40 pp_link to NULL
+PDX(fd000000) = 3f4, kern_pgdir[3f4] = 3c8003
 alloc new page for pt = 3c8003
-&kern_pgdir[PDX] = f0123fd4, pt = f03c8000, va = fd400000, PDX(fd400000) = 3f5
-kb - KERNBASE = d400000
-later kb = fd800000
-pt = 0, PDX = 3f6
-va = fd800000, PDX(0) = 3f6 has no page table in pgdir
-alloc start
-page addr = f0126e38, free_list->next = f0126e30
-page = f0126e38, pgva = f03c7000
+va = fd400000, PDX(0) = 3f5 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e38 pp_link to NULL
-alloc end
-PDX(fd800000) = 3f6, kern_pgdir[3f6] = 3c7003
+set page = f01ede38 pp_link to NULL
+PDX(fd400000) = 3f5, kern_pgdir[3f5] = 3c7003
 alloc new page for pt = 3c7003
-&kern_pgdir[PDX] = f0123fd8, pt = f03c7000, va = fd800000, PDX(fd800000) = 3f6
-kb - KERNBASE = d800000
-later kb = fdc00000
-pt = 0, PDX = 3f7
-va = fdc00000, PDX(0) = 3f7 has no page table in pgdir
-alloc start
-page addr = f0126e30, free_list->next = f0126e28
-page = f0126e30, pgva = f03c6000
+va = fd800000, PDX(0) = 3f6 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e30 pp_link to NULL
-alloc end
-PDX(fdc00000) = 3f7, kern_pgdir[3f7] = 3c6003
+set page = f01ede30 pp_link to NULL
+PDX(fd800000) = 3f6, kern_pgdir[3f6] = 3c6003
 alloc new page for pt = 3c6003
-&kern_pgdir[PDX] = f0123fdc, pt = f03c6000, va = fdc00000, PDX(fdc00000) = 3f7
-kb - KERNBASE = dc00000
-later kb = fe000000
-pt = 0, PDX = 3f8
-va = fe000000, PDX(0) = 3f8 has no page table in pgdir
-alloc start
-page addr = f0126e28, free_list->next = f0126e20
-page = f0126e28, pgva = f03c5000
+va = fdc00000, PDX(0) = 3f7 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e28 pp_link to NULL
-alloc end
-PDX(fe000000) = 3f8, kern_pgdir[3f8] = 3c5003
+set page = f01ede28 pp_link to NULL
+PDX(fdc00000) = 3f7, kern_pgdir[3f7] = 3c5003
 alloc new page for pt = 3c5003
-&kern_pgdir[PDX] = f0123fe0, pt = f03c5000, va = fe000000, PDX(fe000000) = 3f8
-kb - KERNBASE = e000000
-later kb = fe400000
-pt = 0, PDX = 3f9
-va = fe400000, PDX(0) = 3f9 has no page table in pgdir
-alloc start
-page addr = f0126e20, free_list->next = f0126e18
-page = f0126e20, pgva = f03c4000
+va = fe000000, PDX(0) = 3f8 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e20 pp_link to NULL
-alloc end
-PDX(fe400000) = 3f9, kern_pgdir[3f9] = 3c4003
+set page = f01ede20 pp_link to NULL
+PDX(fe000000) = 3f8, kern_pgdir[3f8] = 3c4003
 alloc new page for pt = 3c4003
-&kern_pgdir[PDX] = f0123fe4, pt = f03c4000, va = fe400000, PDX(fe400000) = 3f9
-kb - KERNBASE = e400000
-later kb = fe800000
-pt = 0, PDX = 3fa
-va = fe800000, PDX(0) = 3fa has no page table in pgdir
-alloc start
-page addr = f0126e18, free_list->next = f0126e10
-page = f0126e18, pgva = f03c3000
+va = fe400000, PDX(0) = 3f9 has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e18 pp_link to NULL
-alloc end
-PDX(fe800000) = 3fa, kern_pgdir[3fa] = 3c3003
+set page = f01ede18 pp_link to NULL
+PDX(fe400000) = 3f9, kern_pgdir[3f9] = 3c3003
 alloc new page for pt = 3c3003
-&kern_pgdir[PDX] = f0123fe8, pt = f03c3000, va = fe800000, PDX(fe800000) = 3fa
-kb - KERNBASE = e800000
-later kb = fec00000
-pt = 0, PDX = 3fb
-va = fec00000, PDX(0) = 3fb has no page table in pgdir
-alloc start
-page addr = f0126e10, free_list->next = f0126e08
-page = f0126e10, pgva = f03c2000
+va = fe800000, PDX(0) = 3fa has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e10 pp_link to NULL
-alloc end
-PDX(fec00000) = 3fb, kern_pgdir[3fb] = 3c2003
+set page = f01ede10 pp_link to NULL
+PDX(fe800000) = 3fa, kern_pgdir[3fa] = 3c2003
 alloc new page for pt = 3c2003
-&kern_pgdir[PDX] = f0123fec, pt = f03c2000, va = fec00000, PDX(fec00000) = 3fb
-kb - KERNBASE = ec00000
-later kb = ff000000
-pt = 0, PDX = 3fc
-va = ff000000, PDX(0) = 3fc has no page table in pgdir
-alloc start
-page addr = f0126e08, free_list->next = f0126e00
-page = f0126e08, pgva = f03c1000
+va = fec00000, PDX(0) = 3fb has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e08 pp_link to NULL
-alloc end
-PDX(ff000000) = 3fc, kern_pgdir[3fc] = 3c1003
+set page = f01ede08 pp_link to NULL
+PDX(fec00000) = 3fb, kern_pgdir[3fb] = 3c1003
 alloc new page for pt = 3c1003
-&kern_pgdir[PDX] = f0123ff0, pt = f03c1000, va = ff000000, PDX(ff000000) = 3fc
-kb - KERNBASE = f000000
-later kb = ff400000
-pt = 0, PDX = 3fd
-va = ff400000, PDX(0) = 3fd has no page table in pgdir
-alloc start
-page addr = f0126e00, free_list->next = f0126df8
-page = f0126e00, pgva = f03c0000
+va = ff000000, PDX(0) = 3fc has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126e00 pp_link to NULL
-alloc end
-PDX(ff400000) = 3fd, kern_pgdir[3fd] = 3c0003
+set page = f01ede00 pp_link to NULL
+PDX(ff000000) = 3fc, kern_pgdir[3fc] = 3c0003
 alloc new page for pt = 3c0003
-&kern_pgdir[PDX] = f0123ff4, pt = f03c0000, va = ff400000, PDX(ff400000) = 3fd
-kb - KERNBASE = f400000
-later kb = ff800000
-pt = 0, PDX = 3fe
-va = ff800000, PDX(0) = 3fe has no page table in pgdir
-alloc start
-page addr = f0126df8, free_list->next = f0126df0
-page = f0126df8, pgva = f03bf000
+va = ff400000, PDX(0) = 3fd has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126df8 pp_link to NULL
-alloc end
-PDX(ff800000) = 3fe, kern_pgdir[3fe] = 3bf003
+set page = f01eddf8 pp_link to NULL
+PDX(ff400000) = 3fd, kern_pgdir[3fd] = 3bf003
 alloc new page for pt = 3bf003
-&kern_pgdir[PDX] = f0123ff8, pt = f03bf000, va = ff800000, PDX(ff800000) = 3fe
-kb - KERNBASE = f800000
-later kb = ffc00000
-pt = 0, PDX = 3ff
-va = ffc00000, PDX(0) = 3ff has no page table in pgdir
-alloc start
-page addr = f0126df0, free_list->next = f0126de8
-page = f0126df0, pgva = f03be000
+va = ff800000, PDX(0) = 3fe has no page table in pgdir
 alloc_flags = 1, set value of pgva = 0
-set page = f0126df0 pp_link to NULL
-alloc end
-PDX(ffc00000) = 3ff, kern_pgdir[3ff] = 3be003
+set page = f01eddf0 pp_link to NULL
+PDX(ff800000) = 3fe, kern_pgdir[3fe] = 3be003
 alloc new page for pt = 3be003
-&kern_pgdir[PDX] = f0123ffc, pt = f03be000, va = ffc00000, PDX(ffc00000) = 3ff
-kb - KERNBASE = fc00000
+va = ffc00000, PDX(0) = 3ff has no page table in pgdir
+alloc_flags = 1, set value of pgva = 0
+set page = f01edde8 pp_link to NULL
+PDX(ffc00000) = 3ff, kern_pgdir[3ff] = 3bd003
+alloc new page for pt = 3bd003
 Top of kernel space
 KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTACKTOP - KSTKSIZE + 0 = efff8000
-PADDR(bootstack) = 118000, PADDR + 0 = 118000
+PADDR(bootstack) = 11d000, PADDR + 0 = 11d000
 KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTACKTOP - KSTKSIZE + 1000 = efff9000
-PADDR(bootstack) = 118000, PADDR + 1000 = 119000
+PADDR(bootstack) = 11d000, PADDR + 1000 = 11e000
 KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTACKTOP - KSTKSIZE + 2000 = efffa000
-PADDR(bootstack) = 118000, PADDR + 2000 = 11a000
+PADDR(bootstack) = 11d000, PADDR + 2000 = 11f000
 KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTACKTOP - KSTKSIZE + 3000 = efffb000
-PADDR(bootstack) = 118000, PADDR + 3000 = 11b000
+PADDR(bootstack) = 11d000, PADDR + 3000 = 120000
 KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTACKTOP - KSTKSIZE + 4000 = efffc000
-PADDR(bootstack) = 118000, PADDR + 4000 = 11c000
+PADDR(bootstack) = 11d000, PADDR + 4000 = 121000
 KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTACKTOP - KSTKSIZE + 5000 = efffd000
-PADDR(bootstack) = 118000, PADDR + 5000 = 11d000
+PADDR(bootstack) = 11d000, PADDR + 5000 = 122000
 KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTACKTOP - KSTKSIZE + 6000 = efffe000
-PADDR(bootstack) = 118000, PADDR + 6000 = 11e000
+PADDR(bootstack) = 11d000, PADDR + 6000 = 123000
 KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTACKTOP - KSTKSIZE + 7000 = effff000
-PADDR(bootstack) = 118000, PADDR + 7000 = 11f000
+PADDR(bootstack) = 11d000, PADDR + 7000 = 124000
 check_kern_pgdir() succeeded!
 lcr3 end, check page start
-check page free list, page_free_list = f0126de8
-nextfree initialize as f0165000
-addr = f0165000, n = 0
-check page free list, first free page = f0165000
+check page free list, page_free_list = f01edde0
+nextfree initialize as f0244000
+addr = f0244000, n = 0
+check page free list, first free page = f0244000
 check_page_free_list() succeeded!
 check page end
 lcr0 end, check page installed start
-alloc start
-page addr = f0126de8, free_list->next = f0126de0
-page = f0126de8, pgva = f03bd000
-set page = f0126de8 pp_link to NULL
-alloc end
-alloc start
-page addr = f0126de0, free_list->next = f0126dd8
-page = f0126de0, pgva = f03bc000
-set page = f0126de0 pp_link to NULL
-alloc end
-alloc start
-page addr = f0126dd8, free_list->next = f0126dd0
-page = f0126dd8, pgva = f03bb000
-set page = f0126dd8 pp_link to NULL
-alloc end
+set page = f01edde0 pp_link to NULL
+set page = f01eddd8 pp_link to NULL
+set page = f01eddd0 pp_link to NULL
 check page install, page_inseart pp1 start
-page_insert start, pp = f0126de0, va = 1000
+page_insert start, pp = f01eddd8, va = 1000
 pgdir_walk start
 pgdir_walk, ptpa = 0, PDX(va) = 0
 pgdir_walk, did not find pdr for va = 1000, return NULL
 page_insert, pt = 0, ptpa = 0
 page_insert, there is no page table for va, create one and adds it to the pgdir
-alloc start
-page addr = f0126de8, free_list->next = f0126dd0
-page = f0126de8, pgva = f03bd000
 alloc_flags = 1, set value of pgva = 0
-set page = f0126de8 pp_link to NULL
-alloc end
-page_insert, alloc page = 3bd000 for pt
-page_insert, PDX(va) = 0, pgdir[0] = 3bd007
-page_insert, insert page = 3bc000 to pt for va = 1000
-PTX(va) = 1, pt[1] = 3bc003
-page_free, pp = f0126de0, pre = f0126dd0
-pp = f0126de0, pp_ref = 1
+set page = f01edde0 pp_link to NULL
+page_insert, alloc page = 3bc000 for pt
+page_insert, PDX(va) = 0, pgdir[0] = 3bc007
+page_insert, insert page = 3bb000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 3bb003
+page_free, pp = f01eddd8, pre = f01eddc8
+pp = f01eddd8, pp_ref = 1
 page_insert end
 check page install, page_inseart pp1 end
 check page install, page_inseart pp2 start
-page_insert start, pp = f0126dd8, va = 1000
+page_insert start, pp = f01eddd0, va = 1000
 pgdir_walk start
-pgdir_walk, ptpa = 3bd000, PDX(va) = 0
+pgdir_walk, ptpa = 3bc000, PDX(va) = 0
 pgdir_walk, PTX = 1
-pgdir_walk end, pte = f03bd004
-page_insert, pt = 3bd027, ptpa = 3bd000
-page_insert, there is page table = 3bd000 for va = 1000, PTE_ADDR(pte) = f03bd000
-page_insert, the page mapped at va has page = 3bc023, remove it
+pgdir_walk end, pte = f03bc004
+page_insert, pt = 3bc027, ptpa = 3bc000
+page_insert, there is page table = 3bc000 for va = 1000, PTE_ADDR(pte) = f03bc000
+page_insert, the page mapped at va has page = 3bb023, remove it
 page_remove start, va = 1000
-PDX(va) = 0, pgdir[0] = 3bd027, ptpa = 3bd000
-page_remove, pagelookup start, pgdir = f0123000, va = 1000
+PDX(va) = 0, pgdir[0] = 3bc027, ptpa = 3bc000
+page_remove, pagelookup start, pgdir = f01ea000, va = 1000
 page_lookup start, va = 1000, pte_store = 0
 pgdir_walk start
-pgdir_walk, ptpa = 3bd000, PDX(va) = 0
+pgdir_walk, ptpa = 3bc000, PDX(va) = 0
 pgdir_walk, PTX = 1
-pgdir_walk end, pte = f03bd004
-page_lookup, pte = f03bd004, *pte = 3bc023
-page_lookup, temp = 3bc023, pg = f0126de0
+pgdir_walk end, pte = f03bc004
+page_lookup, pte = f03bc004, *pte = 3bb023
+page_lookup, temp = 3bb023, pg = f01eddd8
 page_lookup end
-page_remove, va = 1000 corrsponding with pgInfo = f0126de0
-page_remove, pt = f03bd000, ptepa = 3bc000
-page_remove, ptepa = 3bc000 is not NULL, set pte to 0
-page_decref start, pp = f0126de0, ref = 1
-page_decref end, pp = f0126de0, ref = 0
+page_remove, va = 1000 corrsponding with pgInfo = f01eddd8
+page_remove, pt = f03bc000, ptepa = 3bb000
+page_remove, ptepa = 3bb000 is not NULL, set pte to 0
+page_decref start, pp = f01eddd8, ref = 1
+page_decref end, pp = f01eddd8, ref = 0
 page_remove end
-page_insert, insert page = 3bb000 to pt for va = 1000
-PTX(va) = 1, pt[1] = 3bb003
-page_free, pp = f0126dd8, pre = f0126de0
-pp = f0126dd8, pp_ref = 1
+page_insert, insert page = 3ba000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 3ba003
+page_free, pp = f01eddd0, pre = f01eddd8
+pp = f01eddd0, pp_ref = 1
 page_insert end
 check page install, page_inseart pp2 end
 page_remove start, va = 1000
-PDX(va) = 0, pgdir[0] = 3bd027, ptpa = 3bd000
-page_remove, pagelookup start, pgdir = f0123000, va = 1000
+PDX(va) = 0, pgdir[0] = 3bc027, ptpa = 3bc000
+page_remove, pagelookup start, pgdir = f01ea000, va = 1000
 page_lookup start, va = 1000, pte_store = 0
 pgdir_walk start
-pgdir_walk, ptpa = 3bd000, PDX(va) = 0
+pgdir_walk, ptpa = 3bc000, PDX(va) = 0
 pgdir_walk, PTX = 1
-pgdir_walk end, pte = f03bd004
-page_lookup, pte = f03bd004, *pte = 3bb063
-page_lookup, temp = 3bb063, pg = f0126dd8
+pgdir_walk end, pte = f03bc004
+page_lookup, pte = f03bc004, *pte = 3ba063
+page_lookup, temp = 3ba063, pg = f01eddd0
 page_lookup end
-page_remove, va = 1000 corrsponding with pgInfo = f0126dd8
-page_remove, pt = f03bd000, ptepa = 3bb000
-page_remove, ptepa = 3bb000 is not NULL, set pte to 0
-page_decref start, pp = f0126dd8, ref = 1
-page_decref end, pp = f0126dd8, ref = 0
+page_remove, va = 1000 corrsponding with pgInfo = f01eddd0
+page_remove, pt = f03bc000, ptepa = 3ba000
+page_remove, ptepa = 3ba000 is not NULL, set pte to 0
+page_decref start, pp = f01eddd0, ref = 1
+page_decref end, pp = f01eddd0, ref = 0
 page_remove end
 check_page_installed_pgdir() succeeded!
 check page installed end
-Welcome to the JOS kernel monitor!
-Type 'help' for a list of commands.
-K> QEMU: Terminated
+KT = 1, addr = f0127328, gdt[KT] = ffff, gdt[KT+1] = cf9a00
+KD = 2, addr = f0127328, gdt[KD] = ffff, gdt[KD+1] = cf9300
+UT = 3, addr = f0127328, gdt[UT] = ffff, gdt[UT+1] = cffa00
+UD = 4, addr = f0127328, gdt[UD] = ffff, gdt[UD+1] = cff300
+trap_syscall = f0104f32
+sizeof(Gatedesc) = 8
+idt = f01e91c0
+addr = f01e9340, idt[SYSCALL] = 84f32, idt[SYSCALL+1] = f010ee00
+env_create start
+alloc_flags = 1, set value of pgva = 0
+set page = f01edde0 pp_link to NULL
+[00000000] new env 00001000
+load_icode start
+ph = f012738c, eph = f01273ec
+ph = f012738c, p_va = 200000, p_offset = 1000
+region_alloc start
+va = 200000, len = ba69, va + len = 20ba69, rounddown = 200000, roundup = 20c000
+pgdir = f03bc000, pde = f03bc000, *pde = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01eddd0 pp_link to NULL
+a = 200000, PTX(a) = 200, pt[PTX(a)] = 0
+pt = f03ba000, *pt = 0, pte = f03ba800, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01eddd8 pp_link to NULL
+pt = f03ba000, *pt = 0, pte = f03ba800, *pte = 3bb007
+pgdir = f03bc000, pde = f03bc000, *pde = 3ba007
+a = 201000, PTX(a) = 201, pt[PTX(a)] = 0
+pt = f03ba000, *pt = 0, pte = f03ba804, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01eddc8 pp_link to NULL
+pt = f03ba000, *pt = 0, pte = f03ba804, *pte = 3b9007
+pgdir = f03bc000, pde = f03bc000, *pde = 3ba007
+a = 202000, PTX(a) = 202, pt[PTX(a)] = 0
+pt = f03ba000, *pt = 0, pte = f03ba808, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01eddc0 pp_link to NULL
+pt = f03ba000, *pt = 0, pte = f03ba808, *pte = 3b8007
+pgdir = f03bc000, pde = f03bc000, *pde = 3ba007
+a = 203000, PTX(a) = 203, pt[PTX(a)] = 0
+pt = f03ba000, *pt = 0, pte = f03ba80c, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01eddb8 pp_link to NULL
+pt = f03ba000, *pt = 0, pte = f03ba80c, *pte = 3b7007
+pgdir = f03bc000, pde = f03bc000, *pde = 3ba007
+a = 204000, PTX(a) = 204, pt[PTX(a)] = 0
+pt = f03ba000, *pt = 0, pte = f03ba810, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01eddb0 pp_link to NULL
+pt = f03ba000, *pt = 0, pte = f03ba810, *pte = 3b6007
+pgdir = f03bc000, pde = f03bc000, *pde = 3ba007
+a = 205000, PTX(a) = 205, pt[PTX(a)] = 0
+pt = f03ba000, *pt = 0, pte = f03ba814, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01edda8 pp_link to NULL
+pt = f03ba000, *pt = 0, pte = f03ba814, *pte = 3b5007
+pgdir = f03bc000, pde = f03bc000, *pde = 3ba007
+a = 206000, PTX(a) = 206, pt[PTX(a)] = 0
+pt = f03ba000, *pt = 0, pte = f03ba818, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01edda0 pp_link to NULL
+pt = f03ba000, *pt = 0, pte = f03ba818, *pte = 3b4007
+pgdir = f03bc000, pde = f03bc000, *pde = 3ba007
+a = 207000, PTX(a) = 207, pt[PTX(a)] = 0
+pt = f03ba000, *pt = 0, pte = f03ba81c, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01edd98 pp_link to NULL
+pt = f03ba000, *pt = 0, pte = f03ba81c, *pte = 3b3007
+pgdir = f03bc000, pde = f03bc000, *pde = 3ba007
+a = 208000, PTX(a) = 208, pt[PTX(a)] = 0
+pt = f03ba000, *pt = 0, pte = f03ba820, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01edd90 pp_link to NULL
+pt = f03ba000, *pt = 0, pte = f03ba820, *pte = 3b2007
+pgdir = f03bc000, pde = f03bc000, *pde = 3ba007
+a = 209000, PTX(a) = 209, pt[PTX(a)] = 0
+pt = f03ba000, *pt = 0, pte = f03ba824, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01edd88 pp_link to NULL
+pt = f03ba000, *pt = 0, pte = f03ba824, *pte = 3b1007
+pgdir = f03bc000, pde = f03bc000, *pde = 3ba007
+a = 20a000, PTX(a) = 20a, pt[PTX(a)] = 0
+pt = f03ba000, *pt = 0, pte = f03ba828, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01edd80 pp_link to NULL
+pt = f03ba000, *pt = 0, pte = f03ba828, *pte = 3b0007
+pgdir = f03bc000, pde = f03bc000, *pde = 3ba007
+a = 20b000, PTX(a) = 20b, pt[PTX(a)] = 0
+pt = f03ba000, *pt = 0, pte = f03ba82c, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01edd78 pp_link to NULL
+pt = f03ba000, *pt = 0, pte = f03ba82c, *pte = 3af007
+region_alloc end
+src = f0128358, dst = 200000
+after copying, p_memsz = ba69, p_filesz = ba69, p_va = 200000
+ph = f01273ac, p_va = 800020, p_offset = d020
+region_alloc start
+va = 800020, len = ffc, va + len = 80101c, rounddown = 800000, roundup = 802000
+pgdir = f03bc008, pde = f03bc008, *pde = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01edd70 pp_link to NULL
+a = 800000, PTX(a) = 0, pt[PTX(a)] = 0
+pt = f03ae000, *pt = 0, pte = f03ae000, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01edd68 pp_link to NULL
+pt = f03ae000, *pt = 3ad007, pte = f03ae000, *pte = 3ad007
+pgdir = f03bc008, pde = f03bc008, *pde = 3ae007
+a = 801000, PTX(a) = 1, pt[PTX(a)] = 0
+pt = f03ae000, *pt = 3ad007, pte = f03ae004, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01edd60 pp_link to NULL
+pt = f03ae000, *pt = 3ad007, pte = f03ae004, *pte = 3ac007
+region_alloc end
+src = f0134378, dst = 800020
+after copying, p_memsz = ffc, p_filesz = ffc, p_va = 800020
+ph = f01273cc, p_va = 802000, p_offset = f000
+region_alloc start
+va = 802000, len = 8, va + len = 802008, rounddown = 802000, roundup = 803000
+pgdir = f03bc008, pde = f03bc008, *pde = 3ae027
+a = 802000, PTX(a) = 2, pt[PTX(a)] = 0
+pt = f03ae000, *pt = 3ad067, pte = f03ae008, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01edd58 pp_link to NULL
+pt = f03ae000, *pt = 3ad067, pte = f03ae008, *pte = 3ab007
+region_alloc end
+src = f0136358, dst = 802000
+after copying, p_memsz = 8, p_filesz = 4, p_va = 802000
+p_entry = 800020
+region_alloc start
+va = eebfd000, len = 1000, va + len = eebfe000, rounddown = eebfd000, roundup = eebfe000
+pgdir = f03bcee8, pde = f03bcee8, *pde = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01edd50 pp_link to NULL
+a = eebfd000, PTX(a) = 3fd, pt[PTX(a)] = 0
+pt = f03aa000, *pt = 0, pte = f03aaff4, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f01edd48 pp_link to NULL
+pt = f03aa000, *pt = 0, pte = f03aaff4, *pte = 3a9007
+region_alloc end
+load_icode end
+env_create end
+env_run start
+set curenv = e
+lcr3 start
+lcr3 end
+*p_entry = e000fc81
+IDT = f01e81c0, PDX(IDT) = 3c0, PTX(IDT) = 1e8
+env_pop_tf start
+QEMU: Terminated
 

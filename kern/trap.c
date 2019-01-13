@@ -25,6 +25,22 @@ struct Pseudodesc idt_pd = {
 	sizeof(idt) - 1, (uint32_t) idt
 };
 
+extern void trap_0();
+extern void trap_1();
+extern void trap_3();
+extern void trap_4();
+extern void trap_5();
+extern void trap_6();
+extern void trap_7();
+extern void trap_8();
+extern void trap_9();
+extern void trap_10();
+extern void trap_11();
+extern void trap_12();
+extern void trap_13();
+extern void trap_14();
+extern void trap_16();
+extern void trap_syscall();
 
 static const char *trapname(int trapno)
 {
@@ -58,13 +74,35 @@ static const char *trapname(int trapno)
 	return "(unknown trap)";
 }
 
-
 void
 trap_init(void)
 {
 	extern struct Segdesc gdt[];
 
 	// LAB 3: Your code here.
+    cprintf("trap_syscall = %x\n", (void *)trap_syscall);
+    cprintf("sizeof(Gatedesc) = %d\n", sizeof(struct Gatedesc));
+    cprintf("idt = %x\n", idt);
+    
+    SETGATE(idt[0], 0, GD_KT, trap_0, 0);
+    SETGATE(idt[1], 0, GD_KT, trap_1, 0);
+    SETGATE(idt[3], 0, GD_KT, trap_3, 0);
+    SETGATE(idt[4], 0, GD_KT, trap_4, 0);
+    SETGATE(idt[5], 0, GD_KT, trap_5, 0);
+    SETGATE(idt[6], 0, GD_KT, trap_6, 0);
+    SETGATE(idt[7], 0, GD_KT, trap_7, 0);
+    SETGATE(idt[8], 0, GD_KT, trap_8, 0);
+    SETGATE(idt[9], 0, GD_KT, trap_9, 0);
+    SETGATE(idt[10], 0, GD_KT, trap_10, 0);
+    SETGATE(idt[11], 0, GD_KT, trap_11, 0);
+    SETGATE(idt[12], 0, GD_KT, trap_12, 0);
+    SETGATE(idt[13], 0, GD_KT, trap_13, 0);
+    SETGATE(idt[14], 0, GD_KT, trap_14, 0);
+    SETGATE(idt[16], 0, GD_KT, trap_16, 0);
+    
+    SETGATE(idt[T_SYSCALL], 0, GD_KT, trap_syscall, 3);
+    
+    cprintf("addr = %x, idt[SYSCALL] = %x, idt[SYSCALL+1] = %x\n",idt + T_SYSCALL, *(idt + T_SYSCALL), *(idt + T_SYSCALL + 1));
 
 	// Per-CPU setup 
 	trap_init_percpu();
@@ -215,4 +253,5 @@ page_fault_handler(struct Trapframe *tf)
 	print_trapframe(tf);
 	env_destroy(curenv);
 }
+
 

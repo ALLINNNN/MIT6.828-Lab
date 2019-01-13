@@ -47,9 +47,59 @@
  * Lab 3: Your code here for generating entry points for the different traps.
  */
 
+TRAPHANDLER_NOEC(trap_0, 0)
+TRAPHANDLER_NOEC(trap_1, 1)
+TRAPHANDLER_NOEC(trap_3, 3)
+TRAPHANDLER_NOEC(trap_4, 4)
+TRAPHANDLER_NOEC(trap_5, 5)
+TRAPHANDLER_NOEC(trap_6, 6)
+TRAPHANDLER_NOEC(trap_7, 7)
+TRAPHANDLER(trap_8, 8)
+TRAPHANDLER_NOEC(trap_9, 9)
+TRAPHANDLER(trap_10, 10)
+TRAPHANDLER(trap_11, 11)
+TRAPHANDLER(trap_12, 12)
+TRAPHANDLER(trap_13, 13)
+TRAPHANDLER(trap_14, 14)
+TRAPHANDLER_NOEC(trap_16, 16)
 
+TRAPHANDLER_NOEC(trap_syscall, T_SYSCALL)
 
 /*
  * Lab 3: Your code here for _alltraps
  */
+
+_alltraps:
+#    pushal
+#    pushl  %ss
+#    pushl  %esp
+#    pushfl
+#    pushl  %cs
+#    pushl  4(%esp)
+#    pushl  %eax      #store err code
+#    pushl  %ecx      #store int(trap) num
+
+#    movw  GD_KD & 0x00ff, %ds
+#    movw  GD_KD & 0x00ff, %es
+
+#    pushl %ds
+#    pushl %es
+
+#    pushl %esp
+
+    pushl %ds
+    pushl %es
+    pushal
+    pushl $GD_KD
+    popl %ds
+    pushl $GD_KD
+    popl %es
+    pushl %esp
+
+    call trap
+
+spin:
+    jmp spin
+
+
 
