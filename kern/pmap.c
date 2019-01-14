@@ -203,6 +203,8 @@ mem_init(void)
 	//    - pages itself -- kernel RW, user NONE
 	// Your code goes here:
 
+    boot_map_region(kern_pgdir, UPAGES, PTSIZE, PADDR(pages), PTE_U);
+/*
     pte_t *ptpages = NULL;
     physaddr_t paptpages = (physaddr_t)PTE_ADDR(kern_pgdir[PDX(UPAGES)]);
     if(!paptpages)
@@ -225,7 +227,7 @@ mem_init(void)
     {
         ptpages[PTX(UPAGES + i*PGSIZE)] = PADDR((uint8_t *)pages + i*PGSIZE) | PTE_U | PTE_P;
     }
-
+*/
 	//////////////////////////////////////////////////////////////////////
 	// Use the physical memory that 'bootstack' refers to as the kernel
 	// stack.  The kernel stack grows down from virtual address KSTACKTOP.
@@ -237,6 +239,9 @@ mem_init(void)
 	//       overwrite memory.  Known as a "guard page".
 	//     Permissions: kernel RW, user NONE
 	// Your code goes here:
+
+    boot_map_region(kern_pgdir, KSTACKTOP - KSTKSIZE, KSTKSIZE, PADDR(bootstack), PTE_W);
+/*
     pte_t *ptstack = NULL;
     physaddr_t paptstack = (physaddr_t)PTE_ADDR(kern_pgdir[PDX(KSTACKTOP)]);
    
@@ -265,7 +270,7 @@ mem_init(void)
         cprintf("PTX(KSTACKTOP - KSTKSIZE +  i*PGSIZE) = %x, ptstack[PTX] = %x\n", PTX(KSTACKTOP -KSTKSIZE +  i*PGSIZE), ptstack[PTX(KSTACKTOP - KSTKSIZE + i*PGSIZE)]);
         cprintf("RADDR(bootstack) = %x, PADDR(bootstack) - %d*PGSIZE = %x\n", PADDR(bootstack), i, PADDR(bootstack) - i*PGSIZE);
     }
-
+*/
 	//////////////////////////////////////////////////////////////////////
 	// Map all of physical memory at KERNBASE.
 	// Ie.  the VA range [KERNBASE, 2^32) should map to
@@ -274,6 +279,9 @@ mem_init(void)
 	// we just set up the mapping anyway.
 	// Permissions: kernel RW, user NONE
 	// Your code goes here:
+
+    boot_map_region(kern_pgdir, KERNBASE, 0xffffffff - KERNBASE, 0, PTE_W);
+/*
     for(uintptr_t kb = KERNBASE; kb <= 0xffc00000; )
     {
         pte_t *pt = (pte_t *)kern_pgdir[PDX(kb)];
@@ -317,7 +325,7 @@ mem_init(void)
         }
         cprintf("later kb = %x\n", kb);
     }
-
+*/
 
 	// Check that the initial page directory has been set up correctly.
 	check_kern_pgdir();
@@ -521,11 +529,10 @@ pte_t *
 pgdir_walk(pde_t *pgdir, const void *va, int create)
 {
 	// Fill this function in
-    cprintf("pgdir_walk start\n");
     pte_t *pte = NULL, *pt = NULL;
     physaddr_t ptpa = PTE_ADDR(pgdir[PDX(va)]);
     
-    cprintf("pgdir_walk, ptpa = %x, PDX(va) = %d\n", ptpa, PDX(va));
+//    cprintf("pgdir_walk, ptpa = %x, PDX(va) = %d\n", ptpa, PDX(va));
     if(!ptpa)
     {
         if(!create)
@@ -546,8 +553,8 @@ pgdir_walk(pde_t *pgdir, const void *va, int create)
     }
     pt  = (pte_t *)page2kva(pa2page(ptpa));    
     pte = pt + PTX(va);
-    cprintf("pgdir_walk, PTX = %d\n", PTX(va));
-    cprintf("pgdir_walk end, pte = %x\n", pte);
+//    cprintf("pgdir_walk, PTX = %d\n", PTX(va));
+//    cprintf("pgdir_walk end, pte = %x\n", pte);
     return pte;
 }
 
@@ -566,6 +573,23 @@ static void
 boot_map_region(pde_t *pgdir, uintptr_t va, size_t size, physaddr_t pa, int perm)
 {
 	// Fill this function in
+    size_t pgs = size / PGSIZE;
+    if(size % PGSIZE != 0)
+        pgs++;
+    
+    for(uint32_t i = 0; i < pgs; i++)
+    {
+        pte_t *pte = pgdir_walk(pgdir, (void *)va, 1);
+        if(pte == NULL)
+        {
+            panic("boot_map_region, out of memory\n");
+        }
+
+        *pte = pa | PTE_P | perm;
+
+        pa += PGSIZE;
+        va += PGSIZE;
+    }
 }
 
 //
