@@ -175,20 +175,20 @@ mem_init(void)
 	// Your code goes here:
     void *tb_addr = (void *)boot_alloc(PGSIZE);
     pages = (struct PageInfo *)boot_alloc(npages * sizeof(struct PageInfo));
-    envs  = (struct Env *)boot_alloc(NENV * sizeof(struct Env));
     
     cprintf("sizeof(PageInfo) = %d, pages = %x, npages = %d\n", sizeof(struct PageInfo), pages, npages);
-    cprintf("sizeof(Env) = %d, envs = %x, NENV = %d\n", sizeof(struct Env), envs, NENV);
     
     memset(pages, 0, sizeof(struct PageInfo) * npages);
-    memset(envs, 0, sizeof(struct Env) * NENV);    
 
     cprintf("initialise pageinfo to 0 end\n");
-    cprintf("initialise envs to 0 end\n");
 
 	//////////////////////////////////////////////////////////////////////
 	// Make 'envs' point to an array of size 'NENV' of 'struct Env'.
 	// LAB 3: Your code here.
+    envs  = (struct Env *)boot_alloc(NENV * sizeof(struct Env));
+    memset(envs, 0, sizeof(struct Env) * NENV);    
+    cprintf("sizeof(Env) = %d, envs = %x, NENV = %d\n", sizeof(struct Env), envs, NENV);
+    cprintf("initialise envs to 0 end\n");
 
 	//////////////////////////////////////////////////////////////////////
 	// Now that we've allocated the initial kernel data structures, we set
@@ -582,7 +582,6 @@ pgdir_walk(pde_t *pgdir, const void *va, int create)
     pte_t *pte = NULL, *pt = NULL;
     physaddr_t ptpa = PTE_ADDR(pgdir[PDX(va)]);
     
-//    cprintf("pgdir_walk, ptpa = %x, PDX(va) = %d\n", ptpa, PDX(va));
     if(!ptpa)
     {
         if(!create)
@@ -603,8 +602,6 @@ pgdir_walk(pde_t *pgdir, const void *va, int create)
     }
     pt  = (pte_t *)page2kva(pa2page(ptpa));    
     pte = pt + PTX(va);
-//    cprintf("pgdir_walk, PTX = %d\n", PTX(va));
-//    cprintf("pgdir_walk end, pte = %x\n", pte);
     return pte;
 }
 
@@ -870,7 +867,33 @@ int
 user_mem_check(struct Env *env, const void *va, size_t len, int perm)
 {
 	// LAB 3: Your code here.
+    uintptr_t va_down = (uintptr_t)ROUNDDOWN(va, PGSIZE);
+    uintptr_t va_up   = (uintptr_t)ROUNDUP(va + len, PGSIZE);
 
+    for(uintptr_t a = va_down; a < va_up; a += PGSIZE)
+    {
+        if(a != va_down)
+        {
+            va = (void *)a;
+        }
+            
+        if(a >= ULIM)
+        {
+            user_mem_check_addr = (uintptr_t)va;
+            return -E_FAULT;
+        }
+
+        pte_t *pte = pgdir_walk(env->env_pgdir, (void *)a, 0);
+        int pte_perm = *pte & 0x00000007;
+        cprintf("*pte = %x, pte_perm = %d, perm = %d\n", *pte, pte_perm, perm);
+
+        if(pte_perm < perm)
+        {
+            user_mem_check_addr = (uintptr_t)va;
+            cprintf("user_mem_check, pte_perm < perm, return %d\n", -E_FAULT);
+            return -E_FAULT;
+        }
+    }
 	return 0;
 }
 

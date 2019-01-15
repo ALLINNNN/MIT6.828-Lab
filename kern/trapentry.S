@@ -70,23 +70,6 @@ TRAPHANDLER_NOEC(trap_syscall, T_SYSCALL)
  */
 
 _alltraps:
-#    pushal
-#    pushl  %ss
-#    pushl  %esp
-#    pushfl
-#    pushl  %cs
-#    pushl  4(%esp)
-#    pushl  %eax      #store err code
-#    pushl  %ecx      #store int(trap) num
-
-#    movw  GD_KD & 0x00ff, %ds
-#    movw  GD_KD & 0x00ff, %es
-
-#    pushl %ds
-#    pushl %es
-
-#    pushl %esp
-
     pushl %ds
     pushl %es
     pushal

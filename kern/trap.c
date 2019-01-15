@@ -9,6 +9,8 @@
 #include <kern/env.h>
 #include <kern/syscall.h>
 
+#include <kern/monitor.h>
+
 static struct Taskstate ts;
 
 /* For debugging, so print_trapframe can distinguish between printing
@@ -86,7 +88,7 @@ trap_init(void)
     
     SETGATE(idt[0], 0, GD_KT, trap_0, 0);
     SETGATE(idt[1], 0, GD_KT, trap_1, 0);
-    SETGATE(idt[3], 0, GD_KT, trap_3, 0);
+    SETGATE(idt[3], 0, GD_KT, trap_3, 3);
     SETGATE(idt[4], 0, GD_KT, trap_4, 0);
     SETGATE(idt[5], 0, GD_KT, trap_5, 0);
     SETGATE(idt[6], 0, GD_KT, trap_6, 0);
@@ -182,6 +184,73 @@ trap_dispatch(struct Trapframe *tf)
 {
 	// Handle processor exceptions.
 	// LAB 3: Your code here.
+    switch(tf->tf_trapno)
+    {
+        case T_DIVIDE:{
+
+        }break;
+        case T_DEBUG:{
+        
+        }break;
+        case T_NMI:{
+        
+        }break;
+        case T_BRKPT:{
+            breakpoint_handler(tf);
+            return;
+        }break;
+        case T_OFLOW:{
+        
+        }break;
+        case T_BOUND:{
+        
+        }break;
+        case T_ILLOP:{
+        
+        }break;
+        case T_DEVICE:{
+        
+        }break;
+        case T_DBLFLT:{
+        
+        }break;
+        case T_TSS:{
+        
+        }break;
+        case T_SEGNP:{
+        
+        }break;
+        case T_STACK:{
+        
+        }break;
+        case T_GPFLT:{
+
+        }break;
+        case T_PGFLT:{
+           page_fault_handler(tf);
+           return;
+        }break;
+        case T_FPERR:{
+        
+        }break;
+        case T_ALIGN:{
+        
+        }break;
+        case T_MCHK:{
+        
+        }break;
+        case T_SIMDERR:{
+                
+        }break;
+        case T_SYSCALL:{
+            cprintf("syscall start\n");
+            int32_t r = syscall(tf->tf_regs.reg_eax, tf->tf_regs.reg_edx, tf->tf_regs.reg_ecx, tf->tf_regs.reg_ebx, tf->tf_regs.reg_edi, tf->tf_regs.reg_esi);
+            cprintf("syscall end, return value = %x\n", r);
+            return;
+        }break;
+        default:
+            break;
+    }
 
 	// Unexpected trap: The user process or the kernel has a bug.
 	print_trapframe(tf);
@@ -243,9 +312,13 @@ page_fault_handler(struct Trapframe *tf)
 	// Handle kernel-mode page faults.
 
 	// LAB 3: Your code here.
+    if(!(tf->tf_cs & 0x03))
+    {
+        panic("page_fault_handler, kernel-mode page faults\n");
+    }
 
 	// We've already handled kernel-mode exceptions, so if we get here,
-	// the page fault happened in user mode.
+	// the page fault happened in user mode.    
 
 	// Destroy the environment that caused the fault.
 	cprintf("[%08x] user fault va %08x ip %08x\n",
@@ -254,4 +327,7 @@ page_fault_handler(struct Trapframe *tf)
 	env_destroy(curenv);
 }
 
-
+void breakpoint_handler(struct Trapframe *tf)
+{
+    monitor(tf);
+}
