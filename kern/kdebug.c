@@ -19,7 +19,6 @@ struct UserStabData {
 	const char *stabstr_end;
 };
 
-extern struct Env *curenv;
 
 // stab_binsearch(stabs, region_left, region_right, type, addr)
 //

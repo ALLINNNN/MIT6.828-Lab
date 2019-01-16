@@ -29,6 +29,40 @@ sched_yield(void)
 	// below to halt the cpu.
 
 	// LAB 4: Your code here.
+    idle = NULL;
+    struct Env *pre = NULL;
+    cprintf("curenv = %x, thiscpu->cpu_env = %x\n", curenv, thiscpu->cpu_env);
+    for(struct Env *e = thiscpu->cpu_env; ; e = e->env_link)
+    {
+        if(e == pre)
+        {
+            if(thiscpu->cpu_env->env_status == ENV_RUNNING)
+            {
+                cprintf("thiscpu->cpu_env->env_status == ENV_RUNNING\n");
+                idle = pre;
+            }
+            else
+                cprintf("Have no runnable env\n");
+    
+            break;
+        }
+
+        if(e->env_status == ENV_RUNNABLE)
+        {
+            idle = e;
+            cprintf("Find env = %x runnable\n", e);
+            break;
+        }
+
+        if(e == NULL)
+        {
+            e = env_free_list;
+            pre = curenv;
+        }
+
+    }
+
+    env_run(idle);
 
 	// sched_halt never returns
 	sched_halt();

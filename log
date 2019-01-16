@@ -1,84 +1,665 @@
-make clean
-make[1]: Entering directory '/home/jun/Project/mit6.828/lab'
-rm -rf obj .gdbinit jos.in qemu.log
-make[1]: Leaving directory '/home/jun/Project/mit6.828/lab'
-./grade-lab3 
-make[1]: Entering directory '/home/jun/Project/mit6.828/lab'
-+ as kern/entry.S
-+ cc kern/entrypgdir.c
-+ cc kern/init.c
-+ cc kern/console.c
-+ cc kern/monitor.c
-+ cc kern/pmap.c
-+ cc kern/env.c
-+ cc kern/kclock.c
-+ cc kern/printf.c
-+ cc kern/trap.c
-+ as kern/trapentry.S
-+ cc kern/syscall.c
-+ cc kern/kdebug.c
-+ cc lib/printfmt.c
-+ cc lib/readline.c
-+ cc lib/string.c
-+ cc[USER] lib/console.c
-+ cc[USER] lib/libmain.c
-+ cc[USER] lib/exit.c
-+ cc[USER] lib/panic.c
-+ cc[USER] lib/printf.c
-+ cc[USER] lib/printfmt.c
-+ cc[USER] lib/readline.c
-+ cc[USER] lib/string.c
-+ cc[USER] lib/syscall.c
-+ ar obj/lib/libjos.a
-+ cc[USER] user/hello.c
-+ as[USER] lib/entry.S
-+ ld obj/user/hello
-+ cc[USER] user/buggyhello.c
-+ ld obj/user/buggyhello
-+ cc[USER] user/buggyhello2.c
-+ ld obj/user/buggyhello2
-+ cc[USER] user/evilhello.c
-+ ld obj/user/evilhello
-+ cc[USER] user/testbss.c
-+ ld obj/user/testbss
-+ cc[USER] user/divzero.c
-+ ld obj/user/divzero
-+ cc[USER] user/breakpoint.c
-+ ld obj/user/breakpoint
-+ cc[USER] user/softint.c
-+ ld obj/user/softint
-+ cc[USER] user/badsegment.c
-+ ld obj/user/badsegment
-+ cc[USER] user/faultread.c
-+ ld obj/user/faultread
-+ cc[USER] user/faultreadkernel.c
-+ ld obj/user/faultreadkernel
-+ cc[USER] user/faultwrite.c
-+ ld obj/user/faultwrite
-+ cc[USER] user/faultwritekernel.c
-+ ld obj/user/faultwritekernel
-+ ld obj/kern/kernel
-+ as boot/boot.S
-+ cc -Os boot/main.c
-+ ld boot/boot
-+ mk obj/kern/kernel.img
-make[1]: Leaving directory '/home/jun/Project/mit6.828/lab'
-divzero: OK (0.9s) 
-softint: OK (0.9s) 
-badsegment: OK (1.0s) 
-Part A score: 30/30
+***
+*** Use Ctrl-a x to exit qemu
+***
+qemu-system-i386 -nographic -drive file=obj/kern/kernel.img,index=0,media=disk,format=raw -serial mon:stdio -gdb tcp::26000 -D qemu.log -smp 4 
+6828 decimal is 15254 octal!
+Physical memory: 131072K available, base = 640K, extended = 130432K
+nextfree initialize as f0370000
+addr = f0370000, n = 4096, number of page = 1, nextfree = f0371000
+UVPT = ef400000, PDX(UVPT) = 3bd, PADDR = 370000
+nextfree initialize as f0371000
+addr = f0371000, n = 4096, number of page = 1, nextfree = f0372000
+nextfree initialize as f0372000
+addr = f0372000, n = 262144, number of page = 64, nextfree = f03b2000
+sizeof(PageInfo) = 8, pages = f0372000, npages = 32768
+initialise pageinfo to 0 end
+nextfree initialize as f03b2000
+addr = f03b2000, n = 126976, number of page = 31, nextfree = f03d1000
+sizeof(Env) = 124, envs = f03b2000, NENV = 1024
+initialise envs to 0 end
+nextfree initialize as f03d1000
+addr = f03d1000, n = 0
+page_init start
+preserve 0 page
+page_init end
+check page free list, page_free_list = f0373ff8
+nextfree initialize as f03d1000
+addr = f03d1000, n = 0
+check page free list, first free page = f03d1000
+check_page_free_list() succeeded!
+check page free list end
+alloc three pages
+set page = f0373ff8 pp_link to NULL
+set page = f0373ff0 pp_link to NULL
+set page = f0373fe8 pp_link to NULL
+set free_list = 0
+has no page to allocate
+free pages
+alloc three pages
+set page = f0373fe8 pp_link to NULL
+next is NULL
+set page = f0373ff0 pp_link to NULL
+set page = f0373ff8 pp_link to NULL
+has no page to allocate
+test flags
+alloc_flags = 1, set value of pgva = 0
+set page = f0373fe8 pp_link to NULL
+check_page_alloc() succeeded!
+check page alloc end
+set page = f0373ff8 pp_link to NULL
+set page = f0373ff0 pp_link to NULL
+set page = f0373fe8 pp_link to NULL
+has no page to allocate
+pgdir_walk, did not find pdr for va = 0, return NULL
+page_insert start, pp = f0373ff0, va = 0
+pgdir_walk, did not find pdr for va = 0, return NULL
+page_insert, pt = 0, ptpa = 0
+page_insert, there is no page table for va, create one and adds it to the pgdir
+has no page to allocate
+page_insert, alloc page for pt failure
+free pp0 and try again: pp0 should be used for page table
+page_insert start, pp = f0373ff0, va = 0
+pgdir_walk, did not find pdr for va = 0, return NULL
+page_insert, pt = 0, ptpa = 0
+page_insert, there is no page table for va, create one and adds it to the pgdir
+alloc_flags = 1, set value of pgva = 0
+set page = f0373ff8 pp_link to NULL
+page_insert, alloc page = 3ff000 for pt
+page_insert, PDX(va) = 0, pgdir[0] = 3ff007
+page_insert, insert page = 3fe000 to pt for va = 0
+PTX(va) = 0, pt[0] = 3fe003
+page_free, pp = f0373ff0, pre = 0
+pp = f0373ff0, pp_ref = 1
+page_insert end
+should be able to map pp2 at PGSIZE because pp0 is already allocated for page table
+page_insert start, pp = f0373fe8, va = 1000
+page_insert, pt = 3ff007, ptpa = 3ff000
+page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff000
+page_insert, insert page = 3fd000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 3fd003
+page_free, pp = f0373fe8, pre = 0
+pp = f0373fe8, pp_ref = 1
+page_insert end
+should be no free memory
+has no page to allocate
+should be able to map pp2 at PGSIZE because it's already there
+pp2 = f0373fe8
+page_insert start, pp = f0373fe8, va = 1000
+page_insert, pt = 3ff007, ptpa = 3ff000
+page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff000
+page_insert, the page mapped at va has page = 3fd003, remove it
+page_remove start, va = 1000
+PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
+page_remove, pagelookup start, pgdir = f0370000, va = 1000
+page_remove, va = 1000 corrsponding with pgInfo = f0373fe8
+page_remove, pt = f03ff000, ptepa = 3fd000
+page_remove, ptepa = 3fd000 is not NULL, set pte to 0
+page_remove end
+page_insert, insert page = 3fd000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 3fd003
+page_free, pp = f0373fe8, pre = f0373fe8
+page_free, find pp == pre
+pp = f0373fe8, pp_ref = 1
+page_insert end
+has no page to allocate
+check that pgdir_walk returns a pointer to the pte
+ptep = f03ff000, ptep + PTX(PGSIZE) = f03ff004
+should be able to change permissions too.
+page_insert start, pp = f0373fe8, va = 1000
+page_insert, pt = 3ff007, ptpa = 3ff000
+page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff000
+page_insert, the page mapped at va has page = 3fd003, remove it
+page_remove start, va = 1000
+PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
+page_remove, pagelookup start, pgdir = f0370000, va = 1000
+page_remove, va = 1000 corrsponding with pgInfo = f0373fe8
+page_remove, pt = f03ff000, ptepa = 3fd000
+page_remove, ptepa = 3fd000 is not NULL, set pte to 0
+page_remove end
+page_insert, insert page = 3fd000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 3fd007
+page_free, pp = f0373fe8, pre = f0373fe8
+page_free, find pp == pre
+pp = f0373fe8, pp_ref = 1
+page_insert end
+page_insert start, pp = f0373fe8, va = 1000
+page_insert, pt = 3ff007, ptpa = 3ff000
+page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff000
+page_insert, the page mapped at va has page = 3fd007, remove it
+page_remove start, va = 1000
+PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
+page_remove, pagelookup start, pgdir = f0370000, va = 1000
+page_remove, va = 1000 corrsponding with pgInfo = f0373fe8
+page_remove, pt = f03ff000, ptepa = 3fd000
+page_remove, ptepa = 3fd000 is not NULL, set pte to 0
+page_remove end
+page_insert, insert page = 3fd000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 3fd003
+page_free, pp = f0373fe8, pre = f0373fe8
+page_free, find pp == pre
+pp = f0373fe8, pp_ref = 1
+page_insert end
+page_insert start, pp = f0373ff8, va = 400000
+pgdir_walk, did not find pdr for va = 400000, return NULL
+page_insert, pt = 0, ptpa = 0
+page_insert, there is no page table for va, create one and adds it to the pgdir
+has no page to allocate
+page_insert, alloc page for pt failure
+page_insert start, pp = f0373ff0, va = 1000
+page_insert, pt = 3ff007, ptpa = 3ff000
+page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff000
+page_insert, the page mapped at va has page = 3fd003, remove it
+page_remove start, va = 1000
+PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
+page_remove, pagelookup start, pgdir = f0370000, va = 1000
+page_remove, va = 1000 corrsponding with pgInfo = f0373fe8
+page_remove, pt = f03ff000, ptepa = 3fd000
+page_remove, ptepa = 3fd000 is not NULL, set pte to 0
+page_remove end
+page_insert, insert page = 3fe000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 3fe003
+page_free, pp = f0373ff0, pre = f0373fe8
+pp = f0373ff0, pp_ref = 2
+page_insert end
+set page = f0373fe8 pp_link to NULL
+page_remove start, va = 0
+PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
+page_remove, pagelookup start, pgdir = f0370000, va = 0
+page_remove, va = 0 corrsponding with pgInfo = f0373ff0
+page_remove, pt = f03ff000, ptepa = 3fe000
+page_remove, ptepa = 3fe000 is not NULL, set pte to 0
+page_remove end
+page_insert start, pp = f0373ff0, va = 1000
+page_insert, pt = 3ff007, ptpa = 3ff000
+page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff000
+page_insert, the page mapped at va has page = 3fe003, remove it
+page_remove start, va = 1000
+PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
+page_remove, pagelookup start, pgdir = f0370000, va = 1000
+page_remove, va = 1000 corrsponding with pgInfo = f0373ff0
+page_remove, pt = f03ff000, ptepa = 3fe000
+page_remove, ptepa = 3fe000 is not NULL, set pte to 0
+page_remove end
+page_insert, insert page = 3fe000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 3fe001
+page_free, pp = f0373ff0, pre = f0373ff0
+page_free, find pp == pre
+pp = f0373ff0, pp_ref = 1
+page_insert end
+page_remove start, va = 1000
+PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
+page_remove, pagelookup start, pgdir = f0370000, va = 1000
+page_remove, va = 1000 corrsponding with pgInfo = f0373ff0
+page_remove, pt = f03ff000, ptepa = 3fe000
+page_remove, ptepa = 3fe000 is not NULL, set pte to 0
+page_remove end
+set page = f0373ff0 pp_link to NULL
+has no page to allocate
+alloc_flags = 1, set value of pgva = 0
+set page = f0373ff8 pp_link to NULL
+pgdir_walk, new page for pt = 3ff000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373ff8 pp_link to NULL
+pgdir_walk, new page for pt = 3ff000
+pre, base = ef800000, pa = 0, size = 1001
+alloc_flags = 1, set value of pgva = 0
+set page = f0373fe8 pp_link to NULL
+pgdir_walk, new page for pt = 3fd000
+now, base = ef802000, pa = 0, size = 2000
+pre, base = ef802000, pa = 0, size = 1000
+now, base = ef803000, pa = 0, size = 1000
+mm1 = ef800000, mm2 = ef802000, mm1 + 8192 = ef802000
+check_page() succeeded!
+check page end
+alloc_flags = 1, set value of pgva = 0
+set page = f0373ff0 pp_link to NULL
+pgdir_walk, new page for pt = 3fe000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373ff8 pp_link to NULL
+pgdir_walk, new page for pt = 3ff000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373fe0 pp_link to NULL
+pgdir_walk, new page for pt = 3fc000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373fd8 pp_link to NULL
+pgdir_walk, new page for pt = 3fb000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373fd0 pp_link to NULL
+pgdir_walk, new page for pt = 3fa000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373fc8 pp_link to NULL
+pgdir_walk, new page for pt = 3f9000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373fc0 pp_link to NULL
+pgdir_walk, new page for pt = 3f8000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373fb8 pp_link to NULL
+pgdir_walk, new page for pt = 3f7000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373fb0 pp_link to NULL
+pgdir_walk, new page for pt = 3f6000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373fa8 pp_link to NULL
+pgdir_walk, new page for pt = 3f5000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373fa0 pp_link to NULL
+pgdir_walk, new page for pt = 3f4000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f98 pp_link to NULL
+pgdir_walk, new page for pt = 3f3000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f90 pp_link to NULL
+pgdir_walk, new page for pt = 3f2000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f88 pp_link to NULL
+pgdir_walk, new page for pt = 3f1000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f80 pp_link to NULL
+pgdir_walk, new page for pt = 3f0000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f78 pp_link to NULL
+pgdir_walk, new page for pt = 3ef000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f70 pp_link to NULL
+pgdir_walk, new page for pt = 3ee000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f68 pp_link to NULL
+pgdir_walk, new page for pt = 3ed000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f60 pp_link to NULL
+pgdir_walk, new page for pt = 3ec000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f58 pp_link to NULL
+pgdir_walk, new page for pt = 3eb000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f50 pp_link to NULL
+pgdir_walk, new page for pt = 3ea000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f48 pp_link to NULL
+pgdir_walk, new page for pt = 3e9000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f40 pp_link to NULL
+pgdir_walk, new page for pt = 3e8000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f38 pp_link to NULL
+pgdir_walk, new page for pt = 3e7000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f30 pp_link to NULL
+pgdir_walk, new page for pt = 3e6000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f28 pp_link to NULL
+pgdir_walk, new page for pt = 3e5000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f20 pp_link to NULL
+pgdir_walk, new page for pt = 3e4000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f18 pp_link to NULL
+pgdir_walk, new page for pt = 3e3000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f10 pp_link to NULL
+pgdir_walk, new page for pt = 3e2000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f08 pp_link to NULL
+pgdir_walk, new page for pt = 3e1000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373f00 pp_link to NULL
+pgdir_walk, new page for pt = 3e0000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373ef8 pp_link to NULL
+pgdir_walk, new page for pt = 3df000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373ef0 pp_link to NULL
+pgdir_walk, new page for pt = 3de000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373ee8 pp_link to NULL
+pgdir_walk, new page for pt = 3dd000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373ee0 pp_link to NULL
+pgdir_walk, new page for pt = 3dc000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373ed8 pp_link to NULL
+pgdir_walk, new page for pt = 3db000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373ed0 pp_link to NULL
+pgdir_walk, new page for pt = 3da000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373ec8 pp_link to NULL
+pgdir_walk, new page for pt = 3d9000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373ec0 pp_link to NULL
+pgdir_walk, new page for pt = 3d8000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373eb8 pp_link to NULL
+pgdir_walk, new page for pt = 3d7000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373eb0 pp_link to NULL
+pgdir_walk, new page for pt = 3d6000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373ea8 pp_link to NULL
+pgdir_walk, new page for pt = 3d5000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373ea0 pp_link to NULL
+pgdir_walk, new page for pt = 3d4000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373e98 pp_link to NULL
+pgdir_walk, new page for pt = 3d3000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373e90 pp_link to NULL
+pgdir_walk, new page for pt = 3d2000
+alloc_flags = 1, set value of pgva = 0
+set page = f0373e88 pp_link to NULL
+pgdir_walk, new page for pt = 3d1000
+alloc_flags = 1, set value of pgva = 0
+set page = f03724f8 pp_link to NULL
+pgdir_walk, new page for pt = 9f000
+alloc_flags = 1, set value of pgva = 0
+set page = f03724f0 pp_link to NULL
+pgdir_walk, new page for pt = 9e000
+alloc_flags = 1, set value of pgva = 0
+set page = f03724e8 pp_link to NULL
+pgdir_walk, new page for pt = 9d000
+alloc_flags = 1, set value of pgva = 0
+set page = f03724e0 pp_link to NULL
+pgdir_walk, new page for pt = 9c000
+alloc_flags = 1, set value of pgva = 0
+set page = f03724d8 pp_link to NULL
+pgdir_walk, new page for pt = 9b000
+alloc_flags = 1, set value of pgva = 0
+set page = f03724d0 pp_link to NULL
+pgdir_walk, new page for pt = 9a000
+alloc_flags = 1, set value of pgva = 0
+set page = f03724c8 pp_link to NULL
+pgdir_walk, new page for pt = 99000
+alloc_flags = 1, set value of pgva = 0
+set page = f03724c0 pp_link to NULL
+pgdir_walk, new page for pt = 98000
+alloc_flags = 1, set value of pgva = 0
+set page = f03724b8 pp_link to NULL
+pgdir_walk, new page for pt = 97000
+alloc_flags = 1, set value of pgva = 0
+set page = f03724b0 pp_link to NULL
+pgdir_walk, new page for pt = 96000
+alloc_flags = 1, set value of pgva = 0
+set page = f03724a8 pp_link to NULL
+pgdir_walk, new page for pt = 95000
+alloc_flags = 1, set value of pgva = 0
+set page = f03724a0 pp_link to NULL
+pgdir_walk, new page for pt = 94000
+alloc_flags = 1, set value of pgva = 0
+set page = f0372498 pp_link to NULL
+pgdir_walk, new page for pt = 93000
+alloc_flags = 1, set value of pgva = 0
+set page = f0372490 pp_link to NULL
+pgdir_walk, new page for pt = 92000
+alloc_flags = 1, set value of pgva = 0
+set page = f0372488 pp_link to NULL
+pgdir_walk, new page for pt = 91000
+alloc_flags = 1, set value of pgva = 0
+set page = f0372480 pp_link to NULL
+pgdir_walk, new page for pt = 90000
+alloc_flags = 1, set value of pgva = 0
+set page = f0372478 pp_link to NULL
+pgdir_walk, new page for pt = 8f000
+alloc_flags = 1, set value of pgva = 0
+set page = f0372470 pp_link to NULL
+pgdir_walk, new page for pt = 8e000
+alloc_flags = 1, set value of pgva = 0
+set page = f0372468 pp_link to NULL
+pgdir_walk, new page for pt = 8d000
+alloc_flags = 1, set value of pgva = 0
+set page = f0372460 pp_link to NULL
+pgdir_walk, new page for pt = 8c000
+alloc_flags = 1, set value of pgva = 0
+set page = f0372458 pp_link to NULL
+pgdir_walk, new page for pt = 8b000
+NCPU = 8
+KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTKGAP = 8000
+top = efff8000
+i = 0, PADDR(percpu_kstack[0]) = 32f000
+NCPU = 8
+KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTKGAP = 8000
+top = effe8000
+i = 1, PADDR(percpu_kstack[1]) = 337000
+NCPU = 8
+KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTKGAP = 8000
+top = effd8000
+i = 2, PADDR(percpu_kstack[2]) = 33f000
+NCPU = 8
+KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTKGAP = 8000
+top = effc8000
+i = 3, PADDR(percpu_kstack[3]) = 347000
+NCPU = 8
+KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTKGAP = 8000
+top = effb8000
+i = 4, PADDR(percpu_kstack[4]) = 34f000
+NCPU = 8
+KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTKGAP = 8000
+top = effa8000
+i = 5, PADDR(percpu_kstack[5]) = 357000
+NCPU = 8
+KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTKGAP = 8000
+top = eff98000
+i = 6, PADDR(percpu_kstack[6]) = 35f000
+NCPU = 8
+KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTKGAP = 8000
+top = eff88000
+i = 7, PADDR(percpu_kstack[7]) = 367000
+check_kern_pgdir() succeeded!
+lcr3 end, check page start
+check page free list, page_free_list = f0372450
+nextfree initialize as f03d1000
+addr = f03d1000, n = 0
+check page free list, first free page = f03d1000
+check_page_free_list() succeeded!
+check page end
+lcr0 end, check page installed start
+set page = f0372450 pp_link to NULL
+set page = f0372448 pp_link to NULL
+set page = f0372440 pp_link to NULL
+check page install, page_inseart pp1 start
+page_insert start, pp = f0372448, va = 1000
+pgdir_walk, did not find pdr for va = 1000, return NULL
+page_insert, pt = 0, ptpa = 0
+page_insert, there is no page table for va, create one and adds it to the pgdir
+alloc_flags = 1, set value of pgva = 0
+set page = f0372450 pp_link to NULL
+page_insert, alloc page = 8a000 for pt
+page_insert, PDX(va) = 0, pgdir[0] = 8a007
+page_insert, insert page = 89000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 89003
+page_free, pp = f0372448, pre = f0372438
+pp = f0372448, pp_ref = 1
+page_insert end
+check page install, page_inseart pp1 end
+check page install, page_inseart pp2 start
+page_insert start, pp = f0372440, va = 1000
+page_insert, pt = 8a027, ptpa = 8a000
+page_insert, there is page table = 8a000 for va = 1000, PTE_ADDR(pte) = f008a000
+page_insert, the page mapped at va has page = 89023, remove it
+page_remove start, va = 1000
+PDX(va) = 0, pgdir[0] = 8a027, ptpa = 8a000
+page_remove, pagelookup start, pgdir = f0370000, va = 1000
+page_remove, va = 1000 corrsponding with pgInfo = f0372448
+page_remove, pt = f008a000, ptepa = 89000
+page_remove, ptepa = 89000 is not NULL, set pte to 0
+page_remove end
+page_insert, insert page = 88000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 88003
+page_free, pp = f0372440, pre = f0372448
+pp = f0372440, pp_ref = 1
+page_insert end
+check page install, page_inseart pp2 end
+page_remove start, va = 1000
+PDX(va) = 0, pgdir[0] = 8a027, ptpa = 8a000
+page_remove, pagelookup start, pgdir = f0370000, va = 1000
+page_remove, va = 1000 corrsponding with pgInfo = f0372440
+page_remove, pt = f008a000, ptepa = 88000
+page_remove, ptepa = 88000 is not NULL, set pte to 0
+page_remove end
+check_page_installed_pgdir() succeeded!
+check page installed end
+KT = 1, addr = f012a348, gdt[KT] = ffff, gdt[KT+1] = cf9a00
+KD = 2, addr = f012a348, gdt[KD] = ffff, gdt[KD+1] = cf9300
+UT = 3, addr = f012a348, gdt[UT] = ffff, gdt[UT+1] = cffa00
+UD = 4, addr = f012a348, gdt[UD] = ffff, gdt[UD+1] = cff300
+trap_syscall = f01055d6
+sizeof(Gatedesc) = 8
+idt = f032d260
+addr = f032d3e0, idt[SYSCALL] = 855d6, idt[SYSCALL+1] = f010ee00
+SMP: CPU 0 found 4 CPU(s)
+pre, base = ef803000, pa = fee00000, size = 1000
+now, base = ef804000, pa = fee00000, size = 1000
+enabled interrupts: 1 2
+SMP: CPU 1 starting
+pre, base = ef804000, pa = fee00000, size = 1000
+now, base = ef805000, pa = fee00000, size = 1000
+SMP: CPU 2 starting
+pre, base = ef805000, pa = fee00000, size = 1000
+now, base = ef806000, pa = fee00000, size = 1000
+SMP: CPU 3 starting
+pre, base = ef806000, pa = fee00000, size = 1000
+now, base = ef807000, pa = fee00000, size = 1000
+env_create start
+alloc_flags = 1, set value of pgva = 0
+set page = f0372450 pp_link to NULL
+[00000000] new env 00001000
+load_icode start
+ph = f031c1ba, eph = f031c21a
+ph = f031c1ba, p_va = 200000, p_offset = 1000
+region_alloc start
+va = 200000, len = c855, va + len = 20c855, rounddown = 200000, roundup = 20d000
+pgdir = f008a000, pde = f008a000, *pde = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0372440 pp_link to NULL
+a = 200000, PTX(a) = 200, pt[PTX(a)] = 0
+pt = f0088000, *pt = 0, pte = f0088800, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0372448 pp_link to NULL
+pt = f0088000, *pt = 0, pte = f0088800, *pte = 89007
+pgdir = f008a000, pde = f008a000, *pde = 88007
+a = 201000, PTX(a) = 201, pt[PTX(a)] = 0
+pt = f0088000, *pt = 0, pte = f0088804, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0372438 pp_link to NULL
+pt = f0088000, *pt = 0, pte = f0088804, *pte = 87007
+pgdir = f008a000, pde = f008a000, *pde = 88007
+a = 202000, PTX(a) = 202, pt[PTX(a)] = 0
+pt = f0088000, *pt = 0, pte = f0088808, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0372430 pp_link to NULL
+pt = f0088000, *pt = 0, pte = f0088808, *pte = 86007
+pgdir = f008a000, pde = f008a000, *pde = 88007
+a = 203000, PTX(a) = 203, pt[PTX(a)] = 0
+pt = f0088000, *pt = 0, pte = f008880c, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0372428 pp_link to NULL
+pt = f0088000, *pt = 0, pte = f008880c, *pte = 85007
+pgdir = f008a000, pde = f008a000, *pde = 88007
+a = 204000, PTX(a) = 204, pt[PTX(a)] = 0
+pt = f0088000, *pt = 0, pte = f0088810, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0372420 pp_link to NULL
+pt = f0088000, *pt = 0, pte = f0088810, *pte = 84007
+pgdir = f008a000, pde = f008a000, *pde = 88007
+a = 205000, PTX(a) = 205, pt[PTX(a)] = 0
+pt = f0088000, *pt = 0, pte = f0088814, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0372418 pp_link to NULL
+pt = f0088000, *pt = 0, pte = f0088814, *pte = 83007
+pgdir = f008a000, pde = f008a000, *pde = 88007
+a = 206000, PTX(a) = 206, pt[PTX(a)] = 0
+pt = f0088000, *pt = 0, pte = f0088818, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0372410 pp_link to NULL
+pt = f0088000, *pt = 0, pte = f0088818, *pte = 82007
+pgdir = f008a000, pde = f008a000, *pde = 88007
+a = 207000, PTX(a) = 207, pt[PTX(a)] = 0
+pt = f0088000, *pt = 0, pte = f008881c, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0372408 pp_link to NULL
+pt = f0088000, *pt = 0, pte = f008881c, *pte = 81007
+pgdir = f008a000, pde = f008a000, *pde = 88007
+a = 208000, PTX(a) = 208, pt[PTX(a)] = 0
+pt = f0088000, *pt = 0, pte = f0088820, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0372400 pp_link to NULL
+pt = f0088000, *pt = 0, pte = f0088820, *pte = 80007
+pgdir = f008a000, pde = f008a000, *pde = 88007
+a = 209000, PTX(a) = 209, pt[PTX(a)] = 0
+pt = f0088000, *pt = 0, pte = f0088824, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03723f8 pp_link to NULL
+pt = f0088000, *pt = 0, pte = f0088824, *pte = 7f007
+pgdir = f008a000, pde = f008a000, *pde = 88007
+a = 20a000, PTX(a) = 20a, pt[PTX(a)] = 0
+pt = f0088000, *pt = 0, pte = f0088828, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03723f0 pp_link to NULL
+pt = f0088000, *pt = 0, pte = f0088828, *pte = 7e007
+pgdir = f008a000, pde = f008a000, *pde = 88007
+a = 20b000, PTX(a) = 20b, pt[PTX(a)] = 0
+pt = f0088000, *pt = 0, pte = f008882c, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03723e8 pp_link to NULL
+pt = f0088000, *pt = 0, pte = f008882c, *pte = 7d007
+pgdir = f008a000, pde = f008a000, *pde = 88007
+a = 20c000, PTX(a) = 20c, pt[PTX(a)] = 0
+pt = f0088000, *pt = 0, pte = f0088830, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03723e0 pp_link to NULL
+pt = f0088000, *pt = 0, pte = f0088830, *pte = 7c007
+region_alloc end
+src = f031d186, dst = 200000
+after copying, p_memsz = c855, p_filesz = c855, p_va = 200000
+ph = f031c1da, p_va = 800020, p_offset = e020
+region_alloc start
+va = 800020, len = 146c, va + len = 80148c, rounddown = 800000, roundup = 802000
+pgdir = f008a008, pde = f008a008, *pde = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03723d8 pp_link to NULL
+a = 800000, PTX(a) = 0, pt[PTX(a)] = 0
+pt = f007b000, *pt = 0, pte = f007b000, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03723d0 pp_link to NULL
+pt = f007b000, *pt = 7a007, pte = f007b000, *pte = 7a007
+pgdir = f008a008, pde = f008a008, *pde = 7b007
+a = 801000, PTX(a) = 1, pt[PTX(a)] = 0
+pt = f007b000, *pt = 7a007, pte = f007b004, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03723c8 pp_link to NULL
+pt = f007b000, *pt = 7a007, pte = f007b004, *pte = 79007
+region_alloc end
+src = f032a1a6, dst = 800020
+after copying, p_memsz = 146c, p_filesz = 146c, p_va = 800020
+ph = f031c1fa, p_va = 802000, p_offset = 10000
+region_alloc start
+va = 802000, len = 8, va + len = 802008, rounddown = 802000, roundup = 803000
+pgdir = f008a008, pde = f008a008, *pde = 7b027
+a = 802000, PTX(a) = 2, pt[PTX(a)] = 0
+pt = f007b000, *pt = 7a067, pte = f007b008, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03723c0 pp_link to NULL
+pt = f007b000, *pt = 7a067, pte = f007b008, *pte = 78007
+region_alloc end
+src = f032c186, dst = 802000
+after copying, p_memsz = 8, p_filesz = 4, p_va = 802000
+p_entry = 800020
+region_alloc start
+va = eebfd000, len = 1000, va + len = eebfe000, rounddown = eebfd000, roundup = eebfe000
+pgdir = f008aee8, pde = f008aee8, *pde = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03723b8 pp_link to NULL
+a = eebfd000, PTX(a) = 3fd, pt[PTX(a)] = 0
+pt = f0077000, *pt = 0, pte = f0077ff4, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03723b0 pp_link to NULL
+pt = f0077000, *pt = 0, pte = f0077ff4, *pte = 76007
+region_alloc end
+load_icode end
+env_create end
+kernel panic on CPU 0 at kern/trap.c:389: page_fault_handler, kernel-mode page faults
 
-faultread: OK (1.1s) 
-faultreadkernel: OK (1.0s) 
-faultwrite: OK (2.0s) 
-faultwritekernel: OK (1.1s) 
-breakpoint: OK (1.9s) 
-testbss: OK (5.2s) 
-hello: OK (1.5s) 
-buggyhello: OK (0.5s) 
-buggyhello2: OK (1.8s) 
-    (Old jos.out.buggyhello2 failure log removed)
-evilhello: OK (2.0s) 
-Part B score: 50/50
-
-Score: 80/80
+Welcome to the JOS kernel monitor!
+Type 'help' for a list of commands.
+K> QEMU: Terminated
+
