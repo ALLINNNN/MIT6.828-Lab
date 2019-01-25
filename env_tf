@@ -1,0 +1,61 @@
+Binary file kern/.syscall.c.swp matches
+kern/syscall.c:43:    envid_t id = curenv->env_id;
+kern/syscall.c:45://	return curenv->env_id;
+kern/syscall.c:62:		cprintf("[%08x] exiting gracefully\n", curenv->env_id);
+kern/syscall.c:64:		cprintf("[%08x] destroying %08x\n", curenv->env_id, e->env_id);
+kern/syscall.c:104:    newenv->env_tf = curenv->env_tf;
+kern/syscall.c:106:    cprintf("newenv->env_id = %x, curenv->env_id = %x\n", newenv->env_id, curenv->env_id);
+kern/trap.c:285:            curenv->env_tf.tf_regs.reg_eax = syscall(tf->tf_regs.reg_eax, tf->tf_regs.reg_edx, tf->tf_regs.reg_ecx, tf->tf_regs.reg_ebx, tf->tf_regs.reg_edi, tf->tf_regs.reg_esi);
+kern/trap.c:286:            cprintf("syscall end, return value = %x\n", curenv->env_tf.tf_regs.reg_eax);
+kern/trap.c:346:		if (curenv->env_status == ENV_DYING) {
+kern/trap.c:353:		// into 'curenv->env_tf', so that running the environment
+kern/trap.c:355:		curenv->env_tf = *tf;
+kern/trap.c:357:		tf = &curenv->env_tf;
+kern/trap.c:370:	if (curenv && curenv->env_status == ENV_RUNNING)
+kern/trap.c:398:	// UXSTACKTOP), then branch to curenv->env_pgfault_upcall.
+kern/trap.c:422:	//   To change what the user environment runs, modify 'curenv->env_tf'
+kern/trap.c:423:	//   (the 'tf' variable points at 'curenv->env_tf').
+kern/trap.c:429:		curenv->env_id, fault_va, tf->tf_eip);
+kern/pmap.c:751:	if (!curenv || curenv->env_pgdir == pgdir)
+kern/env.c:102:	if (checkperm && e != curenv && e->env_parent_id != curenv->env_id) {
+kern/env.c:276:	cprintf("[%08x] new env %08x\n", curenv ? curenv->env_id : 0, e->env_id);
+kern/env.c:522:	cprintf("[%08x] free env %08x\n", curenv ? curenv->env_id : 0, e->env_id);
+kern/env.c:593:	curenv->env_cpunum = cpunum();
+kern/env.c:637:        if(curenv->env_status == ENV_RUNNING)
+kern/env.c:638:            curenv->env_status = ENV_RUNNABLE;                
+kern/env.c:643:    curenv->env_status = ENV_RUNNING;
+kern/env.c:644:    curenv->env_runs++;
+log:688:newenv->env_id = 1001, curenv->env_id = 1000
+Binary file obj/kern/kernel matches
+obj/kern/kernel.asm:3047:	if (!curenv || curenv->env_pgdir == pgdir)
+obj/kern/kernel.asm:6987:	if (checkperm && e != curenv && e->env_parent_id != curenv->env_id) {
+obj/kern/kernel.asm:7384:	cprintf("[%08x] new env %08x\n", curenv ? curenv->env_id : 0, e->env_id);
+obj/kern/kernel.asm:7426:	cprintf("[%08x] new env %08x\n", curenv ? curenv->env_id : 0, e->env_id);
+obj/kern/kernel.asm:7787:	cprintf("[%08x] free env %08x\n", curenv ? curenv->env_id : 0, e->env_id);
+obj/kern/kernel.asm:7918:	cprintf("[%08x] free env %08x\n", curenv ? curenv->env_id : 0, e->env_id);
+obj/kern/kernel.asm:8059:	curenv->env_cpunum = cpunum();
+obj/kern/kernel.asm:8126:        if(curenv->env_status == ENV_RUNNING)
+obj/kern/kernel.asm:8134:            curenv->env_status = ENV_RUNNABLE;                
+obj/kern/kernel.asm:8151:    curenv->env_status = ENV_RUNNING;
+obj/kern/kernel.asm:8158:    curenv->env_runs++;
+obj/kern/kernel.asm:9075:	//   (the 'tf' variable points at 'curenv->env_tf').
+obj/kern/kernel.asm:9082:		curenv->env_id, fault_va, tf->tf_eip);
+obj/kern/kernel.asm:9084:	//   (the 'tf' variable points at 'curenv->env_tf').
+obj/kern/kernel.asm:9092:		curenv->env_id, fault_va, tf->tf_eip);
+obj/kern/kernel.asm:9097:	//   (the 'tf' variable points at 'curenv->env_tf').
+obj/kern/kernel.asm:9107:		curenv->env_id, fault_va, tf->tf_eip);
+obj/kern/kernel.asm:9245:		if (curenv->env_status == ENV_DYING) {
+obj/kern/kernel.asm:9267:		// into 'curenv->env_tf', so that running the environment
+obj/kern/kernel.asm:9269:		curenv->env_tf = *tf;
+obj/kern/kernel.asm:9277:		tf = &curenv->env_tf;
+obj/kern/kernel.asm:9326:            curenv->env_tf.tf_regs.reg_eax = syscall(tf->tf_regs.reg_eax, tf->tf_regs.reg_edx, tf->tf_regs.reg_ecx, tf->tf_regs.reg_ebx, tf->tf_regs.reg_edi, tf->tf_regs.reg_esi);
+obj/kern/kernel.asm:9344:            cprintf("syscall end, return value = %x\n", curenv->env_tf.tf_regs.reg_eax);
+obj/kern/kernel.asm:9398:	if (curenv && curenv->env_status == ENV_RUNNING)
+obj/kern/kernel.asm:9980:    envid_t id = curenv->env_id;
+obj/kern/kernel.asm:9988://	return curenv->env_id;
+obj/kern/kernel.asm:10103:		cprintf("[%08x] exiting gracefully\n", curenv->env_id);
+obj/kern/kernel.asm:10115:		cprintf("[%08x] destroying %08x\n", curenv->env_id, e->env_id);
+obj/kern/kernel.asm:10198:    newenv->env_tf = curenv->env_tf;
+obj/kern/kernel.asm:10208:    cprintf("newenv->env_id = %x, curenv->env_id = %x\n", newenv->env_id, curenv->env_id);
+Binary file obj/kern/kernel.img matches
+Binary file obj/kern/syscall.o matches

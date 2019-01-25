@@ -58,10 +58,12 @@ dumbfork(void)
 		// The copied value of the global variable 'thisenv'
 		// is no longer valid (it refers to the parent!).
 		// Fix it and return 0.
+        cprintf("We are the child, envid = %x\n", envid);
 		thisenv = &envs[ENVX(sys_getenvid())];
 		return 0;
 	}
 
+    cprintf("We are the parent, envid = %x\n", envid);
 	// We're the parent.
 	// Eagerly copy our entire address space into the child.
 	// This is NOT what you should do in your fork implementation.

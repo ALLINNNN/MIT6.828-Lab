@@ -282,8 +282,8 @@ trap_dispatch(struct Trapframe *tf)
         }break;
         case T_SYSCALL:{
             cprintf("syscall start\n");
-            int32_t r = syscall(tf->tf_regs.reg_eax, tf->tf_regs.reg_edx, tf->tf_regs.reg_ecx, tf->tf_regs.reg_ebx, tf->tf_regs.reg_edi, tf->tf_regs.reg_esi);
-            cprintf("syscall end, return value = %x\n", r);
+            curenv->env_tf.tf_regs.reg_eax = syscall(tf->tf_regs.reg_eax, tf->tf_regs.reg_edx, tf->tf_regs.reg_ecx, tf->tf_regs.reg_ebx, tf->tf_regs.reg_edi, tf->tf_regs.reg_esi);
+            cprintf("syscall end, return value = %x\n", curenv->env_tf.tf_regs.reg_eax);
             return;
         }break;
         default:
@@ -423,6 +423,30 @@ page_fault_handler(struct Trapframe *tf)
 	//   (the 'tf' variable points at 'curenv->env_tf').
 
 	// LAB 4: Your code here.
+    if(curenv->env_pgfault_upcall)
+    {
+        struct PageInfo *p = page_lookup(curenv->env_pgdir, (void *)(UXSTACKTOP - PGSIZE), NULL);
+        if(p == NULL)
+            panic("page fault handler, has no page for UXSTACKTOP\n");        
+
+        uint32_t *base = (uint32_t *)UXSTACKTOP;
+        *base++ = 0x00000000;
+        *base++ = tf->tf_esp;
+        *base++ = tf->tf_eflags;
+        *base++ = tf->tf_eip;
+        *base++ = tf->tf_regs.reg_eax;
+        *base++ = tf->tf_regs.reg_ecx;
+        *base++ = tf->tf_regs.reg_edx;
+        *base++ = tf->tf_regs.reg_ebx;
+        *base++ = tf->tf_regs.reg_oesp;
+        *base++ = tf->tf_regs.reg_ebp;
+        *base++ = tf->tf_regs.reg_esi;
+        *base++ = tf->tf_regs.reg_edi;
+        *base++ = tf->tf_err;
+        *base+= = tf->tf_esp;
+
+        (*curenv->env_pgfault_upcall)();
+    }
 
 	// Destroy the environment that caused the fault.
 	cprintf("[%08x] user fault va %08x ip %08x\n",
