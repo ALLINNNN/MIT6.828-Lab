@@ -1,279 +1,1385 @@
-+ cc kern/init.c
+make[1]: Entering directory '/home/jun/Project/mit6.828/lab'
++ cc kern/syscall.c
 + ld obj/kern/kernel
 + mk obj/kern/kernel.img
-dumbfork: 
-$ make run-dumbfork-nox-gdb QEMUEXTRA+=-snapshot
-OK (1.7s) 
-    (Old jos.out.dumbfork failure log removed)
-Part A score: 5/5
+make[1]: Leaving directory '/home/jun/Project/mit6.828/lab'
+qemu-system-i386 -nographic -drive file=obj/kern/kernel.img,index=0,media=disk,format=raw -serial mon:stdio -gdb tcp::26000 -D qemu.log -smp 1 
+6828 decimal is 15254 octal!
+Physical memory: 131072K available, base = 640K, extended = 130432K
+nextfree initialize as f0373000
+addr = f0373000, n = 4096, number of page = 1, nextfree = f0374000
+UVPT = ef400000, PDX(UVPT) = 3bd, PADDR = 373000
+nextfree initialize as f0374000
+addr = f0374000, n = 4096, number of page = 1, nextfree = f0375000
+nextfree initialize as f0375000
+addr = f0375000, n = 262144, number of page = 64, nextfree = f03b5000
+sizeof(PageInfo) = 8, pages = f0375000, npages = 32768
+initialise pageinfo to 0 end
+nextfree initialize as f03b5000
+addr = f03b5000, n = 126976, number of page = 31, nextfree = f03d4000
+sizeof(Env) = 124, envs = f03b5000, NENV = 1024
+initialise envs to 0 end
+nextfree initialize as f03d4000
+addr = f03d4000, n = 0
+page_init start
+preserve 0 page
+page_init end
+check page free list, page_free_list = f0376ff8
+nextfree initialize as f03d4000
+addr = f03d4000, n = 0
+check page free list, first free page = f03d4000
+check_page_free_list() succeeded!
+check page free list end
+alloc three pages
+set page = f0376ff8 pp_link to NULL
+set page = f0376ff0 pp_link to NULL
+set page = f0376fe8 pp_link to NULL
+set free_list = 0
+has no page to allocate
+free pages
+alloc three pages
+set page = f0376fe8 pp_link to NULL
+next is NULL
+set page = f0376ff0 pp_link to NULL
+set page = f0376ff8 pp_link to NULL
+has no page to allocate
+test flags
+alloc_flags = 1, set value of pgva = 0
+set page = f0376fe8 pp_link to NULL
+check_page_alloc() succeeded!
+check page alloc end
+set page = f0376ff8 pp_link to NULL
+set page = f0376ff0 pp_link to NULL
+set page = f0376fe8 pp_link to NULL
+has no page to allocate
+pgdir_walk, did not find pdr for va = 0, return NULL
+page_insert start, pp = f0376ff0, va = 0
+pgdir_walk, did not find pdr for va = 0, return NULL
+page_insert, pt = 0, ptpa = 0
+page_insert, there is no page table for va, create one and adds it to the pgdir
+has no page to allocate
+page_insert, alloc page for pt failure
+free pp0 and try again: pp0 should be used for page table
+page_insert start, pp = f0376ff0, va = 0
+pgdir_walk, did not find pdr for va = 0, return NULL
+page_insert, pt = 0, ptpa = 0
+page_insert, there is no page table for va, create one and adds it to the pgdir
+alloc_flags = 1, set value of pgva = 0
+set page = f0376ff8 pp_link to NULL
+page_insert, alloc page = 3ff000 for pt
+page_insert, PDX(va) = 0, pgdir[0] = 3ff007
+page_insert, insert page = 3fe000 to pt for va = 0
+PTX(va) = 0, pt[0] = 3fe003
+page_free, pp = f0376ff0, pre = 0
+pp = f0376ff0, pp_ref = 1
+page_insert end
+should be able to map pp2 at PGSIZE because pp0 is already allocated for page table
+page_insert start, pp = f0376fe8, va = 1000
+page_insert, pt = 3ff007, ptpa = 3ff000
+page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff000
+page_insert, insert page = 3fd000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 3fd003
+page_free, pp = f0376fe8, pre = 0
+pp = f0376fe8, pp_ref = 1
+page_insert end
+should be no free memory
+has no page to allocate
+should be able to map pp2 at PGSIZE because it's already there
+pp2 = f0376fe8
+page_insert start, pp = f0376fe8, va = 1000
+page_insert, pt = 3ff007, ptpa = 3ff000
+page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff000
+page_insert, the page mapped at va has page = 3fd003, remove it
+page_remove start, va = 1000
+PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
+page_remove, pagelookup start, pgdir = f0373000, va = 1000
+page_remove, va = 1000 corrsponding with pgInfo = f0376fe8
+page_remove, pt = f03ff000, ptepa = 3fd000
+page_remove, ptepa = 3fd000 is not NULL, set pte to 0
+page_remove end
+page_insert, insert page = 3fd000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 3fd003
+page_free, pp = f0376fe8, pre = f0376fe8
+page_free, find pp == pre
+pp = f0376fe8, pp_ref = 1
+page_insert end
+has no page to allocate
+check that pgdir_walk returns a pointer to the pte
+ptep = f03ff000, ptep + PTX(PGSIZE) = f03ff004
+should be able to change permissions too.
+page_insert start, pp = f0376fe8, va = 1000
+page_insert, pt = 3ff007, ptpa = 3ff000
+page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff000
+page_insert, the page mapped at va has page = 3fd003, remove it
+page_remove start, va = 1000
+PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
+page_remove, pagelookup start, pgdir = f0373000, va = 1000
+page_remove, va = 1000 corrsponding with pgInfo = f0376fe8
+page_remove, pt = f03ff000, ptepa = 3fd000
+page_remove, ptepa = 3fd000 is not NULL, set pte to 0
+page_remove end
+page_insert, insert page = 3fd000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 3fd007
+page_free, pp = f0376fe8, pre = f0376fe8
+page_free, find pp == pre
+pp = f0376fe8, pp_ref = 1
+page_insert end
+page_insert start, pp = f0376fe8, va = 1000
+page_insert, pt = 3ff007, ptpa = 3ff000
+page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff000
+page_insert, the page mapped at va has page = 3fd007, remove it
+page_remove start, va = 1000
+PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
+page_remove, pagelookup start, pgdir = f0373000, va = 1000
+page_remove, va = 1000 corrsponding with pgInfo = f0376fe8
+page_remove, pt = f03ff000, ptepa = 3fd000
+page_remove, ptepa = 3fd000 is not NULL, set pte to 0
+page_remove end
+page_insert, insert page = 3fd000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 3fd003
+page_free, pp = f0376fe8, pre = f0376fe8
+page_free, find pp == pre
+pp = f0376fe8, pp_ref = 1
+page_insert end
+page_insert start, pp = f0376ff8, va = 400000
+pgdir_walk, did not find pdr for va = 400000, return NULL
+page_insert, pt = 0, ptpa = 0
+page_insert, there is no page table for va, create one and adds it to the pgdir
+has no page to allocate
+page_insert, alloc page for pt failure
+page_insert start, pp = f0376ff0, va = 1000
+page_insert, pt = 3ff007, ptpa = 3ff000
+page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff000
+page_insert, the page mapped at va has page = 3fd003, remove it
+page_remove start, va = 1000
+PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
+page_remove, pagelookup start, pgdir = f0373000, va = 1000
+page_remove, va = 1000 corrsponding with pgInfo = f0376fe8
+page_remove, pt = f03ff000, ptepa = 3fd000
+page_remove, ptepa = 3fd000 is not NULL, set pte to 0
+page_remove end
+page_insert, insert page = 3fe000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 3fe003
+page_free, pp = f0376ff0, pre = f0376fe8
+pp = f0376ff0, pp_ref = 2
+page_insert end
+set page = f0376fe8 pp_link to NULL
+page_remove start, va = 0
+PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
+page_remove, pagelookup start, pgdir = f0373000, va = 0
+page_remove, va = 0 corrsponding with pgInfo = f0376ff0
+page_remove, pt = f03ff000, ptepa = 3fe000
+page_remove, ptepa = 3fe000 is not NULL, set pte to 0
+page_remove end
+page_insert start, pp = f0376ff0, va = 1000
+page_insert, pt = 3ff007, ptpa = 3ff000
+page_insert, there is page table = 3ff000 for va = 1000, PTE_ADDR(pte) = f03ff000
+page_insert, the page mapped at va has page = 3fe003, remove it
+page_remove start, va = 1000
+PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
+page_remove, pagelookup start, pgdir = f0373000, va = 1000
+page_remove, va = 1000 corrsponding with pgInfo = f0376ff0
+page_remove, pt = f03ff000, ptepa = 3fe000
+page_remove, ptepa = 3fe000 is not NULL, set pte to 0
+page_remove end
+page_insert, insert page = 3fe000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 3fe001
+page_free, pp = f0376ff0, pre = f0376ff0
+page_free, find pp == pre
+pp = f0376ff0, pp_ref = 1
+page_insert end
+page_remove start, va = 1000
+PDX(va) = 0, pgdir[0] = 3ff007, ptpa = 3ff000
+page_remove, pagelookup start, pgdir = f0373000, va = 1000
+page_remove, va = 1000 corrsponding with pgInfo = f0376ff0
+page_remove, pt = f03ff000, ptepa = 3fe000
+page_remove, ptepa = 3fe000 is not NULL, set pte to 0
+page_remove end
+set page = f0376ff0 pp_link to NULL
+has no page to allocate
+alloc_flags = 1, set value of pgva = 0
+set page = f0376ff8 pp_link to NULL
+pgdir_walk, new page for pt = 3ff000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376ff8 pp_link to NULL
+pgdir_walk, new page for pt = 3ff000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376fe8 pp_link to NULL
+pgdir_walk, new page for pt = 3fd000
+mm1 = ef800000, mm2 = ef802000, mm1 + 8192 = ef802000
+check_page() succeeded!
+check page end
+alloc_flags = 1, set value of pgva = 0
+set page = f0376ff0 pp_link to NULL
+pgdir_walk, new page for pt = 3fe000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376ff8 pp_link to NULL
+pgdir_walk, new page for pt = 3ff000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376fe0 pp_link to NULL
+pgdir_walk, new page for pt = 3fc000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376fd8 pp_link to NULL
+pgdir_walk, new page for pt = 3fb000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376fd0 pp_link to NULL
+pgdir_walk, new page for pt = 3fa000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376fc8 pp_link to NULL
+pgdir_walk, new page for pt = 3f9000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376fc0 pp_link to NULL
+pgdir_walk, new page for pt = 3f8000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376fb8 pp_link to NULL
+pgdir_walk, new page for pt = 3f7000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376fb0 pp_link to NULL
+pgdir_walk, new page for pt = 3f6000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376fa8 pp_link to NULL
+pgdir_walk, new page for pt = 3f5000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376fa0 pp_link to NULL
+pgdir_walk, new page for pt = 3f4000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f98 pp_link to NULL
+pgdir_walk, new page for pt = 3f3000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f90 pp_link to NULL
+pgdir_walk, new page for pt = 3f2000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f88 pp_link to NULL
+pgdir_walk, new page for pt = 3f1000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f80 pp_link to NULL
+pgdir_walk, new page for pt = 3f0000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f78 pp_link to NULL
+pgdir_walk, new page for pt = 3ef000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f70 pp_link to NULL
+pgdir_walk, new page for pt = 3ee000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f68 pp_link to NULL
+pgdir_walk, new page for pt = 3ed000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f60 pp_link to NULL
+pgdir_walk, new page for pt = 3ec000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f58 pp_link to NULL
+pgdir_walk, new page for pt = 3eb000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f50 pp_link to NULL
+pgdir_walk, new page for pt = 3ea000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f48 pp_link to NULL
+pgdir_walk, new page for pt = 3e9000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f40 pp_link to NULL
+pgdir_walk, new page for pt = 3e8000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f38 pp_link to NULL
+pgdir_walk, new page for pt = 3e7000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f30 pp_link to NULL
+pgdir_walk, new page for pt = 3e6000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f28 pp_link to NULL
+pgdir_walk, new page for pt = 3e5000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f20 pp_link to NULL
+pgdir_walk, new page for pt = 3e4000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f18 pp_link to NULL
+pgdir_walk, new page for pt = 3e3000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f10 pp_link to NULL
+pgdir_walk, new page for pt = 3e2000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f08 pp_link to NULL
+pgdir_walk, new page for pt = 3e1000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376f00 pp_link to NULL
+pgdir_walk, new page for pt = 3e0000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376ef8 pp_link to NULL
+pgdir_walk, new page for pt = 3df000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376ef0 pp_link to NULL
+pgdir_walk, new page for pt = 3de000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376ee8 pp_link to NULL
+pgdir_walk, new page for pt = 3dd000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376ee0 pp_link to NULL
+pgdir_walk, new page for pt = 3dc000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376ed8 pp_link to NULL
+pgdir_walk, new page for pt = 3db000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376ed0 pp_link to NULL
+pgdir_walk, new page for pt = 3da000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376ec8 pp_link to NULL
+pgdir_walk, new page for pt = 3d9000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376ec0 pp_link to NULL
+pgdir_walk, new page for pt = 3d8000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376eb8 pp_link to NULL
+pgdir_walk, new page for pt = 3d7000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376eb0 pp_link to NULL
+pgdir_walk, new page for pt = 3d6000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376ea8 pp_link to NULL
+pgdir_walk, new page for pt = 3d5000
+alloc_flags = 1, set value of pgva = 0
+set page = f0376ea0 pp_link to NULL
+pgdir_walk, new page for pt = 3d4000
+alloc_flags = 1, set value of pgva = 0
+set page = f03754f8 pp_link to NULL
+pgdir_walk, new page for pt = 9f000
+alloc_flags = 1, set value of pgva = 0
+set page = f03754f0 pp_link to NULL
+pgdir_walk, new page for pt = 9e000
+alloc_flags = 1, set value of pgva = 0
+set page = f03754e8 pp_link to NULL
+pgdir_walk, new page for pt = 9d000
+alloc_flags = 1, set value of pgva = 0
+set page = f03754e0 pp_link to NULL
+pgdir_walk, new page for pt = 9c000
+alloc_flags = 1, set value of pgva = 0
+set page = f03754d8 pp_link to NULL
+pgdir_walk, new page for pt = 9b000
+alloc_flags = 1, set value of pgva = 0
+set page = f03754d0 pp_link to NULL
+pgdir_walk, new page for pt = 9a000
+alloc_flags = 1, set value of pgva = 0
+set page = f03754c8 pp_link to NULL
+pgdir_walk, new page for pt = 99000
+alloc_flags = 1, set value of pgva = 0
+set page = f03754c0 pp_link to NULL
+pgdir_walk, new page for pt = 98000
+alloc_flags = 1, set value of pgva = 0
+set page = f03754b8 pp_link to NULL
+pgdir_walk, new page for pt = 97000
+alloc_flags = 1, set value of pgva = 0
+set page = f03754b0 pp_link to NULL
+pgdir_walk, new page for pt = 96000
+alloc_flags = 1, set value of pgva = 0
+set page = f03754a8 pp_link to NULL
+pgdir_walk, new page for pt = 95000
+alloc_flags = 1, set value of pgva = 0
+set page = f03754a0 pp_link to NULL
+pgdir_walk, new page for pt = 94000
+alloc_flags = 1, set value of pgva = 0
+set page = f0375498 pp_link to NULL
+pgdir_walk, new page for pt = 93000
+alloc_flags = 1, set value of pgva = 0
+set page = f0375490 pp_link to NULL
+pgdir_walk, new page for pt = 92000
+alloc_flags = 1, set value of pgva = 0
+set page = f0375488 pp_link to NULL
+pgdir_walk, new page for pt = 91000
+alloc_flags = 1, set value of pgva = 0
+set page = f0375480 pp_link to NULL
+pgdir_walk, new page for pt = 90000
+alloc_flags = 1, set value of pgva = 0
+set page = f0375478 pp_link to NULL
+pgdir_walk, new page for pt = 8f000
+alloc_flags = 1, set value of pgva = 0
+set page = f0375470 pp_link to NULL
+pgdir_walk, new page for pt = 8e000
+alloc_flags = 1, set value of pgva = 0
+set page = f0375468 pp_link to NULL
+pgdir_walk, new page for pt = 8d000
+alloc_flags = 1, set value of pgva = 0
+set page = f0375460 pp_link to NULL
+pgdir_walk, new page for pt = 8c000
+alloc_flags = 1, set value of pgva = 0
+set page = f0375458 pp_link to NULL
+pgdir_walk, new page for pt = 8b000
+alloc_flags = 1, set value of pgva = 0
+set page = f0375450 pp_link to NULL
+pgdir_walk, new page for pt = 8a000
+alloc_flags = 1, set value of pgva = 0
+set page = f0375448 pp_link to NULL
+pgdir_walk, new page for pt = 89000
+alloc_flags = 1, set value of pgva = 0
+set page = f0375440 pp_link to NULL
+pgdir_walk, new page for pt = 88000
+NCPU = 8
+KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTKGAP = 8000
+top = efff8000
+i = 0, PADDR(percpu_kstack[0]) = 332000
+NCPU = 8
+KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTKGAP = 8000
+top = effe8000
+i = 1, PADDR(percpu_kstack[1]) = 33a000
+NCPU = 8
+KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTKGAP = 8000
+top = effd8000
+i = 2, PADDR(percpu_kstack[2]) = 342000
+NCPU = 8
+KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTKGAP = 8000
+top = effc8000
+i = 3, PADDR(percpu_kstack[3]) = 34a000
+NCPU = 8
+KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTKGAP = 8000
+top = effb8000
+i = 4, PADDR(percpu_kstack[4]) = 352000
+NCPU = 8
+KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTKGAP = 8000
+top = effa8000
+i = 5, PADDR(percpu_kstack[5]) = 35a000
+NCPU = 8
+KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTKGAP = 8000
+top = eff98000
+i = 6, PADDR(percpu_kstack[6]) = 362000
+NCPU = 8
+KSTACKTOP = f0000000, KSTKSIZE = 8000, KSTKGAP = 8000
+top = eff88000
+i = 7, PADDR(percpu_kstack[7]) = 36a000
+check_kern_pgdir() succeeded!
+lcr3 end, check page start
+check page free list, page_free_list = f0375438
+nextfree initialize as f03d4000
+addr = f03d4000, n = 0
+check page free list, first free page = f03d4000
+check_page_free_list() succeeded!
+check page end
+lcr0 end, check page installed start
+set page = f0375438 pp_link to NULL
+set page = f0375430 pp_link to NULL
+set page = f0375428 pp_link to NULL
+check page install, page_inseart pp1 start
+page_insert start, pp = f0375430, va = 1000
+pgdir_walk, did not find pdr for va = 1000, return NULL
+page_insert, pt = 0, ptpa = 0
+page_insert, there is no page table for va, create one and adds it to the pgdir
+alloc_flags = 1, set value of pgva = 0
+set page = f0375438 pp_link to NULL
+page_insert, alloc page = 87000 for pt
+page_insert, PDX(va) = 0, pgdir[0] = 87007
+page_insert, insert page = 86000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 86003
+page_free, pp = f0375430, pre = f0375420
+pp = f0375430, pp_ref = 1
+page_insert end
+check page install, page_inseart pp1 end
+check page install, page_inseart pp2 start
+page_insert start, pp = f0375428, va = 1000
+page_insert, pt = 87027, ptpa = 87000
+page_insert, there is page table = 87000 for va = 1000, PTE_ADDR(pte) = f0087000
+page_insert, the page mapped at va has page = 86023, remove it
+page_remove start, va = 1000
+PDX(va) = 0, pgdir[0] = 87027, ptpa = 87000
+page_remove, pagelookup start, pgdir = f0373000, va = 1000
+page_remove, va = 1000 corrsponding with pgInfo = f0375430
+page_remove, pt = f0087000, ptepa = 86000
+page_remove, ptepa = 86000 is not NULL, set pte to 0
+page_remove end
+page_insert, insert page = 85000 to pt for va = 1000
+PTX(va) = 1, pt[1] = 85003
+page_free, pp = f0375428, pre = f0375430
+pp = f0375428, pp_ref = 1
+page_insert end
+check page install, page_inseart pp2 end
+page_remove start, va = 1000
+PDX(va) = 0, pgdir[0] = 87027, ptpa = 87000
+page_remove, pagelookup start, pgdir = f0373000, va = 1000
+page_remove, va = 1000 corrsponding with pgInfo = f0375428
+page_remove, pt = f0087000, ptepa = 85000
+page_remove, ptepa = 85000 is not NULL, set pte to 0
+page_remove end
+check_page_installed_pgdir() succeeded!
+check page installed end
+KT = 1, addr = f012c348, gdt[KT] = ffff, gdt[KT+1] = cf9a00
+KD = 2, addr = f012c348, gdt[KD] = ffff, gdt[KD+1] = cf9300
+UT = 3, addr = f012c348, gdt[UT] = ffff, gdt[UT+1] = cffa00
+UD = 4, addr = f012c348, gdt[UD] = ffff, gdt[UD+1] = cff300
+trap_syscall = f010570a
+sizeof(Gatedesc) = 8
+idt = f0330260
+addr = f03303e0, idt[SYSCALL] = 8570a, idt[SYSCALL+1] = f010ee00
+SMP: CPU 0 found 1 CPU(s)
+enabled interrupts: 1 2
+env_create start
+alloc_flags = 1, set value of pgva = 0
+set page = f0375438 pp_link to NULL
+[00000000] new env 00001000
+load_icode start
+ph = f02ba7f9, eph = f02ba859
+ph = f02ba7f9, p_va = 200000, p_offset = 1000
+region_alloc start
+va = 200000, len = cca3, va + len = 20cca3, rounddown = 200000, roundup = 20d000
+pgdir = f0087000, pde = f0087000, *pde = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0375428 pp_link to NULL
+a = 200000, PTX(a) = 200, pt[PTX(a)] = 0
+pt = f0085000, *pt = 0, pte = f0085800, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0375430 pp_link to NULL
+pt = f0085000, *pt = 0, pte = f0085800, *pte = 86007
+pgdir = f0087000, pde = f0087000, *pde = 85007
+a = 201000, PTX(a) = 201, pt[PTX(a)] = 0
+pt = f0085000, *pt = 0, pte = f0085804, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0375420 pp_link to NULL
+pt = f0085000, *pt = 0, pte = f0085804, *pte = 84007
+pgdir = f0087000, pde = f0087000, *pde = 85007
+a = 202000, PTX(a) = 202, pt[PTX(a)] = 0
+pt = f0085000, *pt = 0, pte = f0085808, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0375418 pp_link to NULL
+pt = f0085000, *pt = 0, pte = f0085808, *pte = 83007
+pgdir = f0087000, pde = f0087000, *pde = 85007
+a = 203000, PTX(a) = 203, pt[PTX(a)] = 0
+pt = f0085000, *pt = 0, pte = f008580c, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0375410 pp_link to NULL
+pt = f0085000, *pt = 0, pte = f008580c, *pte = 82007
+pgdir = f0087000, pde = f0087000, *pde = 85007
+a = 204000, PTX(a) = 204, pt[PTX(a)] = 0
+pt = f0085000, *pt = 0, pte = f0085810, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0375408 pp_link to NULL
+pt = f0085000, *pt = 0, pte = f0085810, *pte = 81007
+pgdir = f0087000, pde = f0087000, *pde = 85007
+a = 205000, PTX(a) = 205, pt[PTX(a)] = 0
+pt = f0085000, *pt = 0, pte = f0085814, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0375400 pp_link to NULL
+pt = f0085000, *pt = 0, pte = f0085814, *pte = 80007
+pgdir = f0087000, pde = f0087000, *pde = 85007
+a = 206000, PTX(a) = 206, pt[PTX(a)] = 0
+pt = f0085000, *pt = 0, pte = f0085818, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03753f8 pp_link to NULL
+pt = f0085000, *pt = 0, pte = f0085818, *pte = 7f007
+pgdir = f0087000, pde = f0087000, *pde = 85007
+a = 207000, PTX(a) = 207, pt[PTX(a)] = 0
+pt = f0085000, *pt = 0, pte = f008581c, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03753f0 pp_link to NULL
+pt = f0085000, *pt = 0, pte = f008581c, *pte = 7e007
+pgdir = f0087000, pde = f0087000, *pde = 85007
+a = 208000, PTX(a) = 208, pt[PTX(a)] = 0
+pt = f0085000, *pt = 0, pte = f0085820, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03753e8 pp_link to NULL
+pt = f0085000, *pt = 0, pte = f0085820, *pte = 7d007
+pgdir = f0087000, pde = f0087000, *pde = 85007
+a = 209000, PTX(a) = 209, pt[PTX(a)] = 0
+pt = f0085000, *pt = 0, pte = f0085824, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03753e0 pp_link to NULL
+pt = f0085000, *pt = 0, pte = f0085824, *pte = 7c007
+pgdir = f0087000, pde = f0087000, *pde = 85007
+a = 20a000, PTX(a) = 20a, pt[PTX(a)] = 0
+pt = f0085000, *pt = 0, pte = f0085828, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03753d8 pp_link to NULL
+pt = f0085000, *pt = 0, pte = f0085828, *pte = 7b007
+pgdir = f0087000, pde = f0087000, *pde = 85007
+a = 20b000, PTX(a) = 20b, pt[PTX(a)] = 0
+pt = f0085000, *pt = 0, pte = f008582c, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03753d0 pp_link to NULL
+pt = f0085000, *pt = 0, pte = f008582c, *pte = 7a007
+pgdir = f0087000, pde = f0087000, *pde = 85007
+a = 20c000, PTX(a) = 20c, pt[PTX(a)] = 0
+pt = f0085000, *pt = 0, pte = f0085830, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03753c8 pp_link to NULL
+pt = f0085000, *pt = 0, pte = f0085830, *pte = 79007
+region_alloc end
+src = f02bb7c5, dst = 200000
+after copying, p_memsz = cca3, p_filesz = cca3, p_va = 200000
+ph = f02ba819, p_va = 800020, p_offset = e020
+region_alloc start
+va = 800020, len = 18fa, va + len = 80191a, rounddown = 800000, roundup = 802000
+pgdir = f0087008, pde = f0087008, *pde = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03753c0 pp_link to NULL
+a = 800000, PTX(a) = 0, pt[PTX(a)] = 0
+pt = f0078000, *pt = 0, pte = f0078000, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03753b8 pp_link to NULL
+pt = f0078000, *pt = 77007, pte = f0078000, *pte = 77007
+pgdir = f0087008, pde = f0087008, *pde = 78007
+a = 801000, PTX(a) = 1, pt[PTX(a)] = 0
+pt = f0078000, *pt = 77007, pte = f0078004, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03753b0 pp_link to NULL
+pt = f0078000, *pt = 77007, pte = f0078004, *pte = 76007
+region_alloc end
+src = f02c87e5, dst = 800020
+after copying, p_memsz = 18fa, p_filesz = 18fa, p_va = 800020
+ph = f02ba839, p_va = 802000, p_offset = 10000
+region_alloc start
+va = 802000, len = c, va + len = 80200c, rounddown = 802000, roundup = 803000
+pgdir = f0087008, pde = f0087008, *pde = 78027
+a = 802000, PTX(a) = 2, pt[PTX(a)] = 0
+pt = f0078000, *pt = 77067, pte = f0078008, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03753a8 pp_link to NULL
+pt = f0078000, *pt = 77067, pte = f0078008, *pte = 75007
+region_alloc end
+src = f02ca7c5, dst = 802000
+after copying, p_memsz = c, p_filesz = 4, p_va = 802000
+p_entry = 800020
+region_alloc start
+va = eebfd000, len = 1000, va + len = eebfe000, rounddown = eebfd000, roundup = eebfe000
+pgdir = f0087ee8, pde = f0087ee8, *pde = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f03753a0 pp_link to NULL
+a = eebfd000, PTX(a) = 3fd, pt[PTX(a)] = 0
+pt = f0074000, *pt = 0, pte = f0074ff4, *pte = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0375398 pp_link to NULL
+pt = f0074000, *pt = 0, pte = f0074ff4, *pte = 73007
+region_alloc end
+load_icode end
+env_create end
+Schedule and run the first user environment!
+sched_yield start
+curenv = 0, thiscpu->cpu_env = 0
+e == NULL
+e = f03b5000
+Find env = f03b5000 runnable
+start env_run
+env_run start
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+syscall start
+syscall, getenvid
+id = 1000
+syscall end, return value = 1000
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+syscall start
+sys_cputs, s = eebfde88
+user_mem_assert, va = eebfde88
+va = eebfde88, va_down = eebfd000, va_up = eebfe000
+user_mem_check succeed
+envid = 1000
+syscall end, return value = 0
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+syscall start
+sys_cputs, s = eebfde88
+user_mem_assert, va = eebfde88
+va = eebfde88, va_down = eebfd000, va_up = eebfe000
+user_mem_check succeed
+thisenv = eec00000, thisenv->env_id = 4096
+syscall end, return value = 0
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+syscall start
+syscall, getenvid
+id = 1000
+syscall end, return value = 1000
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+syscall start
+sys_cputs, s = eebfde48
+user_mem_assert, va = eebfde48
+va = eebfde48, va_down = eebfd000, va_up = eebfe000
+user_mem_check succeed
+1000: I am ''
+syscall end, return value = 0
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+syscall start
+syscall, sys_page_alloc start
+sys_page_alloc, result = 0
+sys_page_alloc, va = eebff000, UTOP = eec00000
+sys_page_alloc, result = 0, e = f03b5000, envid = 0
+alloc_flags = 1, set value of pgva = 0
+set page = f0375390 pp_link to NULL
+page_insert start, pp = f0375390, va = eebff000
+page_insert, pt = 74027, ptpa = 74000
+page_insert, there is page table = 74000 for va = eebff000, PTE_ADDR(pte) = f0074000
+page_insert, insert page = 72000 to pt for va = eebff000
+PTX(va) = 1023, pt[1023] = 72007
+page_free, pp = f0375390, pre = f0375388
+pp = f0375390, pp_ref = 1
+page_insert end
+syscall end, return value = 0
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+syscall start
+syscall, sys_env_set_pgfault_upcall start
+syscall end, return value = 0
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+syscall start
+syscall, sys_exofork start
+sys_exofork, parent_id = 1000
+alloc_flags = 1, set value of pgva = 0
+set page = f0375388 pp_link to NULL
+[00001000] new env 00001001
+sys_exofork, result = 0
+TRAP frame at 0xf03b507c from CPU 0
+  edi  0x00000000
+  esi  0x00000000
+  ebp  0xeebfdf20
+  oesp 0xf0331fdc
+  ebx  0x00000007
+  edx  0x00000000
+  ecx  0x0080128c
+  eax  0x00000000
+  es   0x----0023
+  ds   0x----0023
+  trap 0x00000030 System call
+  err  0x00000000
+  eip  0x00801051
+  cs   0x----001b
+  flag 0x00000046
+  esp  0xeebfdef8
+  ss   0x----0023
+newenv->env_id = 1001, curenv->env_id = 1000
+syscall end, return value = 1001
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+syscall start
+syscall, sys_page_map start
+srcenvid = 0, dstenvid = 1001
+1: envid2env result = 0
+2: envid2env result = 0
+va_temp = 800000, srcva = 800000
+va_temp = 800000, dstva = 800000
+*srcpte = 77067, p = f03753b8
+check_perm result = 0
+perm = 805, PTE_W = 2
+!(perm & PTE_W) = 1
+!((uint32_t)(*srcpte) & pte_W) = 0
+page_insert start, pp = f03753b8, va = 800000
+pgdir_walk, did not find pdr for va = 800000, return NULL
+page_insert, pt = 0, ptpa = 0
+page_insert, there is no page table for va, create one and adds it to the pgdir
+alloc_flags = 1, set value of pgva = 0
+set page = f0375380 pp_link to NULL
+page_insert, alloc page = 70000 for pt
+page_insert, PDX(va) = 2, pgdir[2] = 70805
+page_insert, insert page = 77000 to pt for va = 800000
+PTX(va) = 0, pt[0] = 77805
+page_free, pp = f03753b8, pre = f0375378
+pp = f03753b8, pp_ref = 1
+page_insert end
+page_insert result = 0
+syscall end, return value = 0
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+syscall start
+syscall, sys_page_map start
+srcenvid = 0, dstenvid = 0
+1: envid2env result = 0
+2: envid2env result = 0
+va_temp = 800000, srcva = 800000
+va_temp = 800000, dstva = 800000
+*srcpte = 77067, p = f03753b8
+check_perm result = 0
+perm = 805, PTE_W = 2
+!(perm & PTE_W) = 1
+!((uint32_t)(*srcpte) & pte_W) = 0
+page_insert start, pp = f03753b8, va = 800000
+page_insert, pt = 78027, ptpa = 78000
+page_insert, there is page table = 78000 for va = 800000, PTE_ADDR(pte) = f0078000
+page_insert, the page mapped at va has page = 77067, remove it
+page_remove start, va = 800000
+PDX(va) = 2, pgdir[2] = 78027, ptpa = 78000
+page_remove, pagelookup start, pgdir = f0087000, va = 800000
+page_remove, va = 800000 corrsponding with pgInfo = f03753b8
+page_remove, pt = f0078000, ptepa = 77000
+page_remove, ptepa = 77000 is not NULL, set pte to 0
+page_remove end
+page_insert, insert page = 77000 to pt for va = 800000
+PTX(va) = 0, pt[0] = 77805
+page_free, pp = f03753b8, pre = f03753b8
+page_free, find pp == pre
+pp = f03753b8, pp_ref = 1
+page_insert end
+page_insert result = 0
+syscall end, return value = 0
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebfffcc
+va = eebfffcc, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebfff8c
+va = eebfff8c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebfff4c
+va = eebfff4c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebfff0c
+va = eebfff0c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffecc
+va = eebffecc, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffe8c
+va = eebffe8c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffe4c
+va = eebffe4c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffe0c
+va = eebffe0c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffdcc
+va = eebffdcc, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffd8c
+va = eebffd8c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffd4c
+va = eebffd4c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffd0c
+va = eebffd0c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffccc
+va = eebffccc, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffc8c
+va = eebffc8c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffc4c
+va = eebffc4c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffc0c
+va = eebffc0c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffbcc
+va = eebffbcc, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffb8c
+va = eebffb8c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffb4c
+va = eebffb4c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffb0c
+va = eebffb0c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffacc
+va = eebffacc, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffa8c
+va = eebffa8c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffa4c
+va = eebffa4c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebffa0c
+va = eebffa0c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff9cc
+va = eebff9cc, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff98c
+va = eebff98c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff94c
+va = eebff94c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff90c
+va = eebff90c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff8cc
+va = eebff8cc, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff88c
+va = eebff88c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff84c
+va = eebff84c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff80c
+va = eebff80c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff7cc
+va = eebff7cc, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff78c
+va = eebff78c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff74c
+va = eebff74c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff70c
+va = eebff70c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff6cc
+va = eebff6cc, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff68c
+va = eebff68c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff64c
+va = eebff64c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff60c
+va = eebff60c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff5cc
+va = eebff5cc, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff58c
+va = eebff58c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff54c
+va = eebff54c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff50c
+va = eebff50c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff4cc
+va = eebff4cc, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff48c
+va = eebff48c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff44c
+va = eebff44c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff40c
+va = eebff40c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff3cc
+va = eebff3cc, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff38c
+va = eebff38c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff34c
+va = eebff34c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff30c
+va = eebff30c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff2cc
+va = eebff2cc, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff28c
+va = eebff28c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff24c
+va = eebff24c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff20c
+va = eebff20c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff1cc
+va = eebff1cc, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff18c
+va = eebff18c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff14c
+va = eebff14c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff10c
+va = eebff10c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff0cc
+va = eebff0cc, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff08c
+va = eebff08c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff04c
+va = eebff04c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebff00c
+va = eebff00c, va_down = eebff000, va_up = eec00000
+user_mem_check succeed
+env_run start
+env_run, curenv = f03b5000, set curenv to runnable
+env_run, e = f03b5000, switch context
+env_run, env_pop_tf start
+user_mem_assert, va = eebfefcc
+va = eebfefcc, va_down = eebfe000, va_up = eebff000
+user_mem_check, pte_perm & perm != 0, return -6
+[00001000] user_mem_check assertion failure for va eebfefcc
+[00001000] free env 00001000
+page_remove start, va = 200000
+PDX(va) = 0, pgdir[0] = 85027, ptpa = 85000
+page_remove, pagelookup start, pgdir = f0087000, va = 200000
+page_remove, va = 200000 corrsponding with pgInfo = f0375430
+page_remove, pt = f0085000, ptepa = 86000
+page_remove, ptepa = 86000 is not NULL, set pte to 0
+page_remove end
+page_remove start, va = 201000
+PDX(va) = 0, pgdir[0] = 85027, ptpa = 85000
+page_remove, pagelookup start, pgdir = f0087000, va = 201000
+page_remove, va = 201000 corrsponding with pgInfo = f0375420
+page_remove, pt = f0085000, ptepa = 84000
+page_remove, ptepa = 84000 is not NULL, set pte to 0
+page_remove end
+page_remove start, va = 202000
+PDX(va) = 0, pgdir[0] = 85027, ptpa = 85000
+page_remove, pagelookup start, pgdir = f0087000, va = 202000
+page_remove, va = 202000 corrsponding with pgInfo = f0375418
+page_remove, pt = f0085000, ptepa = 83000
+page_remove, ptepa = 83000 is not NULL, set pte to 0
+page_remove end
+page_remove start, va = 203000
+PDX(va) = 0, pgdir[0] = 85027, ptpa = 85000
+page_remove, pagelookup start, pgdir = f0087000, va = 203000
+page_remove, va = 203000 corrsponding with pgInfo = f0375410
+page_remove, pt = f0085000, ptepa = 82000
+page_remove, ptepa = 82000 is not NULL, set pte to 0
+page_remove end
+page_remove start, va = 204000
+PDX(va) = 0, pgdir[0] = 85027, ptpa = 85000
+page_remove, pagelookup start, pgdir = f0087000, va = 204000
+page_remove, va = 204000 corrsponding with pgInfo = f0375408
+page_remove, pt = f0085000, ptepa = 81000
+page_remove, ptepa = 81000 is not NULL, set pte to 0
+page_remove end
+page_remove start, va = 205000
+PDX(va) = 0, pgdir[0] = 85027, ptpa = 85000
+page_remove, pagelookup start, pgdir = f0087000, va = 205000
+page_remove, va = 205000 corrsponding with pgInfo = f0375400
+page_remove, pt = f0085000, ptepa = 80000
+page_remove, ptepa = 80000 is not NULL, set pte to 0
+page_remove end
+page_remove start, va = 206000
+PDX(va) = 0, pgdir[0] = 85027, ptpa = 85000
+page_remove, pagelookup start, pgdir = f0087000, va = 206000
+page_remove, va = 206000 corrsponding with pgInfo = f03753f8
+page_remove, pt = f0085000, ptepa = 7f000
+page_remove, ptepa = 7f000 is not NULL, set pte to 0
+page_remove end
+page_remove start, va = 207000
+PDX(va) = 0, pgdir[0] = 85027, ptpa = 85000
+page_remove, pagelookup start, pgdir = f0087000, va = 207000
+page_remove, va = 207000 corrsponding with pgInfo = f03753f0
+page_remove, pt = f0085000, ptepa = 7e000
+page_remove, ptepa = 7e000 is not NULL, set pte to 0
+page_remove end
+page_remove start, va = 208000
+PDX(va) = 0, pgdir[0] = 85027, ptpa = 85000
+page_remove, pagelookup start, pgdir = f0087000, va = 208000
+page_remove, va = 208000 corrsponding with pgInfo = f03753e8
+page_remove, pt = f0085000, ptepa = 7d000
+page_remove, ptepa = 7d000 is not NULL, set pte to 0
+page_remove end
+page_remove start, va = 209000
+PDX(va) = 0, pgdir[0] = 85027, ptpa = 85000
+page_remove, pagelookup start, pgdir = f0087000, va = 209000
+page_remove, va = 209000 corrsponding with pgInfo = f03753e0
+page_remove, pt = f0085000, ptepa = 7c000
+page_remove, ptepa = 7c000 is not NULL, set pte to 0
+page_remove end
+page_remove start, va = 20a000
+PDX(va) = 0, pgdir[0] = 85027, ptpa = 85000
+page_remove, pagelookup start, pgdir = f0087000, va = 20a000
+page_remove, va = 20a000 corrsponding with pgInfo = f03753d8
+page_remove, pt = f0085000, ptepa = 7b000
+page_remove, ptepa = 7b000 is not NULL, set pte to 0
+page_remove end
+page_remove start, va = 20b000
+PDX(va) = 0, pgdir[0] = 85027, ptpa = 85000
+page_remove, pagelookup start, pgdir = f0087000, va = 20b000
+page_remove, va = 20b000 corrsponding with pgInfo = f03753d0
+page_remove, pt = f0085000, ptepa = 7a000
+page_remove, ptepa = 7a000 is not NULL, set pte to 0
+page_remove end
+page_remove start, va = 20c000
+PDX(va) = 0, pgdir[0] = 85027, ptpa = 85000
+page_remove, pagelookup start, pgdir = f0087000, va = 20c000
+page_remove, va = 20c000 corrsponding with pgInfo = f03753c8
+page_remove, pt = f0085000, ptepa = 79000
+page_remove, ptepa = 79000 is not NULL, set pte to 0
+page_remove end
+page_remove start, va = 800000
+PDX(va) = 2, pgdir[2] = 78027, ptpa = 78000
+page_remove, pagelookup start, pgdir = f0087000, va = 800000
+page_remove, va = 800000 corrsponding with pgInfo = f03753b8
+page_remove, pt = f0078000, ptepa = 77000
+page_remove, ptepa = 77000 is not NULL, set pte to 0
+kernel panic on CPU 0 at kern/pmap.c:450: pp_ref != 0 or pp_link != NULL
 
-faultread: 
-$ make run-faultread-nox-gdb QEMUEXTRA+=-snapshot
-OK (0.8s) 
-faultwrite: 
-$ make run-faultwrite-nox-gdb QEMUEXTRA+=-snapshot
-OK (1.0s) 
-faultdie: 
-$ make run-faultdie-nox-gdb QEMUEXTRA+=-snapshot
-FAIL (1.1s) 
-    AssertionError: ...
-           cs   0x----001b
-           flag 0x00000096
-           esp  0xeebfdf48
-           ss   0x----0023
-         qemu: terminating on signal 15 from pid 11614
-    MISSING 'i faulted at va deadbeef, err 6'
-    MISSING '.00001000. exiting gracefully'
-    MISSING '.00001000. free env 00001000'
-    
-    QEMU output saved to jos.out.faultdie
-faultregs: 
-$ make run-faultregs-nox-gdb QEMUEXTRA+=-snapshot
-FAIL (2.1s) 
-    AssertionError: ...
-           cs   0x----001b
-           flag 0x00000096
-           esp  0xeebfdf48
-           ss   0x----0023
-         qemu: terminating on signal 15 from pid 11711
-    MISSING 'Registers in UTrapframe OK'
-    MISSING 'Registers after page-fault OK'
-    
-    QEMU output saved to jos.out.faultregs
-faultalloc: 
-$ make run-faultalloc-nox-gdb QEMUEXTRA+=-snapshot
-FAIL (0.9s) 
-    AssertionError: ...
-           cs   0x----001b
-           flag 0x00000096
-           esp  0xeebfdf48
-           ss   0x----0023
-         qemu: terminating on signal 15 from pid 11808
-    MISSING 'fault deadbeef'
-    MISSING 'this string was faulted in at deadbeef'
-    MISSING 'fault cafebffe'
-    MISSING 'fault cafec000'
-    MISSING 'this string was faulted in at cafebffe'
-    MISSING '.00001000. exiting gracefully'
-    MISSING '.00001000. free env 00001000'
-    
-    QEMU output saved to jos.out.faultalloc
-faultallocbad: 
-$ make run-faultallocbad-nox-gdb QEMUEXTRA+=-snapshot
-FAIL (1.9s) 
-    AssertionError: ...
-           cs   0x----001b
-           flag 0x00000096
-           esp  0xeebfdf48
-           ss   0x----0023
-         qemu: terminating on signal 15 from pid 11905
-    MISSING '.00001000. user_mem_check assertion failure for va deadbeef'
-    MISSING '.00001000. free env 00001000'
-    
-    QEMU output saved to jos.out.faultallocbad
-faultnostack: 
-$ make run-faultnostack-nox-gdb QEMUEXTRA+=-snapshot
-FAIL (1.1s) 
-    AssertionError: ...
-           esp  0xeebfdf98
-           ss   0x----0023
-    GOOD [00001000] free env 00001000
-         page_remove start, va = 200000
-         PDX(va) = 0, pgdir[0] = 86027, ptpa = 86000
-    ...
-         sched_halt start
-         No runnable environments in the system!
-         Welcome to the JOS kernel monitor!
-         Type 'help' for a list of commands.
-         qemu: terminating on signal 15 from pid 12002
-    MISSING '.00001000. user_mem_check assertion failure for va eebfff..'
-    
-    QEMU output saved to jos.out.faultnostack
-faultbadhandler: 
-$ make run-faultbadhandler-nox-gdb QEMUEXTRA+=-snapshot
-FAIL (2.0s) 
-    AssertionError: ...
-           esp  0xeebfdf98
-           ss   0x----0023
-    GOOD [00001000] free env 00001000
-         page_remove start, va = 200000
-         PDX(va) = 0, pgdir[0] = 86027, ptpa = 86000
-    ...
-         sched_halt start
-         No runnable environments in the system!
-         Welcome to the JOS kernel monitor!
-         Type 'help' for a list of commands.
-         qemu: terminating on signal 15 from pid 12099
-    MISSING '.00001000. user_mem_check assertion failure for va (deadb|eebfe)...'
-    
-    QEMU output saved to jos.out.faultbadhandler
-faultevilhandler: 
-$ make run-faultevilhandler-nox-gdb QEMUEXTRA+=-snapshot
-FAIL (2.1s) 
-    AssertionError: ...
-           esp  0xeebfdf98
-           ss   0x----0023
-    GOOD [00001000] free env 00001000
-         page_remove start, va = 200000
-         PDX(va) = 0, pgdir[0] = 86027, ptpa = 86000
-    ...
-         sched_halt start
-         No runnable environments in the system!
-         Welcome to the JOS kernel monitor!
-         Type 'help' for a list of commands.
-         qemu: terminating on signal 15 from pid 12196
-    MISSING '.00001000. user_mem_check assertion failure for va (f0100|eebfe)...'
-    
-    QEMU output saved to jos.out.faultevilhandler
-forktree: 
-$ make run-forktree-nox-gdb QEMUEXTRA+=-snapshot
-FAIL (1.9s) 
-    AssertionError: ...
-           cs   0x----001b
-           flag 0x00000096
-           esp  0xeebfded8
-           ss   0x----0023
-         qemu: terminating on signal 15 from pid 12293
-    MISSING '....: I am .0.'
-    MISSING '....: I am .1.'
-    MISSING '....: I am .000.'
-    MISSING '....: I am .100.'
-    MISSING '....: I am .110.'
-    MISSING '....: I am .111.'
-    MISSING '....: I am .011.'
-    MISSING '....: I am .001.'
-    MISSING '.00001000. exiting gracefully'
-    MISSING '.00001001. exiting gracefully'
-    MISSING '.0000200.. exiting gracefully'
-    MISSING '.0000200.. free env 0000200.'
-    
-    QEMU output saved to jos.out.forktree
-Part B score: 10/50
-
-spin: 
-$ make run-spin-nox-gdb QEMUEXTRA+=-snapshot
-FAIL (2.1s) 
-    AssertionError: ...
-         alloc_flags = 1, set value of pgva = 0
-         set page = f0374440 pp_link to NULL
-    GOOD [00000000] new env 00001000
-         load_icode start
-         ph = f02dba94, eph = f02dbaf4
-    ...
-         syscall start
-         *pte = 74067, pte_perm = 7, perm = 5
-    GOOD I am the parent.  Forking the child...
-         syscall end, return value = 0
-         env_run start
-    ...
-           cs   0x----001b
-           flag 0x00000096
-           esp  0xeebfdf48
-           ss   0x----0023
-         qemu: terminating on signal 15 from pid 12390
-    MISSING '.00001000. new env 00001001'
-    MISSING 'I am the parent.  Running the child...'
-    MISSING 'I am the child.  Spinning...'
-    MISSING 'I am the parent.  Killing the child...'
-    MISSING '.00001000. destroying 00001001'
-    MISSING '.00001000. free env 00001001'
-    MISSING '.00001000. exiting gracefully'
-    MISSING '.00001000. free env 00001000'
-    
-    QEMU output saved to jos.out.spin
-stresssched: 
-$ make run-stresssched-nox-gdb CPUS=4 QEMUEXTRA+=-snapshot
-FAIL (2.1s) 
-    AssertionError: ...
-           cs   0x----001b
-           flag 0x00000096
-           esp  0xeebfdf48
-           ss   0x----0023
-         qemu: terminating on signal 15 from pid 12487
-    MISSING '.000010... stresssched on CPU 0'
-    MISSING '.000010... stresssched on CPU 1'
-    MISSING '.000010... stresssched on CPU 2'
-    MISSING '.000010... stresssched on CPU 3'
-    
-    QEMU output saved to jos.out.stresssched
-sendpage: 
-$ make run-sendpage-nox-gdb CPUS=2 QEMUEXTRA+=-snapshot
-FAIL (2.1s) 
-    AssertionError: ...
-         alloc_flags = 1, set value of pgva = 0
-         set page = f0374440 pp_link to NULL
-    GOOD [00000000] new env 00001000
-         load_icode start
-         ph = f02cb073, eph = f02cb0d3
-    ...
-           cs   0x----001b
-           flag 0x00000096
-           esp  0xeebfdf38
-           ss   0x----0023
-         qemu: terminating on signal 15 from pid 12584
-    MISSING '.00001000. new env 00001001'
-    MISSING '1000 got message: hello child environment! how are you?'
-    MISSING 'child received correct message'
-    MISSING '1001 got message: hello parent environment! I'm good'
-    MISSING 'parent received correct message'
-    MISSING '.00001000. exiting gracefully'
-    MISSING '.00001000. free env 00001000'
-    MISSING '.00001001. exiting gracefully'
-    MISSING '.00001001. free env 00001001'
-    
-    QEMU output saved to jos.out.sendpage
-pingpong: 
-$ make run-pingpong-nox-gdb CPUS=4 QEMUEXTRA+=-snapshot
-FAIL (1.9s) 
-    AssertionError: ...
-         alloc_flags = 1, set value of pgva = 0
-         set page = f0374440 pp_link to NULL
-    GOOD [00000000] new env 00001000
-         load_icode start
-         ph = f02fcdc7, eph = f02fce27
-    ...
-           cs   0x----001b
-           flag 0x00000092
-           esp  0xeebfdf28
-           ss   0x----0023
-         qemu: terminating on signal 15 from pid 12681
-    MISSING '.00001000. new env 00001001'
-    MISSING 'send 0 from 1000 to 1001'
-    MISSING '1001 got 0 from 1000'
-    MISSING '1000 got 1 from 1001'
-    MISSING '1001 got 8 from 1000'
-    MISSING '1000 got 9 from 1001'
-    MISSING '1001 got 10 from 1000'
-    MISSING '.00001000. exiting gracefully'
-    MISSING '.00001000. free env 00001000'
-    MISSING '.00001001. exiting gracefully'
-    MISSING '.00001001. free env 00001001'
-    
-    QEMU output saved to jos.out.pingpong
-primes: 
-$ make run-primes-nox-gdb CPUS=4 QEMUEXTRA+=-snapshot
-FAIL (2.1s) 
-    AssertionError: ...
-         alloc_flags = 1, set value of pgva = 0
-         set page = f0374440 pp_link to NULL
-    GOOD [00000000] new env 00001000
-         load_icode start
-         ph = f031e1ba, eph = f031e21a
-    ...
-         syscall start
-         *pte = 74067, pte_perm = 7, perm = 5
-         [00001000] user panic in <unknown> at lib/fork.c:81: syscall end, return value = 0
-         env_run start
-         qemu: terminating on signal 15 from pid 12778
-    MISSING '.00001000. new env 00001001'
-    MISSING 'CPU .: 2 .00001001. new env 00001002'
-    MISSING 'CPU .: 3 .00001002. new env 00001003'
-    MISSING 'CPU .: 5 .00001003. new env 00001004'
-    MISSING 'CPU .: 7 .00001004. new env 00001005'
-    MISSING 'CPU .: 11 .00001005. new env 00001006'
-    MISSING 'CPU .: 1877 .00001120. new env 00001121'
-    
-    QEMU output saved to jos.out.primes
-Part C score: 0/25
-
-Score: 15/80
+Welcome to the JOS kernel monitor!
+Type 'help' for a list of commands.
+K> QEMU: Terminated
+
